@@ -69,7 +69,7 @@ body {
 	animation: spin 1s linear infinite;
 }
 .boxed_body {
-	background: url(images/patterns/bg13.png) repeat;
+	background: url(/public/images/patterns/bg13.png) repeat;
 }
 .boxed_body_2 {
 	background: url(http://placehold.it/2000x1100/222/FFF) no-repeat center center fixed;
@@ -553,7 +553,7 @@ div[class*="slider_shadow"]:before, div[class^="header_shadow"] {
 	margin-bottom: 30px !important;
 }
 .ask-me .col-md-9 form {
-	background: url("images/chrome.png") no-repeat center bottom;
+	background: url(../images/chrome.png) no-repeat center bottom;
 	height: 324px;
 	width: 100%;
 	background-size: 100% 100%;
@@ -3293,7 +3293,7 @@ span.small_arrow_dowm {
 [class^="icons-"],
 [class*=" icons-"] {
 	display: inline-block;
-	background-image: url(images/icons.png);
+	background-image: url(/public/images/icons.png);
 	background-position: top left;
 	background-repeat: no-repeat;
 	line-height: 1;

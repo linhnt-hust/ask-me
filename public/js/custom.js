@@ -19,6 +19,22 @@ jQuery(document).ready(function($) {
 			});
 		});	
 	});
+
+	// jQuery("#user-panel  ul li ul").parent("li").addClass("parent-list");
+	// jQuery("#user-panel ul a").removeAttr("title");
+	// jQuery("#user-panel ul ul").css({display: "none"});
+	// jQuery("#user-panel ul li").each(function() {	
+	// 	var sub_menu = jQuery(this).find("ul:first");
+	// 	jQuery(this).hover(function() {	
+	// 		sub_menu.stop().css({overflow:"hidden", height:"auto", display:"none", paddingTop:0}).slideDown(250, function() {
+	// 			jQuery(this).css({overflow:"visible", height:"auto"});
+	// 		});	
+	// 	},function() {	
+	// 		sub_menu.stop().slideUp(250, function() {	
+	// 			jQuery(this).css({overflow:"hidden", display:"none"});
+	// 		});
+	// 	});	
+	// });
 	
 	/* Header fixed */
 	
