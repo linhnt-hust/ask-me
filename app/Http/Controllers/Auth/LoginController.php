@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -35,5 +35,35 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'name';
+    }
+
+    /**
+     * Get the maximum number of attempts to allow.
+     *
+     * @return int
+     */
+    public function maxAttempts()
+    {
+        return 5;
+    }
+
+    /**
+     * Get the number of minutes to throttle for.
+     *
+     * @return int
+     */
+    public function decayMinutes()
+    {
+        return 60;
     }
 }
