@@ -7,10 +7,10 @@
                 @guest
                     <li><a href="" id="login-panel"><i class="icon-user"></i>Login Area</a></li>
                 @else
-                    <li><a><i class="icon-user">{{ Auth::user()->name }}</i></a></li>
+                    <li><a><i class="icon-user">    {{ Auth::user()->name }}</i></a></li>
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();"><i class="icon-minus"> Logout</i></a>
+                            document.getElementById('logout-form').submit();"><i class="icon-signout"> Logout</i></a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>   

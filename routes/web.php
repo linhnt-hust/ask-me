@@ -13,5 +13,8 @@
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
+
 Auth::routes();
+
+Route::resource('profile', 'User\ProfileController');
