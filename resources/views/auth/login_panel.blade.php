@@ -8,7 +8,7 @@
                         <form method="post" role="form" action="{{ route('login') }}">
                             {{ csrf_field() }}
                             <div class="form-inputs clearfix">
-                                <p class="login-text" {{ $errors->has('email') ? 'alert alert-danger' : '' }}>
+                                <p class="login-text" {{ $errors->has('name') ? 'alert alert-danger' : '' }}>
                                     <input type="text" value="Username" name="name" onfocus="if (this.value == 'Username') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Username';}">
                                     <i class="icon-user"></i>
                                 </p>
