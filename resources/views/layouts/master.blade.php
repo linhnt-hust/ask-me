@@ -24,7 +24,8 @@
 	
 	<!-- Favicons -->
 	<link rel="shortcut icon" href="{{ asset('/images/favicon.png') }}">
-  
+	
+	@yield('page_scripts')
 </head>
 <body>
 

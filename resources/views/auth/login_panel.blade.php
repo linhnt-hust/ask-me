@@ -5,7 +5,7 @@
                 <div class="page-content">
                     <h2>Login</h2>
                     <div class="form-style form-style-3">
-                        <form method="post" role="form" action="{{ route('login') }}">
+                        <form method="POST" role="form" action="{{ route('login') }}">
                             {{ csrf_field() }}
                             <div class="form-inputs clearfix">
                                 <p class="login-text" {{ $errors->has('name') ? 'alert alert-danger' : '' }}>

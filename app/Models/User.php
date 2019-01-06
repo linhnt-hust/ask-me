@@ -34,6 +34,8 @@ class User extends Authenticatable
         'googleplus_account',    
     ];
 
+    const FOLDER_IMAGE = 'users';
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -43,7 +45,17 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function updateUser($data, $id)
+    public function uploadImage($file, $dir)
+    {
+        $time = Carbon::now();
+        $dataFile = $file;
+        $nameFile = $time->timestamp . $dataFile->getClientOriginalName();
+        $destinationPath = base_path() . '/public/images/' . $dir;
+        $file->move($destinationPath, $nameFile);
+        return $nameFile;
+    }   
+
+    public function updateUser(array $data , $id)
     {
         $user = User::withTrashed()->find($id);
         if (isset($data['password']) && $data['password'] != '') {
@@ -52,14 +64,7 @@ class User extends Authenticatable
             $data['password'] = $user->password;
         }
 
-        if($data->hasFile('avatar')){
-            $file1= $user->avatar;
-            File::delete('avatars/'.$file1);
-            $file = $data->avatar;
-            $file->move('avatar',$file->getClientOriginalName());
-            $user->avatar = $file->getClientOriginalName();
-            $user->save();
-        }
+        $data['image'] = $this->uploadImage($data['avatar'], User::FOLDER_IMAGE);
 
         $input = [ 
             'name' => $data['name'],
@@ -68,6 +73,7 @@ class User extends Authenticatable
             'email' => $data['email'],
             'website' => $data['website'],
             'country' => $data['country'],
+            'avatar' => $data['image'],
             'description' => $data['description'],
             'facebook_account' => $data['facebook_account'],
             'twitter_account' => $data['twitter_account'],
