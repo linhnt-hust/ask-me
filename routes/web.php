@@ -18,3 +18,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::resource('profile', 'User\ProfileController');
+
+Route::resource('question', 'Question\QuestionController');

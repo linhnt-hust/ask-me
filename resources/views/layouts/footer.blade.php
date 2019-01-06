@@ -4,16 +4,15 @@
             <div class="col-md-4">
                 <div class="widget widget_contact">
                     <h3 class="widget_title">Where We Are ?</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravida odio, sit amet suscipit risus ultrices eu.</p>
                     <ul>
                         <li>
                             <span>Address :</span>
-                            Ask Me Network, 33 Street, syada Zeinab, Cairo, Egypt.
+                            609 Trương Định, Hoàng Mai, Hà Nội.
                         </li>
                         <li>
-                            <span>Support :</span>Support Telephone No : (+2)01111011110
+                            <span>Support :</span>Support Telephone No : (+84)834921996
                         </li>
-                        <li>Support Email Account : info@example.com</li>
+                        <li>Support Email Account : chaosmeteor@gmail.com</li>
                     </ul>
                 </div>
             </div>
@@ -21,14 +20,12 @@
                 <div class="widget">
                     <h3 class="widget_title">Quick Links</h3>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="ask_question.html">Ask Question</a></li>
+                        <li><a href="{{ route('home') }}">Home</a></li>
+                        <li><a href="{{ route('question.create') }}">Ask Question</a></li>
                         <li><a href="#">About</a></li>
                         <li><a href="cat_question.html">Questions</a></li>
-                        <li><a href="user_profile.html">Users</a></li>
+                        <li><a href="{{ route('profile.index') }}">Users</a></li>
                         <li><a href="blog_1.html">Blog</a></li>
-                        <li><a href="right_sidebar.html">Pages</a></li>
-                        <li><a href="shortcodes.html">Shortcodes</a></li>
                         <li><a href="contact_us.html">Contact Us</a></li>
                         <li><a href="#">FAQs</a></li>
                     </ul>
@@ -41,12 +38,12 @@
                         <li class="related-item">
                             <h3><a href="#">This is my first Question</a></h3>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lorem quam.</p>
-                            <div class="clear"></div><span>Feb 22, 2014</span>
+                            <div class="clear"></div><span>Jan 01, 2019</span>
                         </li>
                         <li class="related-item">
                             <h3><a href="#">This Is My Second Poll Question</a></h3>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lorem quam.</p>
-                            <div class="clear"></div><span>Feb 22, 2014</span>
+                            <div class="clear"></div><span>Jan 01, 2019</span>
                         </li>
                     </ul>
                 </div>	

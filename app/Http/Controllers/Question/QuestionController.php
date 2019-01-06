@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Question;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Auth;
-use App\Models\User;
-use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Http\Request;
+use App\Models\Question;
 
-class ProfileController extends Controller
-{   
-    protected $modelUser;
-    public function __construct(User $user)
+class QuestionController extends Controller
+{
+    protected $modelQuestion;
+    public function __construct(Question $question)
     {
-        $this->modelUser = $user;
+        $this->modelQuestion = $question;
     }
 
     /**
@@ -23,8 +21,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        return view('user.profile.index', compact('user'));
+        //
     }
 
     /**
@@ -34,7 +31,7 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        //
+        return view('question.create');
     }
 
     /**
@@ -45,7 +42,15 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $success = $this->modelQuestion->createQuestion($input);
+        if ($success) {
+            flash('Create Question successfully.')->success();
+        } else {
+            flash('Whoops! Some error may happened. Please check again!')->error();
+        }
+        
+        return redirect()->back();
     }
 
     /**
@@ -67,8 +72,7 @@ class ProfileController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        return view('user.profile.edit', compact('user'));
+        //
     }
 
     /**
@@ -78,17 +82,9 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $data = $request->all();
-dd($data);
-        $result = $this->modelUser->updateUser($data, $id);
-        if ($result) {
-            flash('Update user profile successfully.')->success();
-        } else {
-            flash('Whoops!! Something is wrong.')->error();
-        }
-        return redirect()->route('profile.index');
+        //
     }
 
     /**

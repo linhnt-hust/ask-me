@@ -1,6 +1,6 @@
 <header id="header" class="index-no-box">
     <section class="container clearfix">
-        <div class="logo"><a href="index.html"><img alt="" src="{{ asset('/images/logo.png') }}"></a></div>
+        <div class="logo"><a href="{{ route('home') }}"><img alt="" src="{{ asset('/images/logo.png') }}"></a></div>
         <nav class="navigation">
             <ul>
                 <li class="current_page_item"><a href="{{ route('home') }}">Home</a>
@@ -12,7 +12,7 @@
                         <li class="current_page_item"><a href="index_no_box.html">Home No Box</a></li>
                     </ul> --}}
                 </li>
-                <li class="ask_question"><a href="ask_question.html">Ask Question</a></li>
+                <li class="ask_question"><a href="{{ route('question.create') }}">Ask Question</a></li>
                 <li><a href="blog_1.html">Blog</a>
                     <ul>
                         <li><a href="blog_1.html">Blog 1</a>
