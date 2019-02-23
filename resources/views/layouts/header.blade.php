@@ -47,7 +47,7 @@
                 </li>
                 @guest
                 @else
-                <li><a href="user_profile.html">User</a>
+                <li><a href="{{ route('profile.index')}}">User</a>
                     <ul>
                         <li><a href="{{ route('profile.index') }}">User Profile</a></li>
                         <li><a href="user_questions.html">User Questions</a></li>

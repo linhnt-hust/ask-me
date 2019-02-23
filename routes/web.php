@@ -20,3 +20,7 @@ Auth::routes();
 Route::resource('profile', 'User\ProfileController');
 
 Route::resource('question', 'Question\QuestionController');
+
+Route::get('/admin', function() {
+    return view('admin.index');
+});
