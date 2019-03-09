@@ -50,7 +50,7 @@
                 <li><a href="{{ route('profile.index')}}">User</a>
                     <ul>
                         <li><a href="{{ route('profile.index') }}">User Profile</a></li>
-                        <li><a href="user_questions.html">User Questions</a></li>
+                        <li><a href="{{ route('user.question') }}">User Questions</a></li>
                         <li><a href="user_answers.html">User Answers</a></li>
                         <li><a href="user_favorite_questions.html">User Favorite Questions</a></li>
                         <li><a href="user_points.html">User Points</a></li>

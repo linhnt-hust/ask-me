@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Question;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Question;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
@@ -31,7 +32,8 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('question.create');
+        $user = Auth::user();
+        return view('question.create', compact('user'));
     }
 
     /**
@@ -45,12 +47,11 @@ class QuestionController extends Controller
         $input = $request->all();
         $success = $this->modelQuestion->createQuestion($input);
         if ($success) {
-            flash('Create Question successfully.')->success();
+            return redirect()->route('user.question')->with('success','Create Question sucessfully.');
+
         } else {
-            flash('Whoops! Some error may happened. Please check again!')->error();
+            return redirect()->back()->with('error','Whoops! Some error may happened. Please check again!');
         }
-        
-        return redirect()->back();
     }
 
     /**

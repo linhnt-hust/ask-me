@@ -50,7 +50,7 @@
                             <!--Zircos-->
                         <!--</a>-->
                         <!-- Image Logo -->
-                        <a href="index.html" class="logo">
+                        <a href="#" class="logo">
                             <img src="{{ asset('/images/logo.png')}}" alt="" height="30">
                         </a>
 

@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/user/question', 'User\UserController@userQuestion')->name('user.question');
+Route::get('/user/question/detail/{id}', 'User\UserController@questionDetail')->name('user.question.detail');
+
 Auth::routes();
 
 Route::resource('profile', 'User\ProfileController');
@@ -24,3 +27,4 @@ Route::resource('question', 'Question\QuestionController');
 Route::get('/admin', function() {
     return view('admin.index');
 });
+
