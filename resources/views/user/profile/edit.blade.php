@@ -29,8 +29,8 @@
                     <div class="boxedtitle page-title"><h2>Edit Profile</h2></div>
                     
 					<div class="form-style form-style-4">
-						<form action="{{ route('profile.update', $user->id ) }}" method="POST" enctype="multipart/form-data" role="form">
-                            {{ method_field('PUT') }}   
+						<form action="{{ route('profile.update', $user->id ) }}" method="POST">
+                            {{ method_field('PATCH') }}   
                             {{ csrf_field() }}
 							<div class="form-inputs clearfix">
 								<p>
@@ -99,7 +99,7 @@
 								</p>
 							</div>
 							<p class="form-submit">
-								<input type="submit" value="Update" class="button color small login-submit submit">
+								<input type="submit" value="Update" class="button color small submit">
 							</p>
 						</form>
 					</div>

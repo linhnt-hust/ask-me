@@ -9,7 +9,7 @@ Ask me – Anything you wanted to know
             <div class="row">
                 <div class="col-md-3">
                     <h2>Welcome to Ask me</h2>
-                    <p>Duis dapibus aliquam mi, eget euismod sem scelerisque ut. Vivamus at elit quis urna adipiscing iaculis. Curabitur vitae velit in neque dictum blandit. Proin in iaculis neque.</p>
+                    <p>AskMe’s mission is to share and grow the world’s knowledge. We want to bring together people with different perspectives so they can understand each other better, and to empower everyone to share their knowledge for the benefit of the rest of the world</p>
                     <div class="clearfix"></div>
                     <a class="color button dark_button medium" href="#">About Us</a>
                     <a class="color button dark_button medium" href="#">Join Now</a>

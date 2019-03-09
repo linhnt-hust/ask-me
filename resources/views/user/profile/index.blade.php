@@ -31,7 +31,7 @@
                     <div class="col-md-12">
                         <div class="page-content">
                             <h2>About {{ $user->name }}
-                                <a href="{{ route('profile.edit', $user->id) }}" class = "btn btn-follow">Edit
+                                 <a href="{{ route('profile.edit', $user->id) }}" class="button small blue-button custom-button">Edit</a>
                             </h2>
                             <div class="user-profile-img"><img width="60" height="60" src="http://placehold.it/60x60/FFF/444" alt="admin"></div>
                             <div class="ul_list ul_list-icon-ok about-user">

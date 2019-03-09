@@ -25,14 +25,22 @@
 <section class="container main-content">
     <div class="row">
         <div class="col-md-9">
-@include('flash::message')
-            
+
+            @if ($message = Session::get('error'))
+                <div class="alert-message error">
+                    <i class="icon-flag"></i>
+                    <p><span>success message</span><br>
+                        {{$message}}</p>
+                </div>
+            @endif
+
             <div class="page-content ask-question">
                 <div class="boxedtitle page-title"><h2>Ask Question</h2></div>
                                 
                 <div class="form-style form-style-3" id="question-submit">
                     <form action="{{ route('question.store') }}" method="POST">
                         {{ csrf_field() }}
+                        <input type="hidden" name="userId" value="{{ $user->id }}">
                         <div class="form-inputs clearfix">
                             <p>
                                 <label class="required">Question Title<span>*</span></label>
