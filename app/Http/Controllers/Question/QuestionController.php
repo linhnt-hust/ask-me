@@ -48,7 +48,6 @@ class QuestionController extends Controller
         $success = $this->modelQuestion->createQuestion($input);
         if ($success) {
             return redirect()->route('user.question')->with('success','Create Question sucessfully.');
-
         } else {
             return redirect()->back()->with('error','Whoops! Some error may happened. Please check again!');
         }
