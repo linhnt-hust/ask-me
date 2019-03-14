@@ -25,6 +25,22 @@
 	<section class="container main-content">
 		<div class="row">
 			<div class="col-md-9">
+                @if ($message = Session::get('success'))
+                    <div class="alert-message success">
+                        <i class="icon-ok"></i>
+                        <p><span>success message</span><br>
+                            {{$message}}</p>
+                    </div>
+                @endif
+
+                @if ($message = Session::get('error'))
+                    <div class="alert-message error">
+                        <i class="icon-flag"></i>
+                        <p><span>success message</span><br>
+                            {{$message}}</p>
+                    </div>
+                @endif
+
 				<div class="page-content">
                     <div class="boxedtitle page-title"><h2>Edit Profile</h2></div>
                     

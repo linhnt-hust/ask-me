@@ -1028,7 +1028,7 @@ jQuery(document).ready(function($) {
 	jQuery(".tweet_1").tweet({
 		join_text: false,
 		username: "envato", // Username
-		modpath: "./js/twitter/",
+		modpath: "/js/twitter/",
 		avatar_size: false,
 		count: 2,
 		template: "{text} <br> {time}",
@@ -1046,7 +1046,7 @@ jQuery(document).ready(function($) {
 	jQuery(".tweet_2").tweet({
 		join_text: false,
 		username: "envato", // Username
-		modpath: "./js/twitter/",
+		modpath: "/js/twitter/",
 		avatar_size: false,
 		count: 2,
 		template: "{text} <br> {time}",

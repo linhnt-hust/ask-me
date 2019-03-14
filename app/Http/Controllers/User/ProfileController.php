@@ -78,17 +78,15 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
-dd($data);
         $result = $this->modelUser->updateUser($data, $id);
         if ($result) {
-            flash('Update user profile successfully.')->success();
+            return redirect()->back()->with('success', 'Update user profile successfully.');
         } else {
-            flash('Whoops!! Something is wrong.')->error();
+            return redirect()->back()->with('error', 'Whoops!! Something is wrong.');
         }
-        return redirect()->route('profile.index');
     }
 
     /**

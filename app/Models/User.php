@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -57,14 +57,18 @@ class User extends Authenticatable
 
     public function updateUser(array $data , $id)
     {
-        $user = User::withTrashed()->find($id);
+        $user = User::find($id);
         if (isset($data['password']) && $data['password'] != '') {
             $data['password'] = Hash::make($data['password']);
         } else {
             $data['password'] = $user->password;
         }
 
-        $data['image'] = $this->uploadImage($data['avatar'], User::FOLDER_IMAGE);
+        if ($data['avatar']) {
+            $data['image'] = $this->uploadImage($data['avatar'], User::FOLDER_IMAGE);
+        } else {
+            $data['image'] = null;
+        }
 
         $input = [ 
             'name' => $data['name'],
