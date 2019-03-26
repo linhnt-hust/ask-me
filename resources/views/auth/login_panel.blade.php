@@ -31,7 +31,7 @@
             <div class="col-md-6">
                 <div class="page-content Register">
                     <h2>Register Now</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravdio, sit amet suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequa. Vivamus vulputate posuere nisl quis consequat.</p>
+                    <p>AskMe’s mission is to share and grow the world’s knowledge. We want to bring together people with different perspectives so they can understand each other better, and to empower everyone to share their knowledge for the benefit of the rest of the world</p>
                     <a class="button color small signup">Create an account</a>
                 </div><!-- End page-content -->
             </div><!-- End col-md-6 -->

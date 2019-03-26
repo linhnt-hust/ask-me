@@ -29,7 +29,7 @@ class Question extends Model
     const APPROVED = 1;
     const DENIED = 2;
 
-    public static $status = [
+    public static $approveStatus = [
         self::PENDING => 'PENDING',
         self::APPROVED => 'APPROVED',
         self::DENIED => 'DENIED',
@@ -37,9 +37,20 @@ class Question extends Model
 
     //categories-question
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
     public function getUserQuestion($userId)
     {
-        $query = Question::where('user_id', $userId)->get();
+        $query = Question::where('user_id', $userId)->orderBy('created_at', 'DESC')->paginate(5);
+        return $query;
+    }
+
+    public function getQuestionToApprove()
+    {
+        $query = Question::orderBy('created_at', 'ASC')->get();
         return $query;
     }
 
