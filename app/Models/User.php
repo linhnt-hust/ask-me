@@ -45,6 +45,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function userQuestions()
+    {
+        return $this->hasMany('App\Models\Question');
+    }
+
     public function uploadImage($file, $dir)
     {
         $time = Carbon::now();
@@ -54,6 +59,11 @@ class User extends Authenticatable
         $file->move($destinationPath, $nameFile);
         return $nameFile;
     }   
+
+    public function getNewUser()
+    {
+        return User::orderBy('created_at','DESC')->paginate(5);
+    }
 
     public function updateUser(array $data , $id)
     {

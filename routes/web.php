@@ -24,7 +24,13 @@ Route::resource('profile', 'User\ProfileController');
 
 Route::resource('question', 'Question\QuestionController');
 
-Route::get('/admin', function() {
-    return view('admin.index');
+//Route::get('/admin', function() {
+//    return view('admin.index');
+//});
+
+Route::group(['prefix' => '/admin'], function (){
+   Route::get('/','Admin\AdminController@index')->name('admin.index');
+   Route::get('/question', 'Admin\Admincontroller@getQuestionToApprove')->name('admin.question');
+   Route::get('/question/detail/{id}','Admin\Admincontroller@detailQuestionApprove')->name('admin.question.detail');
 });
 

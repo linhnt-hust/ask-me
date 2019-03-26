@@ -20,7 +20,7 @@ class CreateQuestionsTable extends Migration
             $table->text('details');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->nullable();
-            $table->string('status')->default('PENDING');
+            $table->tinyInteger('approve_status')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -44,10 +44,10 @@
                                     <ul>
                                         <li><i class="icon-plus"></i>Registerd : <span>{{ $user->created_at->format('M d,Y') }}</span></li>
                                         <li><i class="icon-map-marker"></i>Country : <span>{{ $user->country }}</span></li>
-                                        <li><i class="icon-globe"></i>Website : <a target="_blank" href="http://themeforest.net/user/vbegy">view</a></li>
+                                        <li><i class="icon-globe"></i>Website : <a target="_blank" href="">{{ $user->website }}</a></li>
                                     </ul>
                                 </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravida odio, sit amet suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequat. Vivamus vulputate posuere nisl quis consequat. Donec congue commodo mi, sed commodo velit fringilla ac. Fusce placerat venenatis mi. Pellentesque habitant morbi tristique senectus et netus et malesuada .</p>
+                                <p> {{ $user->description }}</p>
                                 <div class="clearfix"></div>
                                 <span class="user-follow-me">Follow Me</span>
                                 <a href="#" original-title="Facebook" class="tooltip-n">
@@ -93,7 +93,7 @@
                                     <h2>User Stats</h2>
                                     <div class="ul_list ul_list-icon-ok">
                                         <ul>
-                                            <li><i class="icon-question-sign"></i><a href="user_questions.html">Questions<span> ( <span>30</span> ) </span></a></li>
+                                            <li><i class="icon-question-sign"></i>Questions<span> ( <span>{{ count($userQuestions) }}</span> ) </span></a></li>
                                             <li><i class="icon-comment"></i><a href="user_answers.html">Answers<span> ( <span>10</span> ) </span></a></li>
                                             <li><i class="icon-star"></i><a href="user_favorite_questions.html">Favorite Questions<span> ( <span>3</span> ) </span></a></li>
                                             <li><i class="icon-heart"></i><a href="user_points.html">Points<span> ( <span>20</span> ) </span></a></li>
@@ -113,8 +113,19 @@
                             <h3>
                                 <a href="{{ route('user.question.detail', $userQuestion->id) }}">{{ $userQuestion-> title }}</a>
                             </h3>
-                            <div class="question-type-main"><i class="icon-question-sign"></i>Question</div>
-                            <div class="question-type-main"><i class="icon-spinner"></i>Pending</div>
+
+                            @switch( $userQuestion->approve_status )
+                                @case (0)
+                                    <div class="question-type-main"><i class="icon-spinner"></i>Pending</div>
+                                    @break;
+                                @case (1)
+                                    <div class="question-type-main"><i class="icon-ok"></i>Approved</div>
+                                    @break;
+                                @case (2)
+                                    <div class="question-type-main"><i class="icon-remove"></i>Denied</div>
+                                    @break;
+                            @endswitch
+
                             <div class="question-content">
                                 <div class="question-bottom">
                                     <div class="question-answered"><i class="icon-ok"></i>in progress</div>
@@ -199,19 +210,20 @@
 
                 <div class="height_20"></div>
 
-                <div class="pagination">
-                    <a href="#" class="prev-button"><i class="icon-angle-left"></i></a>
-                    <span class="current">1</span>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">5</a>
-                    <span>...</span>
-                    <a href="#">11</a>
-                    <a href="#">12</a>
-                    <a href="#">13</a>
-                    <a href="#" class="next-button"><i class="icon-angle-right"></i></a>
-                </div><!-- End pagination -->
+                {{--<div class="pagination">--}}
+                    {{--<a href="#" class="prev-button"><i class="icon-angle-left"></i></a>--}}
+                    {{--<span class="current">1</span>--}}
+                    {{--<a href="#">2</a>--}}
+                    {{--<a href="#">3</a>--}}
+                    {{--<a href="#">4</a>--}}
+                    {{--<a href="#">5</a>--}}
+                    {{--<span>...</span>--}}
+                    {{--<a href="#">11</a>--}}
+                    {{--<a href="#">12</a>--}}
+                    {{--<a href="#">13</a>--}}
+                    {{--<a href="#" class="next-button"><i class="icon-angle-right"></i></a>--}}
+                {{--</div><!-- End pagination -->--}}
+                {!! $userQuestions->render() !!}
                 <!-- if no questions
                 <p>No questions yet</p>
                 -->
