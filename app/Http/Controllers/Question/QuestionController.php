@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Question;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
@@ -10,9 +11,11 @@ use Illuminate\Support\Facades\Auth;
 class QuestionController extends Controller
 {
     protected $modelQuestion;
-    public function __construct(Question $question)
+    protected $modelCategory;
+    public function __construct(Question $question, Category $category)
     {
         $this->modelQuestion = $question;
+        $this->modelCategory = $category;
     }
 
     /**
@@ -33,7 +36,8 @@ class QuestionController extends Controller
     public function create()
     {
         $user = Auth::user();
-        return view('question.create', compact('user'));
+        $categories = $this->modelCategory->getAllCategories();
+        return view('question.create', compact('user', 'categories'));
     }
 
     /**

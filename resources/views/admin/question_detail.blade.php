@@ -5,14 +5,46 @@
 @section('content')
     <div class="blog-list-wrapper">
         <div class="row">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-icon alert-info alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <i class="mdi mdi-check-all"></i>
+                    <strong>Congratulation!</strong> {{$message}}
+                </div>
+            @endif
+
+            @if ($message = Session::get('error'))
+                <div class="alert alert-icon alert-danger alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <i class="mdi mdi-block-helper"></i>
+                    <strong>Oh snap!</strong> {{ $message }}
+                    again.
+                </div>
+            @endif
             <div class="col-sm-8">
                 <div class="p-20">
 
                     <!-- Image Post -->
                     <div class="blog-post m-b-30">
                         <div class="post-image">
-                            {{--<img src="{{ asset('/zircos/images/blog/1.jpg') }}" alt="" class="img-responsive">--}}
-                            <span class="label label-danger">Category</span>
+
+                            @switch( $question->approve_status)
+                                @case (0)
+                                <span class="label label-warning">Pending</span>
+                                @break
+                                @case (1)
+                                <span class="label label-success">Approved</span>
+                                @break;
+                                @case (2)
+                                <span class="label label-danger">Denied</span>
+                                @break;
+                            @endswitch
                         </div>
                         <div class="text-muted"><span>by <a class="text-dark font-secondary">{{ $question->user->name }}</a>,</span> <span>{{ $question->created_at->format('M d,Y') }}</span></div>
                         <div class="post-title">
@@ -77,13 +109,11 @@
                                     {{ $question->user->description }}
                                 </p>
 
-                                {{--<a href="javascript:void(0);" class="btn btn-xs btn-success waves-light waves-effect">View Profile</a>--}}
                             </div>
                         </div>
                     </div>
 
                     <hr/>
-
                     <div class="m-t-50 blog-post-comment">
                         <h4 class="text-uppercase">Comments <small>(4)</small></h4>
                         <div class="border m-b-20"></div>
@@ -166,20 +196,22 @@
                         <h4 class="text-uppercase m-t-50">Leave message for question owner</h4>
                         <div class="border m-b-20"></div>
 
-                        <form name="ajax-form" action="#" method="post" class="contact-form" data-parsley-validate="" novalidate="">
+                        <form name="ajax-form" action="{{ route('admin.question.verify') }}" method="POST" class="contact-form" data-parsley-validate="" novalidate="">
+                            @csrf
+                            {{--<div class="form-group">--}}
+                                {{--<input class="form-control" id="name2" name="name" placeholder="Your name" type="text" value="" required="">--}}
+                            {{--</div>--}}
+                            {{--<!-- /Form-name -->--}}
 
+                            {{--<div class="form-group">--}}
+                                {{--<input class="form-control" id="email2" name="email" type="email" placeholder="Your email" value="" required="">--}}
+                            {{--</div>--}}
+                            {{--<!-- /Form-email -->--}}
+                            {{--<input name="verify_author" type="hidden" value="{{ Auth::user() }}">--}}
+                            <input name="approve_status" type="hidden" value="{{ $question->approve_status }}">
+                            <input name="question_id" type="hidden" value="{{ $question->id }}">
                             <div class="form-group">
-                                <input class="form-control" id="name2" name="name" placeholder="Your name" type="text" value="" required="">
-                            </div>
-                            <!-- /Form-name -->
-
-                            <div class="form-group">
-                                <input class="form-control" id="email2" name="email" type="email" placeholder="Your email" value="" required="">
-                            </div>
-                            <!-- /Form-email -->
-
-                            <div class="form-group">
-                                <textarea class="form-control" id="message2" name="message" rows="5" placeholder="Message" required=""></textarea>
+                                <textarea class="form-control" id="message2" name="note" rows="5" placeholder="Message" required=""></textarea>
                             </div>
                             <!-- /Form Msg -->
 
@@ -189,16 +221,17 @@
                                         {{--<button type="submit" class="btn btn-custom" id="send">Submit</button>--}}
                                         @switch ( $question->approve_status)
                                             @case (0)
-                                                <button type="submit" class="btn btn-success waves-effect waves-light">Approve</button>
-                                                <button type="button" class="btn btn-danger waves-effect waves-light">Denied</button>
+                                                <button name="submitButton" type="submit"  value="approve" class="btn btn-success waves-effect waves-light">Approve</button>
+                                                <button name="submitButton" type="submit" value="deny" class="btn btn-danger waves-effect waves-light">Deny</button>
                                             @break;
                                             @case (1)
-                                                <button type="button" class="btn btn-danger waves-effect waves-light">Denied</button>
+                                                <button name="submitButton" type="submit" value="deny" class="btn btn-danger waves-effect waves-light">Deny</button>
                                             @break;
                                             @case (2)
-                                                <button type="submit" class="btn btn-success waves-effect waves-light">Approve</button>
+                                                <button name="submitButton" type="submit" value="approve" class="btn btn-success waves-effect waves-light">Approve</button>
                                             @break;
                                         @endswitch
+                                        <a href="{{ route('admin.question') }}" class="btn btn-default waves-effect waves-light">Back</a>
                                     </div>
 
                                 </div> <!-- /col -->

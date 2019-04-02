@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class Question extends Model
 {
@@ -66,5 +67,25 @@ class Question extends Model
         $params['user_id'] = $params['userId'];
         $data = Question::create($params);
         return $data;
+    }
+
+    public function verifyQuestion($request)
+    {
+        $verifiedAt = Carbon::now();
+        if ($request['submitButton'] == 'approve') {
+            $approvedActual = 1;
+        } else if ( $request['submitButton'] == 'deny') {
+            $approvedActual = 2;
+        }
+
+
+        $questionId = $request['question_id'];
+
+        $builder = Question::where('id', $questionId)
+                        ->update([
+                            'verified_at' => $verifiedAt,
+                            'approve_status' => $approvedActual,
+                        ]);
+        return $builder;
     }
 }

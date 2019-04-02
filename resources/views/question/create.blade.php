@@ -57,8 +57,9 @@
                                 <span class="styled-select">
                                     <select>
                                         <option value="">Select a Category</option>
-                                        <option value="1">Category 1</option>
-                                        <option value="2">Category 2</option>
+                                        @foreach( $categories as $category)
+                                            <option value="{{$category->id}}"> {{ $category->name_category }}</option>
+                                        @endforeach
                                     </select>
                                 </span>
                                 <span class="form-description">Please choose the appropriate section so easily search for your question .</span>

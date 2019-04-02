@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use App\Models\Question;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -33,5 +34,17 @@ class AdminController extends Controller
     {
         $question = $this->modelQuestion->getQuestionDetail($id);
         return view('admin.question_detail', compact('question'));
+    }
+
+    public function verifyQuestion(Request $request)
+    {
+        $input = $request->all();
+
+        $result = $this->modelQuestion->verifyQuestion($input);
+        if ($result) {
+            return redirect()->back()->with('success', 'Successful save status.');
+        } else {
+            return redirect()->back()->with('error', 'Whoops!! Something is wrong.');
+        }
     }
 }

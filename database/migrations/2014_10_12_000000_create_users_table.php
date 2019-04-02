@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('website')->nullable();
             $table->string('country')->nullable();
             $table->text('avatar')->nullable();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('facebook_account')->nullable();
             $table->string('twitter_account')->nullable();
             $table->string('github_account')->nullable();
