@@ -15,12 +15,15 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title', 191)->nullable();
+            $table->longText('title', 191)->nullable();
             $table->boolean('question_poll');
-            $table->text('details');
+            $table->longText('details');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->nullable();
             $table->tinyInteger('approve_status')->default(0);
+            $table->integer('verify_author')->nullable();
+            $table->longText('note')->nullable();
+            $table->dateTime('verified_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

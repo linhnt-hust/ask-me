@@ -15,8 +15,10 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/user/question', 'User\UserController@userQuestion')->name('user.question');
-Route::get('/user/question/detail/{id}', 'User\UserController@questionDetail')->name('user.question.detail');
+Route::group(['prefix' => '/user'], function (){
+    Route::get('/question', 'User\UserController@userQuestion')->name('user.question');
+    Route::get('/question/detail/{id}', 'User\UserController@questionDetail')->name('user.question.detail');
+});
 
 Auth::routes();
 
@@ -24,13 +26,10 @@ Route::resource('profile', 'User\ProfileController');
 
 Route::resource('question', 'Question\QuestionController');
 
-//Route::get('/admin', function() {
-//    return view('admin.index');
-//});
-
 Route::group(['prefix' => '/admin'], function (){
    Route::get('/','Admin\AdminController@index')->name('admin.index');
    Route::get('/question', 'Admin\Admincontroller@getQuestionToApprove')->name('admin.question');
    Route::get('/question/detail/{id}','Admin\Admincontroller@detailQuestionApprove')->name('admin.question.detail');
+   Route::post('/question/verify', 'Admin\AdminController@verifyQuestion')->name('admin.question.verify');
 });
 
