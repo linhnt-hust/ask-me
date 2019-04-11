@@ -21,6 +21,11 @@ class Category extends Model
         'updated_at'
     ];
 
+    public function categoryQuestion()
+    {
+        return $this->belongsTo('App\Models\Question');
+    }
+
     public function getAllCategories()
     {
         return Category::orderBy('name_category')->get();

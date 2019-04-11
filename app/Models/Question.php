@@ -17,6 +17,7 @@ class Question extends Model
         'question_poll',
         'details',
         'user_id',
+        'category_id',
         'status',
     ];
 
@@ -36,11 +37,20 @@ class Question extends Model
         self::DENIED => 'DENIED',
     ];
 
-    //categories-question
+
+    public function category()
+    {
+        return $this->hasOne('App\Models\Category', 'id', 'category_id');
+    }
 
     public function user()
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany('App\Models\Comment', 'commentable')->whereNull('parent_id');
     }
 
     public function getUserQuestion($userId)
@@ -51,7 +61,7 @@ class Question extends Model
 
     public function getQuestionToApprove()
     {
-        $query = Question::orderBy('created_at', 'ASC')->get();
+        $query = Question::orderBy('created_at', 'DESC')->get();
         return $query;
     }
 
@@ -63,9 +73,12 @@ class Question extends Model
 
     public function createQuestion($params)
     {
-        $params['question_poll'] = $params['question_poll'] ?? 0;
-        $params['user_id'] = $params['userId'];
-        $data = Question::create($params);
+        $input['question_poll'] = $params['question_poll'] ?? 0;
+        $input['user_id'] = $params['userId'];
+        $input['category_id'] = $params['category'];
+        $input['title'] = $params['title'];
+        $input['details'] = $params['details'];
+        $data = Question::create($input);
         return $data;
     }
 
@@ -87,5 +100,10 @@ class Question extends Model
                             'approve_status' => $approvedActual,
                         ]);
         return $builder;
+    }
+
+    public function getRecentQuestions()
+    {
+        return Question::where('approve_status', '=', 1 )->orderBy('updated_at', 'DESC')->get();
     }
 }

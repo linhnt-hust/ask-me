@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', 'User\UserController@userHome')->name('home');
 
 Route::group(['prefix' => '/user'], function (){
     Route::get('/question', 'User\UserController@userQuestion')->name('user.question');
@@ -25,6 +23,8 @@ Auth::routes();
 Route::resource('profile', 'User\ProfileController');
 
 Route::resource('question', 'Question\QuestionController');
+
+Route::resource('comment', 'Comment\CommentController');
 
 Route::group(['prefix' => '/admin'], function (){
    Route::get('/','Admin\AdminController@index')->name('admin.index');

@@ -130,7 +130,7 @@
                                 <div class="question-bottom">
                                     <div class="question-answered"><i class="icon-ok"></i>in progress</div>
                                     <span class="question-favorite"><i class="icon-star"></i>5</span>
-                                    <span class="question-category"><a href="#"><i class="icon-folder-close"></i>wordpress</a></span>
+                                    <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($userQuestion->category)->name_category }}</a></span>
                                     <span class="question-date"><i class="icon-time"></i>15 secs ago</span>
                                     <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answers</a></span>
                                     <a class="question-reply" href="#"><i class="icon-reply"></i>Reply</a>
