@@ -27,4 +27,11 @@ class UserController extends Controller
         $questions = $this->modelQuestion->getQuestionDetail($id);
         return view('user.question.question_detail', compact('questions', 'user'));
     }
+
+    public function userHome()
+    {
+        $user = Auth::user();
+        $recentQuestions = $this->modelQuestion->getRecentQuestions();
+        return view('home', compact('recentQuestions', 'user'));
+    }
 }

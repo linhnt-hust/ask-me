@@ -17,7 +17,7 @@ class QuestionsTableSeeder extends Seeder
         DB::table('questions')->truncate();
 
         $questions = [
-            ['This is my first question', '0', 'Is Howard Starks Super Soldier Serum in civil WAR ultimately superior to the numerous versions that came before it?', '2', '0'],
+            ['This is my first question', '0', 'Is Howard Starks Super Soldier Serum in civil WAR ultimately superior to the numerous versions that came before it?', '2', '8', '0'],
         ];
 
         foreach ($questions as $question) {
@@ -26,7 +26,8 @@ class QuestionsTableSeeder extends Seeder
                 'question_poll' => $question[1],
                 'details' => $question[2],
                 'user_id' => $question[3],
-                'approve_status' => $question[4],
+                'category_id' => $question[4],
+                'approve_status' => $question[5],
                 'created_at' => new DateTime(),
                 'updated_at' => new DateTime(),
             ]);

@@ -55,7 +55,7 @@
                             <p>
                                 <label class="required">Category<span>*</span></label>
                                 <span class="styled-select">
-                                    <select>
+                                    <select name="category">
                                         <option value="">Select a Category</option>
                                         @foreach( $categories as $category)
                                             <option value="{{$category->id}}"> {{ $category->name_category }}</option>

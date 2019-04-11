@@ -1,21 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Question;
+namespace App\Http\Controllers\Comment;
 
-use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Question;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class QuestionController extends Controller
+class CommentController extends Controller
 {
+    protected $modelComment;
     protected $modelQuestion;
-    protected $modelCategory;
-    public function __construct(Question $question, Category $category)
-    {
+    protected $modelUser;
+    public function __construct(
+        Question $question,
+        User $user,
+        Comment $comment
+    ){
         $this->modelQuestion = $question;
-        $this->modelCategory = $category;
+        $this->modelUser = $user;
+        $this->modelComment = $comment;
     }
 
     /**
@@ -35,9 +41,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-        $categories = $this->modelCategory->getAllCategories();
-        return view('question.create', compact('user', 'categories'));
+
     }
 
     /**
@@ -48,13 +52,13 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $success = $this->modelQuestion->createQuestion($input);
-        if ($success) {
-            return redirect()->route('user.question')->with('success','Create Question sucessfully.');
-        } else {
-            return redirect()->back()->with('error','Whoops! Some error may happened. Please check again!');
-        }
+        $comment = new Comment;
+        $comment->body = $request->get('comment_body');
+        $comment->user()->associate($request->user());
+        $question = Question::find($request->get('question_id'));
+        $question->comments()->save($comment);
+
+        return back();
     }
 
     /**
@@ -65,8 +69,7 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $questionDetail = $this->modelQuestion->getQuestionDetail($id);
-        return view('question.show', compact('questionDetail'));
+        //
     }
 
     /**

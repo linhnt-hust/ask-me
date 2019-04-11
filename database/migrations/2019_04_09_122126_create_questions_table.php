@@ -20,6 +20,8 @@ class CreateQuestionsTable extends Migration
             $table->longText('details');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->nullable();
+            $table->unsignedInteger('category_id')->nullable();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->nullable();
             $table->tinyInteger('approve_status')->default(0);
             $table->integer('verify_author')->nullable();
             $table->longText('note')->nullable();
@@ -27,7 +29,9 @@ class CreateQuestionsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
     }
+
 
     /**
      * Reverse the migrations.

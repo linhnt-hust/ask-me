@@ -111,7 +111,7 @@
                         <tr>
                             <td><a href="#"> <img class="media-object" alt="64x64" src="{{ asset('/zircos/images/small/img-1.jpg') }}" style="width: 100px; height: 66px;"> </a></td>
                             <td><a href="{{ route('admin.question.detail', $question->id) }}"> {{ $question->title }}</a></td>
-                            <td> Category</td>
+                            <td>{{ optional($question->category)->name_category }}</td>
                             <td>{{ $question->user->name }}</td>
                             <td>984</td>
 
