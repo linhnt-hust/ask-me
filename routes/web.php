@@ -26,6 +26,8 @@ Route::resource('question', 'Question\QuestionController');
 
 Route::resource('comment', 'Comment\CommentController');
 
+Route::post('/reply/store', 'Comment\CommentController@replyStore')->name('reply.add');
+
 Route::group(['prefix' => '/admin'], function (){
    Route::get('/','Admin\AdminController@index')->name('admin.index');
    Route::get('/question', 'Admin\Admincontroller@getQuestionToApprove')->name('admin.question');

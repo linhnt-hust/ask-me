@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -61,6 +60,18 @@ class CommentController extends Controller
         return back();
     }
 
+    public function replyStore(Request $request)
+    {
+        $reply = new Comment();
+        $reply->body = $request->get('comment_body');
+        $reply->user()->associate($request->user());
+        $reply->parent_id = $request->get('comment_id');
+        $question = Question::find($request->get('question_id'));
+        $question->comments()->save($reply);
+
+        return back();
+    }
+
     /**
      * Display the specified resource.
      *
@@ -105,4 +116,6 @@ class CommentController extends Controller
     {
         //
     }
+
+
 }

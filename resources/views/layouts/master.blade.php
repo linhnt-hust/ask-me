@@ -56,5 +56,8 @@
 
 @include('layouts.bottom_js')
 
+@yield('page_scripts')
+@yield('inline_scripts')
+
 </body>
 </html>

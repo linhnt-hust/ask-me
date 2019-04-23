@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Question;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
@@ -12,10 +13,15 @@ class QuestionController extends Controller
 {
     protected $modelQuestion;
     protected $modelCategory;
-    public function __construct(Question $question, Category $category)
-    {
+    protected $modelComment;
+    public function __construct(
+        Question $question,
+        Category $category,
+        Comment $comment
+    ){
         $this->modelQuestion = $question;
         $this->modelCategory = $category;
+        $this->modelComment = $comment;
     }
 
     /**
@@ -66,7 +72,8 @@ class QuestionController extends Controller
     public function show($id)
     {
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
-        return view('question.show', compact('questionDetail'));
+        $commentIds = $this->modelComment->getCommentIds($id);
+        return view('question.show', compact('questionDetail', 'commentIds'));
     }
 
     /**
