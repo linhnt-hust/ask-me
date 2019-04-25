@@ -35,8 +35,4 @@ class Comment extends Model
         return $this->hasMany('App\Models\Comment', 'parent_id');
     }
 
-    public function getCommentIds($questionId)
-    {
-        return Comment::where('commentable_id', $questionId)->pluck('id')->toArray();
-    }
 }
