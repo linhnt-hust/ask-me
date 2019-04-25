@@ -52,12 +52,13 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $comment = new Comment;
-        $comment->body = $request->get('comment_body');
+        $comment->body = $request->comment_body;
         $comment->user()->associate($request->user());
+        $comment->user_id = 1;
         $question = Question::find($request->get('question_id'));
         $question->comments()->save($comment);
 
-        return back();
+        return $comment;
     }
 
     public function replyStore(Request $request)

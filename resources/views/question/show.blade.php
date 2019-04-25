@@ -154,17 +154,16 @@
 
                 <div id="respond" class="comment-respond page-content clearfix">
                     <div class="boxedtitle page-title"><h2>Leave a reply</h2></div>
-                    <form action="{{ route('comment.store') }}" method="POST" id="commentform" class="comment-form">
-                        {{ csrf_field() }}
+                    <form id="commentform" class="comment-form">
                         <div id="respond-textarea">
                             <p>
-                                <input type="hidden" name="question_id" value="{{ $questionDetail->id }}" />
+                                <input type="hidden" id="question_id" name="question_id" value="{{ $questionDetail->id }}" />
                                 <label class="required" for="comment">Comment<span>*</span></label>
                                 <textarea id="comment" name="comment_body" aria-required="true" cols="58" rows="8"></textarea>
                             </p>
                         </div>
                         <p class="form-submit">
-                            <input type="submit" id="submit" value="Post your answer" class="button small color">
+                            <div id="submit-comment" class="button small color">Post your answer</div>
                         </p>
                     </form>
                 </div>
@@ -184,4 +183,28 @@
         </div><!-- End row -->
     </section><!-- End container -->
 
+@endsection
+@section('page_scripts')
+<script type="text/javascript">
+    $('#submit-comment').on('click', function(){
+        var commentBody = $('textarea#comment').val();
+        var questionId = $('#question_id').val();
+        console.log(questionId);
+        $.ajax({
+            type: 'post',
+            url: "{{ route('comment.store') }}",
+            data: {
+                '_token': $('input[name=_token]').val(),
+                'comment_body': commentBody,
+                'question_id': questionId,
+            },
+            success: function(data) {
+                
+            },
+            error(data) {
+                console.log(data);
+            }
+        });
+    });
+</script>
 @endsection
