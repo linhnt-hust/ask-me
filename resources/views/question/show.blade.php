@@ -47,7 +47,7 @@
                             <span class="question-favorite"><i class="icon-star"></i>5</span>
                         </div>
                         <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($questionDetail->category)->name_category }}</a></span>
-                        <span class="question-date"><i class="icon-time"></i>4 mins ago</span>
+                        <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $questionDetail->updated_at)->diffForHumans() }}</span>
                         <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer</a></span>
                         <span class="question-view"><i class="icon-user"></i>70 views</span>
                         <span class="single-question-vote-result">+22</span>
@@ -147,27 +147,29 @@
                     <div class="boxedtitle page-title"><h2>Answers ( <span class="color">{{ count($questionDetail->comments )}}</span> )</h2></div>
                     <ol class="commentlist clearfix">
 
-                        @include('partials.comment_replies', ['comments' => $questionDetail->comments, 'question_id' => $questionDetail->id, 'commentIds' => $commentIds])
+                        @include('partials.comment_replies', ['comments' => $questionDetail->comments, 'question_id' => $questionDetail->id])
 
                     </ol><!-- End commentlist -->
                 </div><!-- End page-content -->
 
                 <div id="respond" class="comment-respond page-content clearfix">
                     <div class="boxedtitle page-title"><h2>Leave a reply</h2></div>
-                    <form action="{{ route('comment.store') }}" method="POST" id="commentform" class="comment-form">
-                        {{ csrf_field() }}
+                    <form id="commentform" class="comment-form">
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
                         <div id="respond-textarea">
                             <p>
-                                <input type="hidden" name="question_id" value="{{ $questionDetail->id }}" />
+                                <input type="hidden" name="question_id" id="questionId" value="{{ $questionDetail->id }}" />
                                 <label class="required" for="comment">Comment<span>*</span></label>
                                 <textarea id="comment" name="comment_body" aria-required="true" cols="58" rows="8"></textarea>
                             </p>
                         </div>
                         <p class="form-submit">
-                            <input type="submit" id="submit" value="Post your answer" class="button small color">
+                            <input type="submit" id="submitAjax" value="Post your answer" class="button small color">
                         </p>
                     </form>
                 </div>
+
+                <div class="alert alert-success" style="display:none"></div>
 
                 <div class="post-next-prev clearfix">
                     <p class="prev-post">
@@ -185,3 +187,36 @@
     </section><!-- End container -->
 
 @endsection
+@section('inline_scripts')
+    @parent
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $(".comment-reply").click(function() {
+                id=this.id.split("_")[1];
+                console.log(id);
+                $(".respond-form-"+id).toggle();
+            });
+
+            $('#submitAjax').on('click', function(e){
+                var questionId = $('#questionId').val();
+                var comment = $('#comment').val();
+
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+                });
+                $.ajax({
+                    url: '{{ route('comment.store') }}',
+                    type: 'POST',
+                    data: {
+                        'question_id': questionId,
+                        'comment_body': comment,
+                    },
+                    success: function(){
+                        $('.alert').show();
+                    }});
+            });
+        });
+    </script>
+@stop

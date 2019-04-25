@@ -72,8 +72,7 @@ class QuestionController extends Controller
     public function show($id)
     {
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
-        $commentIds = $this->modelComment->getCommentIds($id);
-        return view('question.show', compact('questionDetail', 'commentIds'));
+        return view('question.show', compact('questionDetail'));
     }
 
     /**
