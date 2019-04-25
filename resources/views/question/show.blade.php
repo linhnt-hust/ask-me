@@ -47,7 +47,7 @@
                             <span class="question-favorite"><i class="icon-star"></i>5</span>
                         </div>
                         <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($questionDetail->category)->name_category }}</a></span>
-                        <span class="question-date"><i class="icon-time"></i>4 mins ago</span>
+                        <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $questionDetail->updated_at)->diffForHumans() }}</span>
                         <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer</a></span>
                         <span class="question-view"><i class="icon-user"></i>70 views</span>
                         <span class="single-question-vote-result">+22</span>
@@ -147,7 +147,7 @@
                     <div class="boxedtitle page-title"><h2>Answers ( <span class="color">{{ count($questionDetail->comments )}}</span> )</h2></div>
                     <ol class="commentlist clearfix">
 
-                        @include('partials.comment_replies', ['comments' => $questionDetail->comments, 'question_id' => $questionDetail->id, 'commentIds' => $commentIds])
+                        @include('partials.comment_replies', ['comments' => $questionDetail->comments, 'question_id' => $questionDetail->id])
 
                     </ol><!-- End commentlist -->
                 </div><!-- End page-content -->
@@ -168,6 +168,8 @@
                     </form>
                 </div>
 
+                <div class="alert alert-success" style="display:none"></div>
+
                 <div class="post-next-prev clearfix">
                     <p class="prev-post">
                         <a href="#"><i class="icon-double-angle-left"></i>&nbsp;Prev question</a>
@@ -184,27 +186,36 @@
     </section><!-- End container -->
 
 @endsection
-@section('page_scripts')
-<script type="text/javascript">
-    $('#submit-comment').on('click', function(){
-        var commentBody = $('textarea#comment').val();
-        var questionId = $('#question_id').val();
-        console.log(questionId);
-        $.ajax({
-            type: 'post',
-            url: "{{ route('comment.store') }}",
-            data: {
-                '_token': $('input[name=_token]').val(),
-                'comment_body': commentBody,
-                'question_id': questionId,
-            },
-            success: function(data) {
-                
-            },
-            error(data) {
-                console.log(data);
-            }
+@section('inline_scripts')
+    @parent
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $(".comment-reply").click(function() {
+                id=this.id.split("_")[1];
+                console.log(id);
+                $(".respond-form-"+id).toggle();
+            });
+
+            $('#submitAjax').on('click', function(e){
+                var questionId = $('#questionId').val();
+                var comment = $('#comment').val();
+
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+                });
+                $.ajax({
+                    url: '{{ route('comment.store') }}',
+                    type: 'POST',
+                    data: {
+                        'question_id': questionId,
+                        'comment_body': comment,
+                    },
+                    success: function(){
+                        $('.alert').show();
+                    }});
+            });
         });
-    });
-</script>
-@endsection
+    </script>
+@stop

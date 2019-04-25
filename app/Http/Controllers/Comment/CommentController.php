@@ -58,7 +58,7 @@ class CommentController extends Controller
         $question = Question::find($request->get('question_id'));
         $question->comments()->save($comment);
 
-        return $comment;
+        return response()->json(['success'=>'Data is successfully added']);
     }
 
     public function replyStore(Request $request)
@@ -117,6 +117,4 @@ class CommentController extends Controller
     {
         //
     }
-
-
 }
