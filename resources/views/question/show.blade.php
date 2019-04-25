@@ -159,7 +159,7 @@
                             <p>
                                 <input type="hidden" id="question_id" name="question_id" value="{{ $questionDetail->id }}" />
                                 <label class="required" for="comment">Comment<span>*</span></label>
-                                <textarea id="comment" name="comment_body" aria-required="true" cols="58" rows="8"></textarea>
+                                <textarea id="comment-body" name="comment_body" aria-required="true" cols="58" rows="8"></textarea>
                             </p>
                         </div>
                         <p class="form-submit">
@@ -186,36 +186,35 @@
     </section><!-- End container -->
 
 @endsection
-@section('inline_scripts')
-    @parent
-    <script type="text/javascript">
-        $(document).ready(function(){
-
-            $(".comment-reply").click(function() {
-                id=this.id.split("_")[1];
-                console.log(id);
-                $(".respond-form-"+id).toggle();
-            });
-
-            $('#submitAjax').on('click', function(e){
-                var questionId = $('#questionId').val();
-                var comment = $('#comment').val();
-
-                e.preventDefault();
-                $.ajaxSetup({
-                    headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
-                });
-                $.ajax({
-                    url: '{{ route('comment.store') }}',
-                    type: 'POST',
-                    data: {
-                        'question_id': questionId,
-                        'comment_body': comment,
-                    },
-                    success: function(){
-                        $('.alert').show();
-                    }});
-            });
+@section('page_scripts')
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#submit-comment').on('click', function(){
+        var commentBody = $('#comment-body').val();
+        var questionId = $('#question_id').val();
+        var userId = $('#user_id').val();
+        $.ajax({
+            type: 'post',
+            url: "{{ route('comment.store') }}",
+            data: {
+                '_token': $('input[name=_token]').val(),
+                'comment_body': commentBody,
+                'question_id': questionId,
+                'user_id': userId,
+            },
+            success: function(data) {
+                //viết 1 function lấy dữ liệu vừa lưu đổ lên trên ở đây
+                // load_comment();
+            },
+            error(data) {
+                console.log(data);
+            }
         });
-    </script>
-@stop
+    });
+    // load_comment();
+    // function load_comment(){
+        //Viết ajax lấy ra ở đây
+    // }
+});
+</script>
+@endsection
