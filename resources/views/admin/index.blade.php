@@ -229,59 +229,6 @@
                                             <td>{{ $newUser->created_at->format('d/m/y - h:m') }}</td>
                                         </tr>
                                         @endforeach
-
-                                        {{--<tr>--}}
-                                            {{--<th>--}}
-                                                {{--<span class="avatar-sm-box bg-primary">C</span>--}}
-                                            {{--</th>--}}
-                                            {{--<td>--}}
-                                                {{--<h5 class="m-0">Craig Hause</h5>--}}
-                                                {{--<p class="m-0 text-muted font-13"><small>Programmer</small></p>--}}
-                                            {{--</td>--}}
-                                            {{--<td>+89 345 6789</td>--}}
-                                            {{--<td>Canada</td>--}}
-                                            {{--<td>29/07/2016</td>--}}
-                                        {{--</tr>--}}
-
-                                        {{--<tr>--}}
-                                            {{--<th>--}}
-                                                {{--<span class="avatar-sm-box bg-brown">E</span>--}}
-                                            {{--</th>--}}
-                                            {{--<td>--}}
-                                                {{--<h5 class="m-0">Edward Grimes</h5>--}}
-                                                {{--<p class="m-0 text-muted font-13"><small>Founder</small></p>--}}
-                                            {{--</td>--}}
-                                            {{--<td>+12 29856 256</td>--}}
-                                            {{--<td>Brazil</td>--}}
-                                            {{--<td>22/07/2016</td>--}}
-                                        {{--</tr>--}}
-
-                                        {{--<tr>--}}
-                                            {{--<th>--}}
-                                                {{--<span class="avatar-sm-box bg-pink">B</span>--}}
-                                            {{--</th>--}}
-                                            {{--<td>--}}
-                                                {{--<h5 class="m-0">Bret Weaver</h5>--}}
-                                                {{--<p class="m-0 text-muted font-13"><small>Web designer</small></p>--}}
-                                            {{--</td>--}}
-                                            {{--<td>+00 567 890</td>--}}
-                                            {{--<td>USA</td>--}}
-                                            {{--<td>20/07/2016</td>--}}
-                                        {{--</tr>--}}
-
-                                        {{--<tr>--}}
-                                            {{--<th>--}}
-                                                {{--<span class="avatar-sm-box bg-orange">M</span>--}}
-                                            {{--</th>--}}
-                                            {{--<td>--}}
-                                                {{--<h5 class="m-0">Mark</h5>--}}
-                                                {{--<p class="m-0 text-muted font-13"><small>Web design</small></p>--}}
-                                            {{--</td>--}}
-                                            {{--<td>+91 123 456</td>--}}
-                                            {{--<td>India</td>--}}
-                                            {{--<td>07/07/2016</td>--}}
-                                        {{--</tr>--}}
-
                                     </tbody>
                                 </table>
 

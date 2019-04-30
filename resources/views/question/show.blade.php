@@ -154,22 +154,22 @@
 
                 <div id="respond" class="comment-respond page-content clearfix">
                     <div class="boxedtitle page-title"><h2>Leave a reply</h2></div>
-                    <form id="commentform" class="comment-form">
-                        <meta name="csrf-token" content="{{ csrf_token() }}">
+                    <form  id="commentform" class="comment-form">
+                            {{ csrf_field() }}
                         <div id="respond-textarea">
                             <p>
-                                <input type="hidden" name="question_id" id="questionId" value="{{ $questionDetail->id }}" />
+                                <input type="hidden" name="question_id" id="question_id" value="{{ $questionDetail->id }}" />
+                                <input type="hidden" name="user_id" id="user_id" value="{{ $questionDetail->user->id }}" />
                                 <label class="required" for="comment">Comment<span>*</span></label>
-                                <textarea id="comment" name="comment_body" aria-required="true" cols="58" rows="8"></textarea>
+                                <textarea id="comment_body" name="comment_body" aria-required="true" cols="58" rows="8"></textarea>
                             </p>
                         </div>
                         <p class="form-submit">
-                            <input type="submit" id="submitAjax" value="Post your answer" class="button small color">
+                            {{--<input type="submit" id="submitAjax" value="Post your answer" class="button small color">--}}
+                            <div id="submit-comment" class="button small color">Post your answer</div>
                         </p>
                     </form>
                 </div>
-
-                <div class="alert alert-success" style="display:none"></div>
 
                 <div class="post-next-prev clearfix">
                     <p class="prev-post">
@@ -194,28 +194,30 @@
 
             $(".comment-reply").click(function() {
                 id=this.id.split("_")[1];
-                console.log(id);
                 $(".respond-form-"+id).toggle();
             });
 
-            $('#submitAjax').on('click', function(e){
-                var questionId = $('#questionId').val();
-                var comment = $('#comment').val();
-
-                e.preventDefault();
-                $.ajaxSetup({
-                    headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
-                });
+            $('#submit-comment').on('click', function(){
+                var commentBody = $('#comment-body').val();
+                var questionId = $('#question_id').val();
+                var userId = $('#user_id').val();
                 $.ajax({
-                    url: '{{ route('comment.store') }}',
-                    type: 'POST',
+                    type: 'post',
+                    url: "{{ route('comment.store') }}",
                     data: {
+                        '_token': $('input[name=_token]').val(),
+                        'comment_body': commentBody,
                         'question_id': questionId,
-                        'comment_body': comment,
+                        'user_id': userId,
                     },
-                    success: function(){
-                        $('.alert').show();
-                    }});
+                    success: function(data) {
+                        //viết 1 function lấy dữ liệu vừa lưu đổ lên trên ở đây
+                        // load_comment();
+                    },
+                    error(data) {
+                        console.log(data);
+                    }
+                });
             });
         });
     </script>

@@ -26,12 +26,20 @@ Route::resource('question', 'Question\QuestionController');
 
 Route::resource('comment', 'Comment\CommentController');
 
+Route::resource('blog','Blog\BlogController');
+
 Route::post('/reply/store', 'Comment\CommentController@replyStore')->name('reply.add');
 
-Route::group(['prefix' => '/admin'], function (){
-   Route::get('/','Admin\AdminController@index')->name('admin.index');
-   Route::get('/question', 'Admin\Admincontroller@getQuestionToApprove')->name('admin.question');
-   Route::get('/question/detail/{id}','Admin\Admincontroller@detailQuestionApprove')->name('admin.question.detail');
-   Route::post('/question/verify', 'Admin\AdminController@verifyQuestion')->name('admin.question.verify');
+Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function (){
+
+    Route::get('/', 'Auth\LoginController@showLoginForm')->name('admin.login');
+    Route::get('/index','AdminController@index')->name('admin.index');
+    Route::post('/login', 'Auth\LoginController@login');
+    Route::post('logout', 'Auth\LoginController@logout')->name('admin.logout');
+    Route::get('register', 'Auth\RegisterController@showRegistrationForm');
+    Route::post('register', 'Auth\RegisterController@register')->name('admin.register');
+    Route::get('/question', 'Admincontroller@getQuestionToApprove')->name('admin.question');
+    Route::get('/question/detail/{id}','Admincontroller@detailQuestionApprove')->name('admin.question.detail');
+    Route::post('/question/verify', 'AdminController@verifyQuestion')->name('admin.question.verify');
 });
 

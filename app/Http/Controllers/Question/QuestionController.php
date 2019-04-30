@@ -19,6 +19,7 @@ class QuestionController extends Controller
         Category $category,
         Comment $comment
     ){
+        $this->middleware('auth');
         $this->modelQuestion = $question;
         $this->modelCategory = $category;
         $this->modelComment = $comment;
