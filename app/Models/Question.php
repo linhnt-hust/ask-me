@@ -91,13 +91,16 @@ class Question extends Model
             $approvedActual = 2;
         }
 
-
         $questionId = $request['question_id'];
+        $verifiedAuthor = $request['verify_author'];
+        $note = $request['note'] ?? null;
 
         $builder = Question::where('id', $questionId)
                         ->update([
                             'verified_at' => $verifiedAt,
                             'approve_status' => $approvedActual,
+                            'verify_author' => $verifiedAuthor,
+                            'note' => $note,
                         ]);
         return $builder;
     }

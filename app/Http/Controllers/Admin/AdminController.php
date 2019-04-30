@@ -14,6 +14,7 @@ class AdminController extends Controller
     protected $modelUser;
     public function __construct(Question $question, User $user)
     {
+        $this->middleware('admin.auth');
         $this->modelQuestion = $question;
         $this->modelUser  = $user;
     }

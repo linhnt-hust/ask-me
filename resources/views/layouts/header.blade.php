@@ -4,39 +4,18 @@
         <nav class="navigation">
             <ul>
                 <li class="current_page_item"><a href="{{ route('home') }}">Home</a>
-                    {{-- <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="index_2.html">Home 2</a></li>
-                        <li><a href="index_boxed_1.html">Home Boxed 1</a></li>
-                        <li><a href="index_boxed_2.html">Home Boxed 2</a></li>
-                        <li class="current_page_item"><a href="index_no_box.html">Home No Box</a></li>
-                    </ul> --}}
                 </li>
                 <li class="ask_question"><a href="{{ route('question.create') }}">Ask Question</a></li>
-                <li><a href="blog_1.html">Blog</a>
-                    <ul>
-                        <li><a href="blog_1.html">Blog 1</a>
-                            <ul>
-                                <li><a href="blog_1.html">Right sidebar</a></li>
-                                <li><a href="blog_1_l_sidebar.html">Left sidebar</a></li>
-                                <li><a href="blog_1_full_width.html">Full Width</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="blog_2.html">Blog 2</a>
-                            <ul>
-                                <li><a href="blog_2.html">Right sidebar</a></li>
-                                <li><a href="blog_2_l_sidebar.html">Left sidebar</a></li>
-                                <li><a href="blog_2_full_width.html">Full Width</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="single_post.html">Post Single</a>
-                            <ul>
-                                <li><a href="single_post.html">Right sidebar</a></li>
-                                <li><a href="single_post_l_sidebar.html">Left sidebar</a></li>
-                                <li><a href="single_post_full_width.html">Full Width</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                <li><a href="{{route('blog.index')}}">Blog</a>
+                    {{--<ul>--}}
+                        {{--<li><a href="blog_1.html">Blog 1</a>--}}
+                            {{--<ul>--}}
+                                {{--<li><a href="blog_1.html">Right sidebar</a></li>--}}
+                                {{--<li><a href="blog_1_l_sidebar.html">Left sidebar</a></li>--}}
+                                {{--<li><a href="blog_1_full_width.html">Full Width</a></li>--}}
+                            {{--</ul>--}}
+                        {{--</li>--}}
+                    {{--</ul>--}}
                 </li>
                 <li><a href="cat_question.html">Questions</a>
                     <ul>
@@ -58,18 +37,6 @@
                     </ul>
                 </li>
                 @endguest
-                {{-- <li><a href="right_sidebar.html">Pages</a>
-                    <ul>
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="contact_us.html">Contact Us</a></li>
-                        <li><a href="ask_question.html">Ask Question</a></li>
-                        <li><a href="right_sidebar.html">Right Sidebar</a></li>
-                        <li><a href="left_sidebar.html">Left Sidebar</a></li>
-                        <li><a href="full_width.html">Full Width</a></li>
-                        <li><a href="404.html">404</a></li>
-                    </ul>
-                </li> --}}
-                {{-- <li><a href="shortcodes.html">Shortcodes</a></li> --}}
                 <li><a href="contact_us.html">Contact Us</a></li>
             </ul>
         </nav>

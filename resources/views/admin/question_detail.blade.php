@@ -198,16 +198,8 @@
 
                         <form name="ajax-form" action="{{ route('admin.question.verify') }}" method="POST" class="contact-form" data-parsley-validate="" novalidate="">
                             @csrf
-                            {{--<div class="form-group">--}}
-                                {{--<input class="form-control" id="name2" name="name" placeholder="Your name" type="text" value="" required="">--}}
-                            {{--</div>--}}
-                            {{--<!-- /Form-name -->--}}
-
-                            {{--<div class="form-group">--}}
-                                {{--<input class="form-control" id="email2" name="email" type="email" placeholder="Your email" value="" required="">--}}
-                            {{--</div>--}}
                             {{--<!-- /Form-email -->--}}
-                            {{--<input name="verify_author" type="hidden" value="{{ Auth::user() }}">--}}
+                            <input name="verify_author" type="hidden" value="{{ Auth::guard('admin')->user()->id }}">
                             <input name="approve_status" type="hidden" value="{{ $question->approve_status }}">
                             <input name="question_id" type="hidden" value="{{ $question->id }}">
                             <div class="form-group">

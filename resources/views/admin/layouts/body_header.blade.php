@@ -132,12 +132,16 @@
                         <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true"><img src="{{ asset('/zircos/images/users/avatar-1.jpg')}}" alt="user-img" class="img-circle"> </a>
                         <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
                             <li class="text-center">
-                                <h5>Hi, John</h5>
+                                <h5>Hi, {{Auth::guard('admin')->user()->name}}</h5>
                             </li>
                             <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Profile</a></li>
                             <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Settings</a></li>
                             <li><a href="javascript:void(0)"><i class="ti-lock m-r-5"></i> Lock screen</a></li>
-                            <li><a href="javascript:void(0)"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+                            <li><a href="javascript:void(0)" href="{{ route('logout') }}" onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+                            <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </ul>
 
                     </li>
