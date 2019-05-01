@@ -35,4 +35,13 @@ class Comment extends Model
         return $this->hasMany('App\Models\Comment', 'parent_id');
     }
 
+    public function getTotalComment()
+    {
+        return Comment::whereNull('parent_id')->get();
+    }
+
+    public function getUserComment($userId)
+    {
+        return Comment::where('user_id', $userId)->orderBy('created_at', 'DESC')->paginate(5);
+    }
 }

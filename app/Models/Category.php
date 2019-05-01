@@ -21,6 +21,11 @@ class Category extends Model
         'updated_at'
     ];
 
+    public function blog()
+    {
+        return $this->belongsToMany('App\Models\Blog');
+    }
+
     public function categoryQuestion()
     {
         return $this->belongsTo('App\Models\Question');

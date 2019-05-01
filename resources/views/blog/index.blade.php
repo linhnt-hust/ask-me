@@ -7,13 +7,13 @@
         <section class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Blog 2</h1>
+                    <h1>Blog</h1>
                 </div>
                 <div class="col-md-12">
                     <div class="crumbs">
                         <a href="#">Home</a>
                         <span class="crumbs-span">/</span>
-                        <span class="current">Blog 2</span>
+                        <span class="current">Blog</span>
                     </div>
                 </div>
             </div><!-- End row -->
@@ -21,6 +21,12 @@
     </div><!-- End breadcrumbs -->
     <section class="container main-content">
         <div class="row">
+            <div class="col-md-9">
+                <a href="{{ route('blog.create') }}" class="post-create button color small">CREATE BLOG</a>
+            </div>
+            <br>
+            <br>
+            <br>
             <div class="col-md-9">
                 <article class="post blog_2 clearfix">
                     <div class="post-inner">

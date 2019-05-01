@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Comment;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -11,9 +13,16 @@ use App\Http\Requests\UpdateUserRequest;
 class ProfileController extends Controller
 {   
     protected $modelUser;
-    public function __construct(User $user)
-    {
+    protected $modelQuestion;
+    protected $modelComment;
+    public function __construct(
+        User $user,
+        Question $question,
+        Comment $comment
+    ){
         $this->modelUser = $user;
+        $this->modelQuestion = $question;
+        $this->modelComment = $comment;
     }
 
     /**
@@ -24,7 +33,9 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('user.profile.index', compact('user'));
+        $userQuestion = $this->modelQuestion->getUserQuestion($user->id);
+        $userComment =  $this->modelComment->getUserComment($user->id);
+        return view('user.profile.index', compact('user', 'userQuestion', 'userComment'));
     }
 
     /**

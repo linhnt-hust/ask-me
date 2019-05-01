@@ -176,12 +176,9 @@
 
                     <li class="has-submenu">
                         <a href="{{ route('admin.question') }}"><i class="mdi mdi-comment-text"></i>Questions</a>
-                        {{--<ul class="submenu">--}}
-                            {{--<li><a href="{{ route('admin.question') }}">Dashboard</a></li>--}}
-                            {{--<li><a href="blogs-blog-list.html">Blog List</a></li>--}}
-                            {{--<li><a href="blogs-blog-column.html">Blog Column</a></li>--}}
-                            {{--<li><a href="blogs-blog-post.html">Blog Post</a></li>--}}
-                        {{--</ul>--}}
+                    </li>
+                    <li class="has-submenu">
+                        <a href="{{ route('admin.blog') }}"><i class="mdi mdi-book-multiple"></i>Blogs</a>
                     </li>
                 </ul>
                 <!-- End navigation menu -->
