@@ -1,7 +1,7 @@
 @foreach($comments as $comment)
     <li class="comment">
         <div class="comment-body comment-body-answered clearfix">
-            <div class="avatar"><img alt="" src="http://placehold.it/60x60/FFF/444"></div>
+            <div class="avatar"><img alt="" src="{{ asset('/avatar/users/'.$comment->user->avatar) }}"></div>
             <div class="comment-text">
                 <div class="author clearfix">
                     <div class="comment-author"><a href="#">{{ $comment->user->name }}</a></div>

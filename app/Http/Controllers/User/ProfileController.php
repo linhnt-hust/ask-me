@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\Models\User;
-use App\Http\Requests\UpdateUserRequest;
 
 class ProfileController extends Controller
 {   

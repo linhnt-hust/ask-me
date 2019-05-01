@@ -51,7 +51,7 @@ Ask me – Anything you wanted to know
                             <div class="question-type-main"><i class="icon-signal"></i>Poll</div>
                             @endif
                             <div class="question-author">
-                                <a href="#" original-title="{{ $recentQuestion->user->name }}" class="question-author-img tooltip-n"><span></span><img alt="" src="https://2code.info/demo/html/ask-me/images/demo/admin.jpeg"></a>
+                                <a href="#" original-title="{{ $recentQuestion->user->name }}" class="question-author-img tooltip-n"><span></span><img alt="" src="{{ asset('/avatar/users/'.$recentQuestion->user->avatar) }}"></a>
                             </div>
                             <div class="question-inner">
                                 <div class="clearfix"></div>
