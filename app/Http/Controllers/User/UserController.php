@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Blog;
 use Auth;
 use App\Models\Question;
 
 class UserController extends Controller
 {
     protected $modelQuestion;
-    public function __construct(Question $question)
+    protected $modelBlog;
+    public function __construct(Question $question, Blog $blog)
     {
+        $this->modelBlog = $blog;
         $this->modelQuestion = $question;
     }
 
@@ -33,5 +36,12 @@ class UserController extends Controller
         $user = Auth::user();
         $recentQuestions = $this->modelQuestion->getRecentQuestions();
         return view('home', compact('recentQuestions', 'user'));
+    }
+
+    public function userBlog()
+    {
+        $user = Auth::user();
+        $userBlogs = $this->modelBlog->getUserBlog($user->id);
+        return view('user.blog.user_blog', compact('user', 'userBlogs'));
     }
 }

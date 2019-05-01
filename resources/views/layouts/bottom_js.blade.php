@@ -16,4 +16,5 @@
 <script src="{{ asset('/js/tags.js') }}"></script>
 <script src="{{ asset('/js/jquery.bxslider.min.js') }}"></script>
 <script src="{{ asset('/js/custom.js') }} "></script>
+
 <!-- End js -->

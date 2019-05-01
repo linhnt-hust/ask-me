@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('page_title')
-    Question Dashboard
+    Blog Dashboard
 @endsection
 @section('content')
     <div class="row">
@@ -14,14 +14,15 @@
                 <strong>Congratulation!</strong> {{$message}}
             </div>
         @endif
+
         <div class="col-lg-3 col-md-6">
             <div class="card-box widget-box-three">
                 <div class="bg-icon pull-left">
                     <i class="ti-image"></i>
                 </div>
                 <div class="text-right">
-                    <p class="text-muted m-t-5 text-uppercase font-600 font-secondary">Total Questions</p>
-                    <h2 class="m-b-10"><span data-plugin="counterup">{{ count($questions) }}</span></h2>
+                    <p class="text-muted m-t-5 text-uppercase font-600 font-secondary">Total Post</p>
+                    <h2 class="m-b-10"><span data-plugin="counterup">{{ count($blogs) }}</span></h2>
                 </div>
             </div>
         </div>
@@ -64,80 +65,46 @@
 
     </div>
     <!-- end row -->
-
-
-    {{--<div class="row">--}}
-        {{--<div class="col-lg-6">--}}
-            {{--<div class="card-box">--}}
-                {{--<h4 class="header-title m-t-0">Total Views</h4>--}}
-
-                {{--<div class="text-center">--}}
-                    {{--<ul class="list-inline chart-detail-list">--}}
-                        {{--<li class="list-inline-item">--}}
-                            {{--<h5 class="text-teal"><i class="mdi mdi-crop-square m-r-5"></i>Page Views</h5>--}}
-                        {{--</li>--}}
-                        {{--<li class="list-inline-item">--}}
-                            {{--<h5><i class="mdi mdi-details m-r-5"></i>Visitors</h5>--}}
-                        {{--</li>--}}
-                    {{--</ul>--}}
-                {{--</div>--}}
-                {{--<div id="morris-bar-stacked" style="height: 280px;"></div>--}}
-
-            {{--</div>--}}
-
-        {{--</div> <!-- end col -->--}}
-
-        {{--<div class="col-lg-6">--}}
-            {{--<div class="card-box">--}}
-                {{--<h4 class="m-t-0 m-b-30 header-title">Visits</h4>--}}
-                {{--<div id="world-map-markers" style="height: 305px"></div>--}}
-
-            {{--</div>--}}
-
-        {{--</div> <!-- end col -->--}}
-
-    {{--</div>--}}
-    {{--<!-- end row -->--}}
-
     <div class="row">
         <div class="col-sm-12">
             <div class="card-box">
-                <h4 class="m-t-0 m-b-30 header-title">All Questions</h4>
+                <h4 class="m-t-0 m-b-30 header-title">All Blogs</h4>
 
                 <div class="table-responsive">
                     <table class="table table-colored table-centered table-inverse m-0">
                         <thead>
                         <tr>
-                            <th>Image</th>
+                            <th>ID</th>
                             <th>Title</th>
-                            <th>Category</th>
+                            <th>Type</th>
                             <th>Author</th>
                             <th>Comments</th>
                             <th>Status</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach( $questions as $question)
-                        <tr>
-                            <td><a href="#"> <img class="media-object" alt="64x64" src="{{ asset('/zircos/images/small/img-1.jpg') }}" style="width: 100px; height: 66px;"> </a></td>
-                            <td><a href="{{ route('admin.question.detail', $question->id) }}"> {{ $question->title }}</a></td>
-                            <td>{{ optional($question->category)->name_category }}</td>
-                            <td>{{ $question->user->name }}</td>
-                            <td>984</td>
+                        @foreach( $blogs as $blog)
+                            <tr>
+{{--<td><a href="#"> <img class="media-object" alt="64x64" src="{{ asset('/upload/blogs/'.$blog->blogUploaded->filename) }}" style="width: 100px; height: 66px;"> </a></td>--}}
+                                <td>{{ $loop->iteration }}</td>
+                                <td><a href="{{ route('admin.blog.detail', $blog->id) }}"> {{ $blog->title }}</a></td>
+                                <td>{{ \App\Models\Blog::$type[$blog->type] }}</td>
+                                <td>{{ $blog->user->name }}</td>
+                                <td>984</td>
 
-                            @switch( $question->approve_status)
-                                @case (0)
+                                @switch( $blog->approve_status)
+                                    @case (0)
                                     <td><span class="label label-warning">Pending</span></td>
                                     @break
-                                @case (1)
+                                    @case (1)
                                     <td><span class="label label-success">Approved</span></td>
                                     @break;
-                                @case (2)
+                                    @case (2)
                                     <td><span class="label label-danger">Denied</span></td>
                                     @break;
-                            @endswitch
+                                @endswitch
 
-                        </tr>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>

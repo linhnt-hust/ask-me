@@ -37,7 +37,6 @@ class Question extends Model
         self::DENIED => 'DENIED',
     ];
 
-
     public function category()
     {
         return $this->hasOne('App\Models\Category', 'id', 'category_id');
@@ -109,4 +108,5 @@ class Question extends Model
     {
         return Question::where('approve_status', '=', 1 )->orderBy('updated_at', 'DESC')->get();
     }
+
 }

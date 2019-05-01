@@ -154,7 +154,7 @@
 
                 <div id="respond" class="comment-respond page-content clearfix">
                     <div class="boxedtitle page-title"><h2>Leave a reply</h2></div>
-                    <form  id="commentform" class="comment-form">
+                    <form  id="commentform" class="comment-form" method="POST" action="{{route('comment.store')}}">
                             {{ csrf_field() }}
                         <div id="respond-textarea">
                             <p>
@@ -197,28 +197,28 @@
                 $(".respond-form-"+id).toggle();
             });
 
-            $('#submit-comment').on('click', function(){
-                var commentBody = $('#comment-body').val();
-                var questionId = $('#question_id').val();
-                var userId = $('#user_id').val();
-                $.ajax({
-                    type: 'post',
-                    url: "{{ route('comment.store') }}",
-                    data: {
-                        '_token': $('input[name=_token]').val(),
-                        'comment_body': commentBody,
-                        'question_id': questionId,
-                        'user_id': userId,
-                    },
-                    success: function(data) {
-                        //viết 1 function lấy dữ liệu vừa lưu đổ lên trên ở đây
-                        // load_comment();
-                    },
-                    error(data) {
-                        console.log(data);
-                    }
-                });
-            });
+            {{--$('#submit-comment').on('click', function(){--}}
+                {{--var commentBody = $('#comment-body').val();--}}
+                {{--var questionId = $('#question_id').val();--}}
+                {{--var userId = $('#user_id').val();--}}
+                {{--$.ajax({--}}
+                    {{--type: 'post',--}}
+                    {{--url: "{{ route('comment.store') }}",--}}
+                    {{--data: {--}}
+                        {{--'_token': $('input[name=_token]').val(),--}}
+                        {{--'comment_body': commentBody,--}}
+                        {{--'question_id': questionId,--}}
+                        {{--'user_id': userId,--}}
+                    {{--},--}}
+                    {{--success: function(data) {--}}
+                        {{--//viết 1 function lấy dữ liệu vừa lưu đổ lên trên ở đây--}}
+                        {{--// load_comment();--}}
+                    {{--},--}}
+                    {{--error(data) {--}}
+                        {{--console.log(data);--}}
+                    {{--}--}}
+                {{--});--}}
+            {{--});--}}
         });
     </script>
 @stop

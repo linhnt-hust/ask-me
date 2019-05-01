@@ -2,15 +2,31 @@
 
 namespace App\Http\Controllers\Blog;
 
+use App\Models\Blog;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Question;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
-
-    public function __construct()
-    {
+    protected $modelQuestion;
+    protected $modelCategory;
+    protected $modelComment;
+    protected $modelBlog;
+    public function __construct(
+        Question $question,
+        Category $category,
+        Comment $comment,
+        Blog $blog
+    ){
         $this->middleware('auth');
+        $this->modelQuestion = $question;
+        $this->modelCategory = $category;
+        $this->modelComment = $comment;
+        $this->modelBlog = $blog;
     }
 
     /**
@@ -30,7 +46,9 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();
+        $categories = $this->modelCategory->getAllCategories();
+        return view('blog.create', compact('user', 'categories'));
     }
 
     /**
@@ -41,7 +59,13 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $success = $this->modelBlog->createBlog($input);
+        if ($success) {
+            return redirect()->route('user.blog')->with('success','Data create sucessfully.');
+        } else {
+            return redirect()->back()->with('error','Whoops! Some error may happened. Please check again!');
+        }
     }
 
     /**

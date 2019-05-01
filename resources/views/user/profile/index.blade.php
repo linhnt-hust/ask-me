@@ -33,12 +33,12 @@
                             <h2>About {{ $user->name }}
                                  <a href="{{ route('profile.edit', $user->id) }}" class="button small blue-button custom-button">Edit</a>
                             </h2>
-                            <div class="user-profile-img"><img width="60" height="60" src="http://placehold.it/60x60/FFF/444" alt="admin"></div>
+                            <div class="user-profile-img"><img width="60" height="60" src="{{ asset('/avatar/users/'.$user->avatar) }}" alt="admin"></div>
                             <div class="ul_list ul_list-icon-ok about-user">
                                 <ul>
                                     <li><i class="icon-plus"></i>Registerd : <span>{{ $user->created_at->format('M d,Y') }}</span></li>
                                     <li><i class="icon-map-marker"></i>Country : <span>{{ $user->country }}</span></li>
-                                    <li><i class="icon-globe"></i>Website : <a target="_blank" href="http://themeforest.net/user/vbegy">view</a></li>
+                                    <li><i class="icon-globe"></i>Website : <a target="_blank" href="{{ $user->website }}">{{ $user->website }}</a></li>
                                 </ul>
                             </div>
                             <p>{{ $user->description }}</p>
@@ -87,8 +87,8 @@
                                 <h2>User Stats</h2>
                                 <div class="ul_list ul_list-icon-ok">
                                     <ul>
-                                        <li><i class="icon-question-sign"></i><a href="user_questions.html">Questions<span> ( <span>30</span> ) </span></a></li>
-                                        <li><i class="icon-comment"></i><a href="user_answers.html">Answers<span> ( <span>10</span> ) </span></a></li>
+                                        <li><i class="icon-question-sign"></i><a href="{{ route('user.question') }}">Questions<span> ( <span>{{ count($userQuestion) }}</span> ) </span></a></li>
+                                        <li><i class="icon-comment"></i><a href="">Answers<span> ( <span>{{ count($userComment) }}</span> ) </span></a></li>
                                         <li><i class="icon-star"></i><a href="user_favorite_questions.html">Favorite Questions<span> ( <span>3</span> ) </span></a></li>
                                         <li><i class="icon-heart"></i><a href="user_points.html">Points<span> ( <span>20</span> ) </span></a></li>
                                         <li><i class="icon-asterisk"></i>Best Answers<span> ( <span>2</span> ) </span></li>

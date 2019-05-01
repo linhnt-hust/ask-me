@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('page_title')
-    Question Detail
+    Blog Detail
 @endsection
 @section('content')
     <div class="blog-list-wrapper">
@@ -23,7 +23,7 @@
                     <div class="blog-post m-b-30">
                         <div class="post-image">
 
-                            @switch( $question->approve_status)
+                            @switch( $blog->approve_status)
                                 @case (0)
                                 <span class="label label-warning">Pending</span>
                                 @break
@@ -34,52 +34,18 @@
                                 <span class="label label-danger">Denied</span>
                                 @break;
                             @endswitch
+
+                            @foreach( $blog->blogUploaded as $blogFileUpload)
+                                    <img src="{{ asset('upload/blogs/'.$blogFileUpload->filename) }}" alt="" class="img-responsive">
+                             @endforeach
                         </div>
-                        <div class="text-muted"><span>by <a class="text-dark font-secondary">{{ $question->user->name }}</a>,</span> <span>{{ $question->created_at->format('M d,Y') }}</span></div>
+                        <div class="text-muted"><span>by <a class="text-dark font-secondary">{{ $blog->user->name }}</a>,</span> <span>{{ $blog->created_at->format('M d,Y') }}</span></div>
                         <div class="post-title">
-                            <h3><a href="javascript:void(0);">{{ $question->title }}</a></h3>
+                            <h3><a href="javascript:void(0);">{{ $blog->title }}</a></h3>
                         </div>
                         <div>
-                            <p>{{ $question->details }}
+                            <p>{{ $blog->description }}
                             </p>
-
-                            {{--<blockquote class="custom-blockquote margin-t-30">--}}
-                                {{--<p>--}}
-                                    {{--When an unknown printer took a galley of type and scrambled it to--}}
-                                    {{--make a type specimen book. It has survived not only five centuries.--}}
-                                {{--</p>--}}
-                                {{--<footer>--}}
-                                    {{--Someone famous in <cite title="Source Title">Source Title</cite>--}}
-                                {{--</footer>--}}
-                            {{--</blockquote>--}}
-
-                            {{--<p>Praesentium voluptatum deleniti atque corrupti quos dolores et quas--}}
-                                {{--molestias excepturi sint occaecati cupiditate non provident,--}}
-                                {{--similique sunt in culpa qui officia deserunt mollitia animi, id est--}}
-                                {{--laborum et dolorum fuga. Et harum quidem rerum facilis est et--}}
-                                {{--expedita distinctio.--}}
-                            {{--</p>--}}
-
-                            {{--<div class="text-center p-20">--}}
-                                {{--<h4 class="text-danger"><i>"Excepturi sint occaecati cupiditate non provident deserunt mollitia anim"</i></h4>--}}
-                            {{--</div>--}}
-
-                            {{--<p class="text-muted">Praesentium voluptatum deleniti atque corrupti quos dolores et quas--}}
-                                {{--molestias excepturi sint occaecati cupiditate non provident,--}}
-                                {{--similique sunt in culpa qui officia deserunt mollitia animi, id est--}}
-                                {{--laborum et dolorum fuga. Et harum quidem rerum facilis est et--}}
-                                {{--expedita distinctio.--}}
-                            {{--</p>--}}
-
-                            {{--<blockquote class="blockquote-reverse margin-t-30">--}}
-                                {{--<p>--}}
-                                    {{--When an unknown printer took a galley of type and scrambled it to--}}
-                                    {{--make a type specimen book. It has survived not only five centuries.--}}
-                                {{--</p>--}}
-                                {{--<footer>--}}
-                                    {{--Someone famous in <cite title="Source Title">Source Title</cite>--}}
-                                {{--</footer>--}}
-                            {{--</blockquote>--}}
                         </div>
 
                     </div>
@@ -93,9 +59,9 @@
                                 <a href="#"> <img class="media-object m-r-10" alt="64x64" src="assets/images/users/avatar-1.jpg" style="width: 96px; height: 96px;"> </a>
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">{{ $question->user->name }}</h4>
+                                <h4 class="media-heading">{{ $blog->user->name }}</h4>
                                 <p>
-                                    {{ $question->user->description }}
+                                    {{ $blog->user->description }}
                                 </p>
 
                             </div>
@@ -185,12 +151,12 @@
                         <h4 class="text-uppercase m-t-50">Leave message for question owner</h4>
                         <div class="border m-b-20"></div>
 
-                        <form name="ajax-form" action="{{ route('admin.question.verify') }}" method="POST" class="contact-form" data-parsley-validate="" novalidate="">
+                        <form name="ajax-form" action="{{ route('admin.blog.verify') }}" method="POST" class="contact-form" data-parsley-validate="" novalidate="">
                             @csrf
-                            {{--<!-- /Form-email -->--}}
+                            <!-- /Form-email -->
                             <input name="verify_author" type="hidden" value="{{ Auth::guard('admin')->user()->id }}">
-                            <input name="approve_status" type="hidden" value="{{ $question->approve_status }}">
-                            <input name="question_id" type="hidden" value="{{ $question->id }}">
+                            <input name="approve_status" type="hidden" value="{{ $blog->approve_status }}">
+                            <input name="question_id" type="hidden" value="{{ $blog->id }}">
                             <div class="form-group">
                                 <textarea class="form-control" id="message2" name="note" rows="5" placeholder="Message" required=""></textarea>
                             </div>
@@ -199,20 +165,19 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="">
-                                        {{--<button type="submit" class="btn btn-custom" id="send">Submit</button>--}}
-                                        @switch ( $question->approve_status)
+                                        @switch ( $blog->approve_status)
                                             @case (0)
-                                                <button name="submitButton" type="submit"  value="approve" class="btn btn-success waves-effect waves-light">Approve</button>
-                                                <button name="submitButton" type="submit" value="deny" class="btn btn-danger waves-effect waves-light">Deny</button>
+                                            <button name="submitButton" type="submit"  value="approve" class="btn btn-success waves-effect waves-light">Approve</button>
+                                            <button name="submitButton" type="submit" value="deny" class="btn btn-danger waves-effect waves-light">Deny</button>
                                             @break;
                                             @case (1)
-                                                <button name="submitButton" type="submit" value="deny" class="btn btn-danger waves-effect waves-light">Deny</button>
+                                            <button name="submitButton" type="submit" value="deny" class="btn btn-danger waves-effect waves-light">Deny</button>
                                             @break;
                                             @case (2)
-                                                <button name="submitButton" type="submit" value="approve" class="btn btn-success waves-effect waves-light">Approve</button>
+                                            <button name="submitButton" type="submit" value="approve" class="btn btn-success waves-effect waves-light">Approve</button>
                                             @break;
                                         @endswitch
-                                        <a href="{{ route('admin.question') }}" class="btn btn-default waves-effect waves-light">Back</a>
+                                        <a href="{{ route('admin.blog') }}" class="btn btn-default waves-effect waves-light">Back</a>
                                     </div>
 
                                 </div> <!-- /col -->

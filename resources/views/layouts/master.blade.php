@@ -16,7 +16,10 @@
 	
 	<!-- Main Style -->
 	<link rel="stylesheet" href="{{ asset('/css/style.css') }}">
-	
+
+    <!-- Summernote css -->
+    <link href="{{ asset('/zircos/plugins/summernote/summernote.css')}}" rel="stylesheet" />
+
 	<!-- Skins -->
 	<link rel="stylesheet" href="{{ asset('/css/skins/blue.css') }}">
 	
@@ -26,7 +29,7 @@
 	<!-- Favicons -->
 	<link rel="shortcut icon" href="{{ asset('/images/favicon.png') }}">
 	
-	@yield('page_scripts')
+	@yield('page_header')
 </head>
 <body>
 

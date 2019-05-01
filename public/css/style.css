@@ -4873,6 +4873,19 @@ a.carousel-next {
 	color: #2f3239;
 	font-size: 13px;
 }
+.post-create {
+    float:right;
+    margin: 0;
+    color: #007ee5;
+    font-size: 13px;
+}
+.post-create:before {
+    font-family: "FontAwesome";
+    content: "\f040";
+    margin-right: 5px;
+    font-size: 12px;
+    color: #fefffc;
+}
 .post-read-more:before {
 	font-family: "FontAwesome";
 	content: "\f067";

@@ -55,7 +55,7 @@ class User extends Authenticatable
         $time = Carbon::now();
         $dataFile = $file;
         $nameFile = $time->timestamp . $dataFile->getClientOriginalName();
-        $destinationPath = base_path() . '/public/images/' . $dir;
+        $destinationPath = base_path() . '/public/avatar/' . $dir;
         $file->move($destinationPath, $nameFile);
         return $nameFile;
     }   
