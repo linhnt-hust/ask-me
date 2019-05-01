@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->truncate();
 
         $users = [
-            ['rin', 'rin@gmail.com', '111111', 'truong dinh, ha noi', 'rinrucro.com', 'vietnam', 'depzai vlllll'],
+            ['rin', 'rin@gmail.com', '111111', 'truong dinh, ha noi', 'rinrucro.com', 'vietnam', 'users.png','Vì Tổ Quốc Xã Hội Chủ Nghĩa. Vì lý tưởng của bác Hồ vĩ đại. Sẵn sàng'],
         ];
 
         foreach ($users as $user) {
@@ -33,7 +33,8 @@ class UsersTableSeeder extends Seeder
                 'address' => $user[3],
                 'website' => $user[4],
                 'country' => $user[5],
-                'description' => $user[6],
+                'avatar' => $user[6],
+                'description' => $user[7],
             ]);
 
         }

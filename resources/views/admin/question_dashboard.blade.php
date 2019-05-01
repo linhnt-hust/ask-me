@@ -123,7 +123,7 @@
                             <td><a href="{{ route('admin.question.detail', $question->id) }}"> {{ $question->title }}</a></td>
                             <td>{{ optional($question->category)->name_category }}</td>
                             <td>{{ $question->user->name }}</td>
-                            <td>984</td>
+                            <td>{{ count($question->comments) }}</td>
 
                             @switch( $question->approve_status)
                                 @case (0)
