@@ -1,4 +1,7 @@
 @extends('layouts.master')
+@section('page_header')
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+@endsection
 @section('title')
     User Questions
 @endsection
@@ -39,7 +42,7 @@
                         <div class="col-md-12">
                             <div class="page-content">
                                 <h2>About {{ $user->name }}</h2>
-                                <div class="user-profile-img"><img width="60" height="60" src="http://placehold.it/60x60/FFF/444" alt="admin"></div>
+                                <div class="user-profile-img"><img width="60" height="60" src="{{ asset('/avatar/users/'.$user->avatar) }}" alt="admin"></div>
                                 <div class="ul_list ul_list-icon-ok about-user">
                                     <ul>
                                         <li><i class="icon-plus"></i>Registerd : <span>{{ $user->created_at->format('M d,Y') }}</span></li>
@@ -109,20 +112,20 @@
                 <div class="page-content page-content-user">
                     <div class="user-questions">
                         @foreach($userQuestions as $userQuestion)
-                        <article class="question user-question">
+                        <article class="question user-question" id="itemQuestion{{$userQuestion->id}}">
                             <h3>
-                                <a href="{{ route('user.question.detail', $userQuestion->id) }}">{{ $userQuestion-> title }}</a>
+                                <a href="{{ route('question.show', $userQuestion->id) }}">{{ $userQuestion-> title }}</a>
                             </h3>
 
                             @switch( $userQuestion->approve_status )
                                 @case (0)
-                                    <div class="question-type-main"><i class="icon-spinner"></i>Pending</div>
+                                    <div class="question-type-main" style="background-color: #ee9900"><i class="icon-spinner"></i>Pending</div>
                                     @break;
                                 @case (1)
-                                    <div class="question-type-main"><i class="icon-ok"></i>Approved</div>
+                                    <div class="question-type-main" style="background-color: #2fa360"><i class="icon-ok"></i>Approved</div>
                                     @break;
                                 @case (2)
-                                    <div class="question-type-main"><i class="icon-remove"></i>Denied</div>
+                                    <div class="question-type-main" style="background-color: red"><i class="icon-remove"></i>Denied</div>
                                     @break;
                             @endswitch
 
@@ -131,80 +134,23 @@
                                     <div class="question-answered"><i class="icon-ok"></i>in progress</div>
                                     <span class="question-favorite"><i class="icon-star"></i>5</span>
                                     <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($userQuestion->category)->name_category }}</a></span>
-                                    <span class="question-date"><i class="icon-time"></i>15 secs ago</span>
+                                    <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $userQuestion->updated_at)->diffForHumans() }}</span>
                                     <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answers</a></span>
                                     <a class="question-reply" href="#"><i class="icon-reply"></i>Reply</a>
                                     <span class="question-view"><i class="icon-user"></i>70 views</span>
+                                    <a href="#" class="button small">Edit</a>
+                                    <a href="#" class="button small">Edit</a>
+                                    <a href="#" class="button small">Edit</a>
+                                    @if ( $userQuestion->approve_status != 1)
+                                        <button class="edit-modal btn btn-info" data-id="" data-title="" data-content="">
+                                            <span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                        <button class="delete-modal btn btn-danger" data-id="{{ $userQuestion->id }}" data-title="" data-content="">
+                                            <span class="glyphicon glyphicon-trash"></span> Delete</button>
+                                    @endif
                                 </div>
                             </div>
                         </article>
                         @endforeach
-                        {{--<article class="question user-question">--}}
-                            {{--<h3>--}}
-                                {{--<a href="single_question_poll.html">This Is My Second Poll Question</a>--}}
-                            {{--</h3>--}}
-                            {{--<div class="question-type-main"><i class="icon-signal"></i>Poll</div>--}}
-                            {{--<div class="question-content">--}}
-                                {{--<div class="question-bottom">--}}
-                                    {{--<span class="question-favorite"><i class="icon-star-empty"></i>0</span>--}}
-                                    {{--<span class="question-category"><a href="#"><i class="icon-folder-close"></i>CSS</a></span>--}}
-                                    {{--<span class="question-date"><i class="icon-time"></i>15 secs ago</span>--}}
-                                    {{--<span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answers</a></span>--}}
-                                    {{--<a class="question-reply" href="#"><i class="icon-reply"></i>Reply</a>--}}
-                                    {{--<span class="question-view"><i class="icon-user"></i>70 views</span>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</article>--}}
-                        {{--<article class="question user-question">--}}
-                            {{--<h3>--}}
-                                {{--<a href="single_question.html">This is my third Question</a>--}}
-                            {{--</h3>--}}
-                            {{--<div class="question-type-main"><i class="icon-question-sign"></i>Question</div>--}}
-                            {{--<div class="question-content">--}}
-                                {{--<div class="question-bottom">--}}
-                                    {{--<div class="question-answered question-answered-done"><i class="icon-ok"></i>solved</div>--}}
-                                    {{--<span class="question-favorite"><i class="icon-star-empty"></i>0</span>--}}
-                                    {{--<span class="question-category"><a href="#"><i class="icon-folder-close"></i>HTML</a></span>--}}
-                                    {{--<span class="question-date"><i class="icon-time"></i>15 secs ago</span>--}}
-                                    {{--<span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answers</a></span>--}}
-                                    {{--<a class="question-reply" href="#"><i class="icon-reply"></i>Reply</a>--}}
-                                    {{--<span class="question-view"><i class="icon-user"></i>70 views</span>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</article>--}}
-                        {{--<article class="question user-question">--}}
-                            {{--<h3>--}}
-                                {{--<a href="single_question.html">This is my fourth Question</a>--}}
-                            {{--</h3>--}}
-                            {{--<div class="question-type-main"><i class="icon-question-sign"></i>Question</div>--}}
-                            {{--<div class="question-content">--}}
-                                {{--<div class="question-bottom">--}}
-                                    {{--<span class="question-favorite"><i class="icon-star-empty"></i>0</span>--}}
-                                    {{--<span class="question-category"><a href="#"><i class="icon-folder-close"></i>PHP</a></span>--}}
-                                    {{--<span class="question-date"><i class="icon-time"></i>15 secs ago</span>--}}
-                                    {{--<span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answers</a></span>--}}
-                                    {{--<a class="question-reply" href="#"><i class="icon-reply"></i>Reply</a>--}}
-                                    {{--<span class="question-view"><i class="icon-user"></i>70 views</span>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</article>--}}
-                        {{--<article class="question user-question">--}}
-                            {{--<h3>--}}
-                                {{--<a href="single_question.html">This is my fifth Question</a>--}}
-                            {{--</h3>--}}
-                            {{--<div class="question-type-main"><i class="icon-question-sign"></i>Question</div>--}}
-                            {{--<div class="question-content">--}}
-                                {{--<div class="question-bottom">--}}
-                                    {{--<div class="question-answered"><i class="icon-ok"></i>in progress</div>--}}
-                                    {{--<span class="question-favorite"><i class="icon-star-empty"></i>0</span>--}}
-                                    {{--<span class="question-category"><a href="#"><i class="icon-folder-close"></i>jQuery</a></span>--}}
-                                    {{--<span class="question-date"><i class="icon-time"></i>15 secs ago</span>--}}
-                                    {{--<span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answers</a></span>--}}
-                                    {{--<a class="question-reply" href="#"><i class="icon-reply"></i>Reply</a>--}}
-                                    {{--<span class="question-view"><i class="icon-user"></i>70 views</span>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</article>--}}
                     </div>
                 </div>
 
@@ -233,4 +179,63 @@
 
         </div><!-- End row -->
     </section><!-- End container -->
+
+    <!-- Modal form to delete a form -->
+    <div id="deleteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <h3 class="text-center">Are you sure you want to delete this question?</h3>
+                    <br />
+                    <input type="hidden" id="id_delete">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger delete" data-dismiss="modal">
+                            <span id="" class='glyphicon glyphicon-trash'></span> Delete
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='glyphicon glyphicon-remove'></span> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
+@section('inline_scripts')
+    @parent
+    <!-- Bootstrap JavaScript -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>
+
+    <!-- toastr notifications -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).on('click', '.delete-modal', function() {
+            $('.modal-title').text('Delete');
+            $('#id_delete').val($(this).data('id'));
+            $('#deleteModal').modal('show');
+            id = $('#id_delete').val();
+            console.log(id);
+        });
+        $('.modal-footer').on('click', '.delete', function() {
+            $.ajax({
+                type: 'DELETE',
+                url: '/question/' + id,
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                },
+                success: function(data) {
+                    toastr.success('Successfully deleted Question!', 'Success Alert', {timeOut: 5000});
+                    $('#itemQuestion' + data['id']).remove();
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        });
+    </script>
+@stop
