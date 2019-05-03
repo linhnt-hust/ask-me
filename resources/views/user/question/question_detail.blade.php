@@ -119,7 +119,7 @@
 
                 <div class="about-author clearfix">
                     <div class="author-image">
-                        <a href="#" original-title="admin" class="tooltip-n"><img alt="" src="http://placehold.it/60x60/FFF/444"></a>
+                        <a href="#" original-title="admin" class="tooltip-n"><img alt="" src="{{ asset('/avatar/users/'.$user->avatar) }}"></a>
                     </div>
                     <div class="author-bio">
                         <h4>About the Author: {{ $questions->user->name }}</h4>

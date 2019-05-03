@@ -21,6 +21,9 @@ Route::group(['prefix' => '/user'], function (){
 
 Auth::routes();
 
+Route::get('login/{provider}', 'Auth\AuthController@redirectToProvider');
+Route::get('{provider}/callback', 'Auth\AuthController@handleProviderCallback');
+
 Route::resource('profile', 'User\ProfileController');
 
 Route::resource('question', 'Question\QuestionController');

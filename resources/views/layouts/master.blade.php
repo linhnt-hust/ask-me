@@ -28,8 +28,10 @@
 	
 	<!-- Favicons -->
 	<link rel="shortcut icon" href="{{ asset('/images/favicon.png') }}">
-	
-	@yield('page_header')
+
+    <!-- Bootstrap -->
+
+    @yield('page_header')
 </head>
 <body>
 
