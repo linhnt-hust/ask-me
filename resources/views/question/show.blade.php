@@ -147,7 +147,9 @@
                     <div class="boxedtitle page-title"><h2>Answers ( <span class="color">{{ count($questionDetail->comments )}}</span> )</h2></div>
                     <ol class="commentlist clearfix">
 
-                        @include('partials.comment_replies', ['comments' => $questionDetail->comments, 'question_id' => $questionDetail->id])
+                    @foreach($questionDetail->comments as $comment)
+                        @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id])
+                    @endforeach
 
                     </ol><!-- End commentlist -->
                 </div><!-- End page-content -->
@@ -186,10 +188,16 @@
     </section><!-- End container -->
 
 @endsection
-@section('page_scripts')
+@section('inline_scripts')
+@parent
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#submit-comment').on('click', function(){
+    $(".comment-reply").click(function() {
+                id=this.id.split("_")[1];
+                $(".respond-form-"+id).toggle();
+            });
+    
+    $('#submit-comment').on('click', function(event){
+        event.preventDefault();
         var commentBody = $('#comment-body').val();
         var questionId = $('#question_id').val();
         var userId = $('#user_id').val();
@@ -203,18 +211,13 @@ $(document).ready(function() {
                 'user_id': userId,
             },
             success: function(data) {
-                //viết 1 function lấy dữ liệu vừa lưu đổ lên trên ở đây
-                // load_comment();
+                $('.commentlist').append(data['success']);
             },
             error(data) {
                 console.log(data);
             }
         });
+        $('#comment-body').val('');
     });
-    // load_comment();
-    // function load_comment(){
-        //Viết ajax lấy ra ở đây
-    // }
-});
 </script>
 @endsection

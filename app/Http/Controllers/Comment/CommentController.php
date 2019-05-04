@@ -40,7 +40,7 @@ class CommentController extends Controller
      */
     public function create()
     {
-
+        
     }
 
     /**
@@ -58,7 +58,12 @@ class CommentController extends Controller
         $question = Question::find($request->get('question_id'));
         $question->comments()->save($comment);
 
-        return response()->json(['success'=>'Data is successfully added']);
+        $view1 = \View::make('partials.comment_replies')->with(['question_id'=>$question->id])->with(compact('comment'));
+
+        $contents = (string) $view1;
+
+
+        return response()->json(['success'=>$contents]);
     }
 
     public function replyStore(Request $request)
@@ -116,5 +121,12 @@ class CommentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function fetch()
+    {
+        $comments = Comment::orderBy('created_at', 'DESC')->get()->first();
+        
+        return response()->json(array('$comments'=> $$comments), 200);
     }
 }

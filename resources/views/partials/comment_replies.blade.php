@@ -1,4 +1,4 @@
-@foreach($comments as $comment)
+
     <li class="comment">
         <div class="comment-body comment-body-answered clearfix">
             <div class="avatar"><img alt="" src="http://placehold.it/60x60/FFF/444"></div>
@@ -40,8 +40,9 @@
         </div>
         <ul class="children">
             <li class="comment">
-                @include('partials.comment_replies', ['comments' => $comment->replies])
+                @foreach($comment->replies as $comment)
+                    @include('partials.comment_replies', ['comment' => $comment])
+                @endforeach
             </li>
         </ul><!-- End children -->
     </li>
-@endforeach
