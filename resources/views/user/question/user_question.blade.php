@@ -138,12 +138,12 @@
                                     <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answers</a></span>
                                     <a class="question-reply" href="#"><i class="icon-reply"></i>Reply</a>
                                     <span class="question-view"><i class="icon-user"></i>70 views</span>
-                                    <a href="#" class="button small">Edit</a>
-                                    <a href="#" class="button small">Edit</a>
-                                    <a href="#" class="button small">Edit</a>
+                                    <a class="button small">Edit</a>
+                                    <a class="button small">Edit</a>
+                                    <a class="button small">Edit</a>
                                     @if ( $userQuestion->approve_status != 1)
-                                        <button class="edit-modal btn btn-info" data-id="" data-title="" data-content="">
-                                            <span class="glyphicon glyphicon-edit"></span> Edit</button>
+                                        <a class="edit-modal btn btn-info" href="{{ route('question.edit', $userQuestion->id)}}">
+                                            <span class="glyphicon glyphicon-edit"></span> Edit</a>
                                         <button class="delete-modal btn btn-danger" data-id="{{ $userQuestion->id }}" data-title="" data-content="">
                                             <span class="glyphicon glyphicon-trash"></span> Delete</button>
                                     @endif
