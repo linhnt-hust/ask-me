@@ -147,7 +147,9 @@
                     <div class="boxedtitle page-title"><h2>Answers ( <span class="color">{{ count($questionDetail->comments )}}</span> )</h2></div>
                     <ol class="commentlist clearfix">
 
-                        @include('partials.comment_replies', ['comments' => $questionDetail->comments, 'question_id' => $questionDetail->id])
+                    @foreach($questionDetail->comments as $comment)
+                        @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id])
+                    @endforeach
 
                     </ol><!-- End commentlist -->
                 </div><!-- End page-content -->
@@ -159,14 +161,18 @@
                         <div id="respond-textarea">
                             <p>
                                 <input type="hidden" name="question_id" id="question_id" value="{{ $questionDetail->id }}" />
+
                                 <input type="hidden" name="user_id" id="user_id" value="{{ $questionDetail->user->id }}" />
                                 <label class="required" for="comment">Comment<span>*</span></label>
-                                <textarea id="comment_body" name="comment_body" aria-required="true" cols="58" rows="8"></textarea>
+                    
+                                <textarea id="comment-body" name="comment_body" aria-required="true" cols="58" rows="8"></textarea>
                             </p>
                         </div>
                         <p class="form-submit">
-                            {{--<input type="submit" id="submitAjax" value="Post your answer" class="button small color">--}}
-                            <div id="submit-comment" class="button small color">Post your answer</div>
+                            <!-- <input type="submit" id="submitAjax" value="Post your answer" class="button small color"> -->
+                            <!-- <div id="submit-comment" class="button small color">Post your answer</div> -->
+                             <div id="submit-comment" class="button small color">Post your answer</div>
+
                         </p>
                     </form>
                 </div>
@@ -197,28 +203,29 @@
                 $(".respond-form-"+id).toggle();
             });
 
-            {{--$('#submit-comment').on('click', function(){--}}
-                {{--var commentBody = $('#comment-body').val();--}}
-                {{--var questionId = $('#question_id').val();--}}
-                {{--var userId = $('#user_id').val();--}}
-                {{--$.ajax({--}}
-                    {{--type: 'post',--}}
-                    {{--url: "{{ route('comment.store') }}",--}}
-                    {{--data: {--}}
-                        {{--'_token': $('input[name=_token]').val(),--}}
-                        {{--'comment_body': commentBody,--}}
-                        {{--'question_id': questionId,--}}
-                        {{--'user_id': userId,--}}
-                    {{--},--}}
-                    {{--success: function(data) {--}}
-                        {{--//viết 1 function lấy dữ liệu vừa lưu đổ lên trên ở đây--}}
-                        {{--// load_comment();--}}
-                    {{--},--}}
-                    {{--error(data) {--}}
-                        {{--console.log(data);--}}
-                    {{--}--}}
-                {{--});--}}
-            {{--});--}}
+            $('#submit-comment').on('click', function(event){
+                event.preventDefault();
+                var commentBody = $('#comment-body').val();
+                var questionId = $('#question_id').val();
+                var userId = $('#user_id').val();
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('comment.store') }}",
+                    data: {
+                        '_token': $('input[name=_token]').val(),
+                        'comment_body': commentBody,
+                        'question_id': questionId,
+                        'user_id': userId,
+                    },
+                    success: function(data) {
+                        $('.commentlist').append(data['success']);
+                    },
+                    error(data) {
+                        console.log(data);
+                    }
+                });
+                $('#comment-body').val('');
+            });
         });
     </script>
 @stop

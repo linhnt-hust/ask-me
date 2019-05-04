@@ -84,7 +84,10 @@ class QuestionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $question = $this->modelQuestion->getQuestionDetail($id);
+        $user = Auth::user();
+        $categories = $this->modelCategory->getAllCategories();
+        return view('question.edit', compact('question', 'user', 'categories'));
     }
 
     /**
