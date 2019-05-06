@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Question;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Poll;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
+use App\Models\PollVoteHistory;
 
 class QuestionController extends Controller
 {
@@ -16,17 +18,20 @@ class QuestionController extends Controller
     protected $modelCategory;
     protected $modelComment;
     protected $modelTag;
+    protected $modelPoll;
     public function __construct(
         Question $question,
         Category $category,
         Comment $comment,
-        Tag $tag
+        Tag $tag,
+        Poll $poll
     ){
         $this->middleware('auth');
         $this->modelQuestion = $question;
         $this->modelCategory = $category;
         $this->modelComment = $comment;
         $this->modelTag = $tag;
+        $this->modelPoll = $poll;
     }
 
     /**
@@ -76,11 +81,19 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
+        $user = Auth::user();
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
-        if ($questionDetail->question_poll == 0){
-            return view('question.show', compact('questionDetail'));
-        } else {
-            return view('question.show_poll', compact('questionDetail'));
+        if ($questionDetail->question_poll == 0) {
+            return view('question.show', compact('questionDetail', 'user'));
+        } else{
+            $userVote = PollVoteHistory::where('user_id', $user->id)->Where('question_id', $questionDetail->id)->first();
+            if ($userVote != null){
+                $voted = 1;
+                return view('question.show_poll', compact('questionDetail', 'user', 'voted'));
+            } else {
+                $voted = 0;
+                return view('question.show_poll', compact('questionDetail', 'user', 'voted'));
+            }
         }
     }
 
@@ -126,10 +139,20 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        dd($id);
         $question = Question::findOrFail($id);
         $question->delete();
 
         return response()->json($question);
+    }
+
+    public function voteQuestionPoll(Request $request)
+    {
+        $input = $request->all();
+        $vote = $this->modelPoll->voteQuestionPoll($input);
+        if ($vote) {
+            return redirect()->back()->with('success', 'Your vote has been recorded');
+        } else {
+            return redirect()->back()->with('error','Whoops! Some error may happened. Please check again!');
+        }
     }
 }

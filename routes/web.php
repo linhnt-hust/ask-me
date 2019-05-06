@@ -17,6 +17,7 @@ Route::group(['prefix' => '/user'], function (){
     Route::get('/question', 'User\UserController@userQuestion')->name('user.question');
     Route::get('/question/detail/{id}', 'User\UserController@questionDetail')->name('user.question.detail');
     Route::get('/blog', 'User\UserController@userBlog')->name('user.blog');
+    Route::post('/vote', 'Question\QuestionController@voteQuestionPoll')->name('user.poll.vote');
 });
 
 Auth::routes();
