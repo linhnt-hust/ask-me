@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQuestionsTagsTable extends Migration
+class CreatePollFieldsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateQuestionsTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('question_tag', function (Blueprint $table) {
+        Schema::create('poll_fields', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('question_id')->nullable();
+            $table->string('title');
+            $table->unsignedInteger('question_id');
             $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade')->nullable();
-            $table->unsignedInteger('tag_id')->nullable();
-            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade')->nullable();
+            $table->integer('votes')->default(0);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateQuestionsTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('question_tag');
+        Schema::dropIfExists('poll_fields');
     }
 }

@@ -21,20 +21,60 @@
             </div><!-- End row -->
         </section><!-- End container -->
     </div><!-- End breadcrumbs -->
-
     <section class="container main-content">
         <div class="row">
             <div class="col-md-9">
-                <article class="question single-question question-type-normal">
+                <article class="question single-question question-type-poll">
                     <h2>
-                        <a href="#">{{ $questionDetail->title }}</a>
+                        <a href="">{{ $questionDetail->title }}</a>
                     </h2>
-                    <a class="question-report" href="#">Report</a>
-                    <div class="question-type-main"><i class="icon-question-sign"></i>Question</div>
+                    <a class="question-report" href="#">Close</a>
+
+                    @switch( $questionDetail->approve_status )
+                        @case (0)
+                        <div class="question-type-main" style="background-color: #ee9900"><i class="icon-spinner"></i>Pending</div>
+                        @break;
+                        @case (1)
+                        <div class="question-type-main" style="background-color: #2fa360"><i class="icon-ok"></i>Approved</div>
+                        @break;
+                        @case (2)
+                        <div class="question-type-main" style="background-color: red"><i class="icon-remove"></i>Denied</div>
+                        @break;
+                    @endswitch
                     <div class="question-inner">
                         <div class="clearfix"></div>
                         <div class="question-desc">
-                            <p> {{ $questionDetail->details }}</p>
+                            <div class="poll_1">
+                                <div class="progressbar-warp">
+                                    @foreach($questionDetail->poll as $poll)
+                                        <span class="progressbar-title">{{ $poll->title }}: {{$poll->votes}} votes</span>
+                                        <div class="progressbar">
+                                            <div class="progressbar-percent poll-result" attr-percent="0"></div>
+                                        </div>
+                                    @endforeach
+                                    {{--<span class="progressbar-title">The second option 75%</span>--}}
+                                    {{--<div class="progressbar">--}}
+                                    {{--<div class="progressbar-percent" style="background-color: #3498db;" attr-percent="75"></div>--}}
+                                    {{--</div>--}}
+                                </div><!-- End progressbar-warp -->
+                                <a href="#" class="color button small poll_polls margin_0">Rating</a>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="poll_2">
+                                <form class="form-style form-style-3">
+                                    <div class="form-inputs clearfix">
+                                        @foreach($questionDetail->poll as $poll)
+                                            <p>
+                                                <input id="poll-1" name="poll-radio" type="radio">
+                                                <label for="poll-1">{{ $poll->title }}</label>
+                                            </p>
+                                        @endforeach
+                                    </div>
+                                </form>
+                                <a href="#" class="color button small poll_results margin_0">Results</a>
+                            </div>
+                            <div class="clearfix height_20"></div>
+                            <p>{{ $questionDetail->details }}</p>
                         </div>
                         <div class="question-details">
                             <span class="question-answered question-answered-done"><i class="icon-ok"></i>solved</span>
@@ -143,9 +183,9 @@
                     <div class="boxedtitle page-title"><h2>Answers ( <span class="color">{{ count($questionDetail->comments )}}</span> )</h2></div>
                     <ol class="commentlist clearfix">
 
-                    @foreach($questionDetail->comments as $comment)
-                        @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id])
-                    @endforeach
+                        @foreach($questionDetail->comments as $comment)
+                            @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id])
+                        @endforeach
 
                     </ol><!-- End commentlist -->
                 </div><!-- End page-content -->
@@ -153,32 +193,49 @@
                 <div id="respond" class="comment-respond page-content clearfix">
                     <div class="boxedtitle page-title"><h2>Leave a reply</h2></div>
                     <form  id="commentform" class="comment-form" method="POST" action="{{route('comment.store')}}">
-                            {{ csrf_field() }}
+                        {{ csrf_field() }}
                         <div id="respond-textarea">
                             <p>
                                 <input type="hidden" name="question_id" id="question_id" value="{{ $questionDetail->id }}" />
 
                                 <input type="hidden" name="user_id" id="user_id" value="{{ $questionDetail->user->id }}" />
                                 <label class="required" for="comment">Comment<span>*</span></label>
-                    
+
                                 <textarea id="comment-body" name="comment_body" aria-required="true" cols="58" rows="8"></textarea>
                             </p>
                         </div>
                         <p class="form-submit">
                             <!-- <input type="submit" id="submitAjax" value="Post your answer" class="button small color"> -->
                             <!-- <div id="submit-comment" class="button small color">Post your answer</div> -->
-                             <div id="submit-comment" class="button small color">Post your answer</div>
+                        <div id="submit-comment" class="button small color">Post your answer</div>
 
                         </p>
                     </form>
                 </div>
+                @if ($questionDetail->approve_status != 0)
+                    <div id="respond" class="comment-respond page-content clearfix">
+                        <div class="author-bio">
+                            <h4>Your question has been {{ \App\Models\Question::$approveStatus[$questionDetail->approve_status] }} by Admin</h4>
+                            @if ($questionDetail->note)
+                                With Note:
+                                {{ $questionDetail->note }}
+                            @endif
+                        </div>
+                    </div>
+                @endif
+                @if ($questionDetail->approve_status != 1)
+                    <br>
+                    <div>
+                        <a class="button small color" style="background-color: red; float: right" data-toggle="modal" data-target="#modal-confirm" data-url="{!! URL::route('question.destroy', ['id' => $questionDetail->id]) !!}">Delete</a>
+                        <a href="{{route('question.edit', $questionDetail->id)}}" class="button small color" style="background-color: #5bc0de; float: right">Edit</a>
+                    </div>
+                @endif
             </div><!-- End main -->
 
             @include('layouts.asside_bar')
 
         </div><!-- End row -->
     </section><!-- End container -->
-
 @endsection
 @section('inline_scripts')
     @parent

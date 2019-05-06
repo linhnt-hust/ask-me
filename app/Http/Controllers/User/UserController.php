@@ -27,8 +27,12 @@ class UserController extends Controller
     public function questionDetail($id)
     {
         $user = Auth::user();
-        $questions = $this->modelQuestion->getQuestionDetail($id);
-        return view('user.question.question_detail', compact('questions', 'user'));
+        $questionDetail = $this->modelQuestion->getQuestionDetail($id);
+        if ($questionDetail->question_poll == 0) {
+            return view('user.question.question_detail', compact('questionDetail', 'user'));
+        } else{
+            return view('user.question.question_poll_detail', compact('questionDetail', 'user'));
+        }
     }
 
     public function userHome()

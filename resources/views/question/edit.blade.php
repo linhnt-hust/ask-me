@@ -38,23 +38,24 @@
                 <div class="boxedtitle page-title"><h2>Edit Question</h2></div>
                                 
                 <div class="form-style form-style-3" id="question-submit">
-                    <form action="" method="POST">
+                    <form action="{{ route('question.update', $question->id) }}" method="POST" role="form" enctype="multipart/form-data">
+                        {{ method_field('PATCH') }}
                         {{ csrf_field() }}
-                        <input type="hidden" name="userId" value="{{ $user->id }}">
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
                         <div class="form-inputs clearfix">
                             <p>
                                 <label class="required">Question Title<span>*</span></label>
-                                <input type="text" id="question-title" name="title" placeholder="{{$question->title}}">
+                                <input type="text" id="question-title" name="title" value="{{ $question->title }}">
                             </p>
                             <p>
                                 <label>Tags</label>
-                                <input type="text" class="input" name="question_tags" id="question_tags" data-seperator="," name="tags">
+                                <input type="text" class="input" id="question_tags" data-seperator="," name="tags" value="{{ $nameTag }}">
                             </p>
                             <p>
                                 <label class="required">Category<span>*</span></label>
                                 <span class="styled-select">
                                     <select name="category">
-                                        <option value=""> {{ $question->category->name_category }}</option>
+                                        <option value="{{ $question->category->id }}"> {{ $question->category->name_category }}</option>
                                         @foreach( $categories as $category)
                                             <option value="{{$category->id}}"> {{ $category->name_category }}</option>
                                         @endforeach
@@ -65,33 +66,36 @@
                                 <label for="question_poll">Poll</label>
                                 <input type="checkbox" id="question_poll" value="1" name="question_poll" >
                                 <span class="question_poll">This question is a poll ?</span>
-                                <span class="poll-description">If you want to be doing a poll click here .</span>
                             </p>
                             <div class="clearfix"></div>
+
                             <div class="poll_options">
                                 <p class="form-submit add_poll">
                                     <button id="add_poll" type="button" class="button color small submit"><i class="icon-plus"></i>Add Field</button>
                                 </p>
+
                                 <ul id="question_poll_item">
+                                    @foreach($question->poll as $key => $poll)
                                     <li id="poll_li_1">
                                         <div class="poll-li">
-                                            <p><input id="ask[1][title]" class="ask" name="ask[1][title]" value="" type="text"></p>
-                                            <input id="ask[1][value]" name="ask[1][value]" value="" type="hidden">
-                                            <input id="ask[1][id]" name="ask[1][id]" value="1" type="hidden">
+                                            <p><input id="ask[{{ $key }}][title]" class="ask" name="ask[{{ $key }}][title]" value="{{ $poll->title }}" type="text"></p>
+                                            <input id="ask[{{$key}}][id]" name="ask[{{$key}}][id]" value="{{$key+1}}" type="hidden">
                                             <div class="del-poll-li"><i class="icon-remove"></i></div>
                                             <div class="move-poll-li"><i class="icon-fullscreen"></i></div>
                                         </div>
                                     </li>
+                                    @endforeach
                                 </ul>
+
                                 <script> var nextli = 2;</script>
                                 <div class="clearfix"></div>
                             </div>
-                            
+
                             <label>Attachment</label>
                             <div class="fileinputs">
-                                <input type="file" class="file">
+                                <input type="file" class="file" name="filename">
                                 <div class="fakefile">
-                                    <button type="button" class="button small margin_0">Select file</button>
+                                    <button type="button" id="buttonUpload" class="button small margin_0">{{ $question->filename }}</button>
                                     <span><i class="icon-arrow-up"></i>Browse</span>
                                 </div>
                             </div>
@@ -105,7 +109,7 @@
                             </p>
                         </div>
                         <p class="form-submit">
-                            <input type="submit" id="publish-question" value="Save your question" class="button color small submit">
+                            <input type="submit" id="publish-question" value="Update your question" class="button color small submit">
                         </p>
                     </form>
                 </div>
@@ -116,4 +120,35 @@
 
 		</div><!-- End row -->
 	</section><!-- End container -->
+@endsection
+@section('page_scripts')
+    @parent
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var question_title_edit = "<?php echo $question->title ?>";
+            $("#question-title").val(question_title_edit);
+
+            var question_poll = "<?php echo $question->question_poll ?>";
+            if ( question_poll == 1) {
+                $("#question_poll").prop("checked", true);
+                $(".poll_options").slideDown(500);
+                $(".del-poll-li").click(function() {
+                    $(this).parent().parent().addClass('removered').fadeOut(function() {
+                        $(this).remove();
+                    });
+                });
+            }
+
+            $(".del-poll-li").click(function() {
+                $(this).parent().parent().addClass('removered').fadeOut(function() {
+                    $(this).remove();
+                });
+            });
+
+            $('input[type="file"]').change(function(e){
+                var fileName = e.target.files[0].name;
+                $("#buttonUpload").text(fileName);
+            });
+        });
+    </script>
 @endsection
