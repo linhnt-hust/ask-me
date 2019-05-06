@@ -38,9 +38,9 @@
                 <div class="boxedtitle page-title"><h2>Ask Question</h2></div>
                                 
                 <div class="form-style form-style-3" id="question-submit">
-                    <form action="{{ route('question.store') }}" method="POST">
+                    <form action="{{ route('question.store') }}" method="POST" role="form" enctype="multipart/form-data">
                         {{ csrf_field() }}
-                        <input type="hidden" name="userId" value="{{ $user->id }}">
+                        <input type="hidden" name="user_id" value="{{ $user->id }}">
                         <div class="form-inputs clearfix">
                             <p>
                                 <label class="required">Question Title<span>*</span></label>
@@ -49,7 +49,7 @@
                             </p>
                             <p>
                                 <label>Tags</label>
-                                <input type="text" class="input" name="question_tags" id="question_tags" data-seperator="," name="tags">
+                                <input type="text" class="input" id="question_tags" data-seperator="," name="tags">
                                 <span class="form-description">Please choose  suitable Keywords Ex : <span class="color">question , poll</span> .</span>
                             </p>
                             <p>
@@ -79,7 +79,7 @@
                                     <li id="poll_li_1">
                                         <div class="poll-li">
                                             <p><input id="ask[1][title]" class="ask" name="ask[1][title]" value="" type="text"></p>
-                                            <input id="ask[1][value]" name="ask[1][value]" value="" type="hidden">
+                                            <input id="ask[1][value]" name="ask[1][value]" value="1" type="hidden">
                                             <input id="ask[1][id]" name="ask[1][id]" value="1" type="hidden">
                                             <div class="del-poll-li"><i class="icon-remove"></i></div>
                                             <div class="move-poll-li"><i class="icon-fullscreen"></i></div>
@@ -92,9 +92,9 @@
                             
                             <label>Attachment</label>
                             <div class="fileinputs">
-                                <input type="file" class="file">
+                                <input type="file" class="file" name="filename">
                                 <div class="fakefile">
-                                    <button type="button" class="button small margin_0">Select file</button>
+                                    <button type="button" id="buttonUpload"  class="button small margin_0">Select file</button>
                                     <span><i class="icon-arrow-up"></i>Browse</span>
                                 </div>
                             </div>
@@ -119,4 +119,15 @@
 
 		</div><!-- End row -->
 	</section><!-- End container -->
+@endsection
+@section('page_scripts')
+    @parent
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('input[type="file"]').change(function(e){
+                var fileName = e.target.files[0].name;
+                $("#buttonUpload").text(fileName);
+            });
+        });
+    </script>
 @endsection

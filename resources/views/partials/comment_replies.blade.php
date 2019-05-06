@@ -1,4 +1,3 @@
-
     <li class="comment">
         <div class="comment-body comment-body-answered clearfix">
             <div class="avatar"><img alt="" src="{{ asset('/avatar/users/'.$comment->user->avatar) }}"></div>

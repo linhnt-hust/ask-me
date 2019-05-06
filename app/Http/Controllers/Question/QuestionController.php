@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Question;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
@@ -14,15 +15,18 @@ class QuestionController extends Controller
     protected $modelQuestion;
     protected $modelCategory;
     protected $modelComment;
+    protected $modelTag;
     public function __construct(
         Question $question,
         Category $category,
-        Comment $comment
+        Comment $comment,
+        Tag $tag
     ){
         $this->middleware('auth');
         $this->modelQuestion = $question;
         $this->modelCategory = $category;
         $this->modelComment = $comment;
+        $this->modelTag = $tag;
     }
 
     /**
@@ -73,7 +77,11 @@ class QuestionController extends Controller
     public function show($id)
     {
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
-        return view('question.show', compact('questionDetail'));
+        if ($questionDetail->question_poll == 0){
+            return view('question.show', compact('questionDetail'));
+        } else {
+            return view('question.show_poll', compact('questionDetail'));
+        }
     }
 
     /**
@@ -84,10 +92,12 @@ class QuestionController extends Controller
      */
     public function edit($id)
     {
-        $question = $this->modelQuestion->getQuestionDetail($id);
         $user = Auth::user();
+        $question = $this->modelQuestion->getQuestionDetail($id);
         $categories = $this->modelCategory->getAllCategories();
-        return view('question.edit', compact('question', 'user', 'categories'));
+        $tag = $question->tag->pluck('name_tag')->toArray();
+        $nameTag = implode(",", $tag);
+        return view('question.edit', compact('question', 'user', 'categories', 'nameTag'));
     }
 
     /**
@@ -99,7 +109,13 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+        $success = $this->modelQuestion->updateQuestion($id, $input);
+        if ($success) {
+            return redirect()->route('user.question')->with('success','Edit Question sucessfully.');
+        } else {
+            return redirect()->back()->with('error','Whoops! Some error may happened. Please check again!');
+        }
     }
 
     /**
@@ -110,6 +126,7 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
+        dd($id);
         $question = Question::findOrFail($id);
         $question->delete();
 

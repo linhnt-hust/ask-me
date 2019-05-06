@@ -19,6 +19,7 @@ class Question extends Model
         'user_id',
         'category_id',
         'status',
+        'filename',
     ];
 
     protected $date = [
@@ -37,9 +38,16 @@ class Question extends Model
         self::DENIED => 'DENIED',
     ];
 
+    const FOLDER_UPLOAD = 'questions';
+
     public function category()
     {
         return $this->hasOne('App\Models\Category', 'id', 'category_id');
+    }
+
+    public function tag()
+    {
+        return $this->belongsToMany('App\Models\Tag');
     }
 
     public function user()
@@ -50,6 +58,21 @@ class Question extends Model
     public function comments()
     {
         return $this->morphMany('App\Models\Comment', 'commentable')->whereNull('parent_id');
+    }
+
+    public function poll()
+    {
+        return $this->hasMany('App\Models\Poll');
+    }
+
+    public function uploadFile($file, $dir)
+    {
+        $time = Carbon::now();
+        $dataFile = $file;
+        $nameFile = $time->timestamp . $dataFile->getClientOriginalName();
+        $destinationPath = base_path() . '/public/upload/' . $dir;
+        $file->move($destinationPath, $nameFile);
+        return $nameFile;
     }
 
     public function getUserQuestion($userId)
@@ -73,12 +96,109 @@ class Question extends Model
     public function createQuestion($params)
     {
         $input['question_poll'] = $params['question_poll'] ?? 0;
-        $input['user_id'] = $params['userId'];
         $input['category_id'] = $params['category'];
         $input['title'] = $params['title'];
+        $input['user_id'] = $params['user_id'];
         $input['details'] = $params['details'];
+
+        if (isset($params['filename']))
+        {
+            $input['filename'] = $this->uploadFile($params['filename'], Question::FOLDER_UPLOAD);
+
+        }
         $data = Question::create($input);
+
+        if ($params['tags'])
+        {
+            $tags = explode("," , $params['tags']);
+            foreach ($tags as $tag)
+            {
+                $createTag = Tag::create(['name_tag' => $tag] );
+                QuestionTag::create([
+                    'question_id' => $data->id,
+                    'tag_id' => $createTag->id
+                ]);
+            }
+        }
+
+        if ($data['question_poll'] == 1)
+        {
+            foreach ($params['ask'] as $pollField)
+            {
+                Poll::create([
+                   'title' => $pollField['title'],
+                   'question_id' => $data->id,
+                ]);
+            }
+        }
         return $data;
+    }
+
+    public function updateQuestion($id, $data = array())
+    {
+        $question = Question::find($id);
+
+        //Update tags question
+        $tags = explode("," , $data['tags']);
+        $tagQuery = $question->tag->pluck('name_tag')->toArray();
+        foreach ($tags as $tag)
+        {
+            if (!in_array($tag, $tagQuery)){
+                $newTag = Tag::create(['name_tag' => $tag]);
+                QuestionTag::create([
+                    'question_id' => $question->id,
+                    'tag_id' => $newTag->id
+                ]);
+            }
+        }
+        foreach ($tagQuery as $tag1)
+        {
+            if(!in_array($tag1, $tags)){
+                $deleteTag = Tag::where('name_tag', $tag1)->first();
+                QuestionTag::where('tag_id', $deleteTag['id'])->delete();
+                $deleteTag->delete();
+            }
+        }
+
+        //update file
+        if (!isset($data['filename'])) {
+            $data['filename'] = $question->filename;
+        } else {
+            $data['filename'] = $this->uploadImage($data['filename'], Question::FOLDER_UPLOAD);
+        }
+
+        //update poll question
+        if (!isset($data['question_poll']) && !isset($data['ask'])){
+            Poll::where('question_id', $question->id)->delete();
+        }
+
+        if (isset($data['question_poll']) && $data['question_poll'] == 1)
+        {
+            $pollQuery = $question->poll->pluck('title')->toArray();
+            foreach ($data['ask'] as $pollCheck)
+            {
+                $pollInput[] = $pollCheck['title'];
+                if (!in_array($pollCheck['title'], $pollQuery)){
+                    Poll::create([
+                        'title' => $pollCheck['title'],
+                        'question_id' => $question->id
+                    ]);
+                }
+            }
+            foreach ($pollQuery as $poll1)
+            {
+                if(!in_array($poll1, $pollInput))
+                {
+                    Poll::where('title', $poll1)->first()->delete();
+                }
+            }
+        } else {
+            $data['question_poll'] = 0;
+        }
+
+
+        return $question->update($data);
+
     }
 
     public function verifyQuestion($request)
