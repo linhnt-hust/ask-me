@@ -41,41 +41,79 @@
                         <div class="question-type-main" style="background-color: red"><i class="icon-remove"></i>Denied</div>
                         @break;
                     @endswitch
+
+                    @php
+                        $sumVotes = $questionDetail->poll->sum('votes');
+                    @endphp
                     <div class="question-inner">
                         <div class="clearfix"></div>
+                        @if ($message = Session::get('success') || $voted == 1))
+                            <div class="question-desc">
+                                <div class="progressbar-warp">
+                                    @foreach($questionDetail->poll as $poll)
+                                        <span class="progressbar-title">{{ $poll->title }}: {{$poll->votes}} votes</span>
+                                    @php
+                                        $votePercent = ($poll->votes)/$sumVotes * 100;
+                                    @endphp
+                                        <div class="progressbar">
+                                            @switch (true)
+                                                @case($votePercent <= 20)
+                                                <div class="progressbar-percent" style="background-color: #4B4C4D;" attr-percent="{{ $votePercent}}"></div>
+                                                @break
+                                                @case (20 < $votePercent && $votePercent <= 40)
+                                                <div class="progressbar-percent" style="background-color: #37b8eb;" attr-percent="{{ $votePercent}}"></div>
+                                                @break
+                                                @case (40 < $votePercent && $votePercent <= 60)
+                                                <div class="progressbar-percent" style="background-color: #c54133;" attr-percent="{{ $votePercent}}"></div>
+                                                @break
+                                                @case (60 < $votePercent && $votePercent <= 80)
+                                                <div class="progressbar-percent" style="background-color: #81519c;" attr-percent="{{ $votePercent}}"></div>
+                                                @break
+                                                @case (80 < $votePercent && $votePercent <= 100)
+                                                <div class="progressbar-percent" style="background-color: #ee7e2a;" attr-percent="{{ $votePercent}}"></div>
+                                                @break
+                                            @endswitch
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="clearfix height_20"></div>
+                                <p>{{ $questionDetail->details }}</p>
+                            </div>
+                        @else
                         <div class="question-desc">
                             <div class="poll_1">
                                 <div class="progressbar-warp">
                                     @foreach($questionDetail->poll as $poll)
                                         <span class="progressbar-title">{{ $poll->title }}: {{$poll->votes}} votes</span>
                                         <div class="progressbar">
-                                            <div class="progressbar-percent poll-result" attr-percent="0"></div>
+                                            <div class="progressbar-percent" style="background-color: #3498db;" attr-percent="75"></div>
                                         </div>
                                     @endforeach
-                                    {{--<span class="progressbar-title">The second option 75%</span>--}}
-                                    {{--<div class="progressbar">--}}
-                                    {{--<div class="progressbar-percent" style="background-color: #3498db;" attr-percent="75"></div>--}}
-                                    {{--</div>--}}
                                 </div><!-- End progressbar-warp -->
                                 <a href="#" class="color button small poll_polls margin_0">Rating</a>
                             </div>
                             <div class="clearfix"></div>
                             <div class="poll_2">
-                                <form class="form-style form-style-3">
+                                <form id="myform" class="form-style form-style-3" action="{{route('user.poll.vote')}}" method="POST">
+                                    {{ csrf_field() }}
                                     <div class="form-inputs clearfix">
                                         @foreach($questionDetail->poll as $poll)
                                             <p>
-                                                <input id="poll-1" name="poll-radio" type="radio">
+                                                <input id="poll-1" name="poll_id" type="radio" value="{{$poll->id}}">
                                                 <label for="poll-1">{{ $poll->title }}</label>
+                                                <input type="hidden" value="{{ $user->id }}" name="user_id">
+                                                <input type="hidden" value="{{ $questionDetail->id }}" name="question_id">
                                             </p>
                                         @endforeach
                                     </div>
                                 </form>
-                                <a href="#" class="color button small poll_results margin_0">Results</a>
+                                <a href="#" class="color button small poll_results">Results</a>
+                                <input type="submit" form="myform" class="color button small margin_0" style="background-color: #2fa360">
                             </div>
                             <div class="clearfix height_20"></div>
                             <p>{{ $questionDetail->details }}</p>
                         </div>
+                        @endif
                         <div class="question-details">
                             <span class="question-answered question-answered-done"><i class="icon-ok"></i>solved</span>
                             <span class="question-favorite"><i class="icon-star"></i>5</span>

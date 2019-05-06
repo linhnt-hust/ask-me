@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\PollVoteHistory;
 use Auth;
 use App\Models\Question;
 
@@ -31,7 +32,14 @@ class UserController extends Controller
         if ($questionDetail->question_poll == 0) {
             return view('user.question.question_detail', compact('questionDetail', 'user'));
         } else{
-            return view('user.question.question_poll_detail', compact('questionDetail', 'user'));
+            $userVote = PollVoteHistory::where('user_id', $user->id)->Where('question_id', $questionDetail->id)->first();
+            if ($userVote != null){
+                $voted = 1;
+                return view('user.question.question_poll_detail', compact('questionDetail', 'user', 'voted'));
+            } else {
+                $voted = 0;
+                return view('user.question.question_poll_detail', compact('questionDetail', 'user', 'voted'));
+            }
         }
     }
 
