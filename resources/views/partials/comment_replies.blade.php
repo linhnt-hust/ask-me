@@ -1,4 +1,4 @@
-    <li class="comment">
+    <li class="comment" id="comment_{{$comment->id}}">
         <div class="comment-body comment-body-answered clearfix">
             <div class="avatar"><img alt="" src="{{ asset('/avatar/users/'.$comment->user->avatar) }}"></div>
             <div class="comment-text">
@@ -14,8 +14,10 @@
                     <div class="comment-meta">
                         <div class="date"><i class="icon-time"></i>{{ $comment->created_at->format('M d, Y - h:m') }}</div>
                     </div>
-                    <a class="comment-reply" style="margin-left: 10px;"><i class="icon-remove"></i>Remove</a>
-                    <a class="comment-reply" id="reply-button_{{$comment->id}}" ><i class="icon-reply"></i>Reply</a>
+                    @if ($comment->user->id==\Auth::user()->id)
+                        <a class="comment-reply remove-button" id="remove_{{$comment->id}}" style="margin-left: 10px;" onclick="delete_comment({{$comment->id}})"><i class="icon-remove"></i>Remove</a>
+                    @endif
+                    <a class="comment-reply reply-button" id="reply-button_{{$comment->id}}" ><i class="icon-reply"></i>Reply</a>
                 </div>
                 <div class="text"><p> {{ $comment->body }} </p>
                 </div>

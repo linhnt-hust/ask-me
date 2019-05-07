@@ -168,7 +168,7 @@
 
                                 <input type="hidden" name="user_id" id="user_id" value="{{ $questionDetail->user->id }}" />
                                 <label class="required" for="comment">Comment<span>*</span></label>
-                    
+
                                 <textarea id="comment-body" name="comment_body" aria-required="true" cols="58" rows="8"></textarea>
                             </p>
                         </div>
@@ -192,13 +192,48 @@
 @section('inline_scripts')
     @parent
     <script type="text/javascript">
-        $(document).ready(function(){
+        function delete_comment(id){
+            $.ajax({
+                type: 'post',
+                url: "{{ route('comment.loz') }}",
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    'id': id,
+                },
+                success: function(data) {
 
-            $(".comment-reply").click(function() {
+                    $("#comment_"+id).remove();
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        }
+        $(document).ready(function(){
+            $(".reply-button").click(function() {
                 id=this.id.split("_")[1];
                 $(".respond-form-"+id).toggle();
             });
+            // $('.remove-button').on('click', function(event){
+            //     event.preventDefault();
+            //     id=this.id.split("_")[1];
 
+            //     $.ajax({
+            //         type: 'post',
+            //         url: "{{ route('comment.loz') }}",
+            //         data: {
+            //             '_token': $('input[name=_token]').val(),
+            //             'id': id,
+            //         },
+            //         success: function(data) {
+
+            //             $("#comment_"+id).remove();
+            //         },
+            //         error(data) {
+            //             console.log(data);
+            //         }
+            //     });
+            // });
             $('#submit-comment').on('click', function(event){
                 event.preventDefault();
                 var commentBody = $('#comment-body').val();

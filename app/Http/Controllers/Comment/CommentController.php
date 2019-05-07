@@ -115,8 +115,13 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function loz(Request $request)
     {
-        //
+
+        $id = $request->get('id');
+        $comment = Comment::find($id);
+        $comment->delete();
+
+        return response()->json(['success'=>'success']);
     }
 }
