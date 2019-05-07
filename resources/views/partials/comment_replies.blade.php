@@ -17,7 +17,7 @@
                     @if ($comment->user->id==\Auth::user()->id)
                         <a class="comment-reply remove-button" id="remove_{{$comment->id}}" style="margin-left: 10px;" onclick="delete_comment({{$comment->id}})"><i class="icon-remove"></i>Remove</a>
                     @endif
-                    <a class="comment-reply reply-button" id="reply-button_{{$comment->id}}" ><i class="icon-reply"></i>Reply</a>
+                    <a class="comment-reply reply-button" id="reply-button_{{$comment->id}}" onclick="reply_box({{$comment->id}})"><i class="icon-reply"></i>Reply</a>
                 </div>
                 <div class="text"><p> {{ $comment->body }} </p>
                 </div>

@@ -209,11 +209,15 @@
                 }
             });
         }
+        function reply_box(id){
+            // id=this.id.split("_")[1];
+            $(".respond-form-"+id).toggle();
+        }
         $(document).ready(function(){
-            $(".reply-button").click(function() {
-                id=this.id.split("_")[1];
-                $(".respond-form-"+id).toggle();
-            });
+            // $(".reply-button").click(function() {
+            //     id=this.id.split("_")[1];
+            //     $(".respond-form-"+id).toggle();
+            // });
             // $('.remove-button').on('click', function(event){
             //     event.preventDefault();
             //     id=this.id.split("_")[1];
