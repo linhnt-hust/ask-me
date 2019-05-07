@@ -32,7 +32,7 @@ Route::resource('profile', 'User\ProfileController');
 Route::resource('question', 'Question\QuestionController');
 
 Route::resource('comment', 'Comment\CommentController');
-
+Route::post('comment/loz', 'Comment\CommentController@loz')->name('comment.loz');
 Route::resource('blog','Blog\BlogController');
 
 Route::post('/reply/store', 'Comment\CommentController@replyStore')->name('reply.add');
