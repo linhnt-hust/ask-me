@@ -18,6 +18,8 @@ Route::group(['prefix' => '/user'], function (){
     Route::get('/question/detail/{id}', 'User\UserController@questionDetail')->name('user.question.detail');
     Route::get('/blog', 'User\UserController@userBlog')->name('user.blog');
     Route::post('/vote', 'Question\QuestionController@voteQuestionPoll')->name('user.poll.vote');
+    Route::get('/question/close/{id}', 'User\UserController@closeQuestion')->name('user.question.close');
+    Route::get('/question/reopen/{id}', 'User\UserController@reopenQuestion')->name('user.question.reopen');
 });
 
 Auth::routes();

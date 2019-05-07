@@ -28,8 +28,11 @@
                     <h2>
                         <a href="">{{ $questionDetail->title }}</a>
                     </h2>
-                    <a class="question-report" href="#">Close</a>
-
+                    @if ($questionDetail->is_solved == 0)
+                        <a class="question-report" href="{{ route('user.question.close', $questionDetail->id) }}">Close</a>
+                    @else
+                        <a class="question-report" href="{{ route('user.question.reopen', $questionDetail->id) }}">ReOpen</a>
+                    @endif
                     @switch( $questionDetail->approve_status )
                         @case (0)
                         <div class="question-type-main" style="background-color: #ee9900"><i class="icon-spinner"></i>Pending</div>
@@ -78,6 +81,7 @@
                                 </div>
                                 <div class="clearfix height_20"></div>
                                 <p>{{ $questionDetail->details }}</p>
+                                <div class="post-img"><a><img src="{{ asset('/upload/questions/'.$questionDetail->filename) }}" alt=""></a></div>
                             </div>
                         @else
                         <div class="question-desc">
@@ -85,8 +89,27 @@
                                 <div class="progressbar-warp">
                                     @foreach($questionDetail->poll as $poll)
                                         <span class="progressbar-title">{{ $poll->title }}: {{$poll->votes}} votes</span>
+                                        @php
+                                            $votePercent = ($poll->votes)/$sumVotes * 100;
+                                        @endphp
                                         <div class="progressbar">
-                                            <div class="progressbar-percent" style="background-color: #3498db;" attr-percent="75"></div>
+                                            @switch (true)
+                                                @case($votePercent <= 20)
+                                                <div class="progressbar-percent" style="background-color: #4B4C4D;" attr-percent="{{ $votePercent}}"></div>
+                                                @break
+                                                @case (20 < $votePercent && $votePercent <= 40)
+                                                <div class="progressbar-percent" style="background-color: #37b8eb;" attr-percent="{{ $votePercent}}"></div>
+                                                @break
+                                                @case (40 < $votePercent && $votePercent <= 60)
+                                                <div class="progressbar-percent" style="background-color: #c54133;" attr-percent="{{ $votePercent}}"></div>
+                                                @break
+                                                @case (60 < $votePercent && $votePercent <= 80)
+                                                <div class="progressbar-percent" style="background-color: #81519c;" attr-percent="{{ $votePercent}}"></div>
+                                                @break
+                                                @case (80 < $votePercent && $votePercent <= 100)
+                                                <div class="progressbar-percent" style="background-color: #ee7e2a;" attr-percent="{{ $votePercent}}"></div>
+                                                @break
+                                            @endswitch
                                         </div>
                                     @endforeach
                                 </div><!-- End progressbar-warp -->
@@ -112,11 +135,16 @@
                             </div>
                             <div class="clearfix height_20"></div>
                             <p>{{ $questionDetail->details }}</p>
+                            <div class="post-img"><a><img src="{{ asset('/upload/questions/'.$questionDetail->filename) }}" alt=""></a></div>
                         </div>
                         @endif
                         <div class="question-details">
-                            <span class="question-answered question-answered-done"><i class="icon-ok"></i>solved</span>
-                            <span class="question-favorite"><i class="icon-star"></i>5</span>
+                            @if ($questionDetail->is_solved == 1)
+                                <span class="question-answered question-answered-done"><i class="icon-ok"></i>solved</span>
+                            @else
+                                <div class="question-answered"><i class="icon-ok"></i>in progress</div>
+                            @endif
+                            {{--<span class="question-favorite"><i class="icon-star"></i>5</span>--}}
                         </div>
                         <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($questionDetail->category)->name_category }}</a></span>
                         <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $questionDetail->updated_at)->diffForHumans() }}</span>
@@ -222,7 +250,7 @@
                     <ol class="commentlist clearfix">
 
                         @foreach($questionDetail->comments as $comment)
-                            @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id])
+                            @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id, 'isSolved'=>$questionDetail->is_solved])
                         @endforeach
 
                     </ol><!-- End commentlist -->
@@ -243,8 +271,6 @@
                             </p>
                         </div>
                         <p class="form-submit">
-                            <!-- <input type="submit" id="submitAjax" value="Post your answer" class="button small color"> -->
-                            <!-- <div id="submit-comment" class="button small color">Post your answer</div> -->
                         <div id="submit-comment" class="button small color">Post your answer</div>
 
                         </p>
