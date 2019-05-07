@@ -57,8 +57,12 @@ Ask me – Anything you wanted to know
                                 <div class="clearfix"></div>
                                 <p class="question-desc"> {{ $recentQuestion->details }}</p>
                                 <div class="question-details">
-                                    <span class="question-answered question-answered-done"><i class="icon-ok"></i>solved</span>
-                                    <span class="question-favorite"><i class="icon-star"></i>5</span>
+                                    @if ($recentQuestion->is_solved == 0)
+                                        <div class="question-answered"><i class="icon-ok"></i>in progress</div>
+                                    @else
+                                        <div class="question-answered question-answered-done"><i class="icon-ok"></i>solved</div>
+                                    @endif
+                                    {{--<span class="question-favorite"><i class="icon-star"></i>5</span>--}}
                                 </div>
                                 <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($recentQuestion->category)->name_category }}</a></span>
                                 <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $recentQuestion->updated_at)->diffForHumans() }}</span>

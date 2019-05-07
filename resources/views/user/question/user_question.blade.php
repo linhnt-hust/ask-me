@@ -131,7 +131,11 @@
 
                             <div class="question-content">
                                 <div class="question-bottom">
+                                    @if ($userQuestion->is_solved == 0)
                                     <div class="question-answered"><i class="icon-ok"></i>in progress</div>
+                                    @else
+                                    <div class="question-answered question-answered-done"><i class="icon-ok"></i>solved</div>
+                                    @endif
                                     <span class="question-favorite"><i class="icon-star"></i>5</span>
                                     <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($userQuestion->category)->name_category }}</a></span>
                                     <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $userQuestion->updated_at)->diffForHumans() }}</span>

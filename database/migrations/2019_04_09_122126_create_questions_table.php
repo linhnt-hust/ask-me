@@ -23,6 +23,7 @@ class CreateQuestionsTable extends Migration
             $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->nullable();
             $table->string('filename')->nullable();
+            $table->boolean('is_solved')->default(0);
             $table->tinyInteger('approve_status')->default(0);
             $table->integer('verify_author')->nullable();
             $table->longText('note')->nullable();

@@ -14,6 +14,7 @@
                     <div class="comment-meta">
                         <div class="date"><i class="icon-time"></i>{{ $comment->created_at->format('M d, Y - h:m') }}</div>
                     </div>
+                    <a class="comment-reply" style="margin-left: 10px;"><i class="icon-remove"></i>Remove</a>
                     <a class="comment-reply" id="reply-button_{{$comment->id}}" ><i class="icon-reply"></i>Reply</a>
                 </div>
                 <div class="text"><p> {{ $comment->body }} </p>
@@ -21,6 +22,7 @@
                 {{--<div class="question-answered question-answered-done"><i class="icon-ok"></i>Best Answer</div>--}}
             </div>
             <br>
+            @if ($isSolved == 0)
             <div id="respond" class="children respond-form-{{ $comment->id }}" style="display: none">
                 <form action="{{ route('reply.add') }}" method="POST" id="commentform" class="comment-form">
                     {{ csrf_field() }}
@@ -36,6 +38,7 @@
                     </p>
                 </form>
             </div>
+            @endif
         </div>
         <ul class="children">
             <li class="comment">

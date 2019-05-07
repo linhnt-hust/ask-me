@@ -20,6 +20,7 @@ class Question extends Model
         'category_id',
         'status',
         'filename',
+        'is_solved',
     ];
 
     protected $date = [
@@ -164,7 +165,7 @@ class Question extends Model
         if (!isset($data['filename'])) {
             $data['filename'] = $question->filename;
         } else {
-            $data['filename'] = $this->uploadImage($data['filename'], Question::FOLDER_UPLOAD);
+            $data['filename'] = $this->uploadFile($data['filename'], Question::FOLDER_UPLOAD);
         }
 
         //update poll question
@@ -222,6 +223,20 @@ class Question extends Model
                             'note' => $note,
                         ]);
         return $builder;
+    }
+
+    public function closeQuestion($id)
+    {
+        $question = Question::find($id);
+        $data['is_solved'] = 1 ;
+        return $question->update($data);
+    }
+
+    public function reopenQuestion($id)
+    {
+        $question = Question::find($id);
+        $data['is_solved'] = 0 ;
+        return $question->update($data);
     }
 
     public function getRecentQuestions()

@@ -68,6 +68,7 @@
                             </div>
                             <div class="clearfix height_20"></div>
                             <p>{{ $questionDetail->details }}</p>
+                            <div class="post-img"><a><img src="{{ asset('/upload/questions/'.$questionDetail->filename) }}" alt=""></a></div>
                         </div>
                         @else
                             <div class="question-desc">
@@ -75,8 +76,27 @@
                                     <div class="progressbar-warp">
                                         @foreach($questionDetail->poll as $poll)
                                             <span class="progressbar-title">{{ $poll->title }}: {{$poll->votes}} votes</span>
+                                            @php
+                                                $votePercent = ($poll->votes)/$sumVotes * 100;
+                                            @endphp
                                             <div class="progressbar">
-                                                <div class="progressbar-percent" style="background-color: #3498db;" attr-percent="75"></div>
+                                                @switch (true)
+                                                    @case($votePercent <= 20)
+                                                    <div class="progressbar-percent" style="background-color: #4B4C4D;" attr-percent="{{ $votePercent}}"></div>
+                                                    @break
+                                                    @case (20 < $votePercent && $votePercent <= 40)
+                                                    <div class="progressbar-percent" style="background-color: #37b8eb;" attr-percent="{{ $votePercent}}"></div>
+                                                    @break
+                                                    @case (40 < $votePercent && $votePercent <= 60)
+                                                    <div class="progressbar-percent" style="background-color: #c54133;" attr-percent="{{ $votePercent}}"></div>
+                                                    @break
+                                                    @case (60 < $votePercent && $votePercent <= 80)
+                                                    <div class="progressbar-percent" style="background-color: #81519c;" attr-percent="{{ $votePercent}}"></div>
+                                                    @break
+                                                    @case (80 < $votePercent && $votePercent <= 100)
+                                                    <div class="progressbar-percent" style="background-color: #ee7e2a;" attr-percent="{{ $votePercent}}"></div>
+                                                    @break
+                                                @endswitch
                                             </div>
                                         @endforeach
                                     </div><!-- End progressbar-warp -->
@@ -102,6 +122,7 @@
                                 </div>
                                 <div class="clearfix height_20"></div>
                                 <p>{{ $questionDetail->details }}</p>
+                                <div class="post-img"><a><img src="{{ asset('/upload/questions/'.$questionDetail->filename) }}" alt=""></a></div>
                             </div>
                         @endif
                         <div class="question-details">
@@ -212,7 +233,7 @@
                     <ol class="commentlist clearfix">
 
                         @foreach($questionDetail->comments as $comment)
-                            @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id])
+                            @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id, 'isSolved' => $questionDetail->is_solved])
                         @endforeach
 
                     </ol><!-- End commentlist -->

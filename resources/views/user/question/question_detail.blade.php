@@ -29,8 +29,11 @@
                     <h2>
                         <a href="#">{{ $questionDetail->title }}</a>
                     </h2>
-                    <a class="question-report" href="#">Close</a>
-
+                    @if ($questionDetail->is_solved == 0)
+                    <a class="question-report" href="{{ route('user.question.close', $questionDetail->id) }}">Close</a>
+                    @else
+                    <a class="question-report" href="{{ route('user.question.reopen', $questionDetail->id) }}">ReOpen</a>
+                    @endif
                     @switch( $questionDetail->approve_status )
                         @case (0)
                         <div class="question-type-main" style="background-color: #ee9900"><i class="icon-spinner"></i>Pending</div>
@@ -47,10 +50,15 @@
                         <div class="clearfix"></div>
                         <div class="question-desc">
                             <p> {{ $questionDetail->details }}</p>
+                            <div class="post-img"><a><img src="{{ asset('/upload/questions/'.$questionDetail->filename) }}" alt=""></a></div>
                         </div>
                         <div class="question-details">
+                            @if ($questionDetail->is_solved == 1)
                             <span class="question-answered question-answered-done"><i class="icon-ok"></i>solved</span>
-                            <span class="question-favorite"><i class="icon-star"></i>5</span>
+                            @else
+                            <div class="question-answered"><i class="icon-ok"></i>in progress</div>
+                            @endif
+                            {{--<span class="question-favorite"><i class="icon-star"></i>5</span>--}}
                         </div>
                         <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($questionDetail->category)->name_category }}</a></span>
                         <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $questionDetail->updated_at)->diffForHumans() }}</span>
@@ -156,7 +164,7 @@
                     <ol class="commentlist clearfix">
 
                         @foreach($questionDetail->comments as $comment)
-                            @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id])
+                            @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id, 'isSolved'=>$questionDetail->is_solved])
                         @endforeach
 
                     </ol><!-- End commentlist -->

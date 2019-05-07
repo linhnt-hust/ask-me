@@ -56,4 +56,16 @@ class UserController extends Controller
         $userBlogs = $this->modelBlog->getUserBlog($user->id);
         return view('user.blog.user_blog', compact('user', 'userBlogs'));
     }
+
+    public function closeQuestion($id)
+    {
+        $this->modelQuestion->closeQuestion($id);
+        return redirect()->back();
+    }
+
+    public function reopenQuestion($id)
+    {
+        $this->modelQuestion->reopenQuestion($id);
+        return redirect()->back();
+    }
 }

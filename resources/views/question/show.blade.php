@@ -35,10 +35,17 @@
                         <div class="clearfix"></div>
                         <div class="question-desc">
                             <p> {{ $questionDetail->details }}</p>
+                            @if ($questionDetail->filename != null )
+                            <div class="post-img"><a><img src="{{ asset('/upload/questions/'.$questionDetail->filename) }}" alt=""></a></div>
+                            @endif
                         </div>
                         <div class="question-details">
-                            <span class="question-answered question-answered-done"><i class="icon-ok"></i>solved</span>
-                            <span class="question-favorite"><i class="icon-star"></i>5</span>
+                            @if ($questionDetail->is_solved == 0)
+                                <div class="question-answered"><i class="icon-ok"></i>in progress</div>
+                            @else
+                                <div class="question-answered question-answered-done"><i class="icon-ok"></i>solved</div>
+                            @endif
+                            {{--<span class="question-favorite"><i class="icon-star"></i>5</span>--}}
                         </div>
                         <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($questionDetail->category)->name_category }}</a></span>
                         <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $questionDetail->updated_at)->diffForHumans() }}</span>
@@ -144,12 +151,13 @@
                     <ol class="commentlist clearfix">
 
                     @foreach($questionDetail->comments as $comment)
-                        @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id])
+                        @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id, 'isSolved' => $questionDetail->is_solved])
                     @endforeach
 
                     </ol><!-- End commentlist -->
                 </div><!-- End page-content -->
 
+                @if ($questionDetail->is_solved == 0)
                 <div id="respond" class="comment-respond page-content clearfix">
                     <div class="boxedtitle page-title"><h2>Leave a reply</h2></div>
                     <form  id="commentform" class="comment-form" method="POST" action="{{route('comment.store')}}">
@@ -172,6 +180,7 @@
                         </p>
                     </form>
                 </div>
+                @endif
             </div><!-- End main -->
 
             @include('layouts.asside_bar')

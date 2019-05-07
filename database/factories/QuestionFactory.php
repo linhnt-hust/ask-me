@@ -15,6 +15,8 @@ $factory->define(App\Models\Question::class, function (Faker $faker) {
         'user_id' => App\Models\User::all()->random()->id,
         'approve_status' => $faker->randomElement([0,1,2]),
         'category_id' => App\Models\Category::all()->random()->id,
+        'filename' => $faker->boolean(50) ? $faker->image($dir='public/upload/questions', $width=800, $height=480,null, false) : null,
+        'is_solved' => $faker->boolean,
         'created_at' => new DateTime(),
         'updated_at' => new DateTime(),
     ];

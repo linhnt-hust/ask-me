@@ -58,7 +58,7 @@ class CommentController extends Controller
         $question = Question::find($request->get('question_id'));
         $question->comments()->save($comment);
 
-        $view1 = \View::make('partials.comment_replies')->with(['question_id'=>$question->id])->with(compact('comment'));
+        $view1 = \View::make('partials.comment_replies')->with(['question_id'=>$question->id])->with(compact('comment'))->with(['isSolved'=>$question->is_solved]);
          $contents = (string) $view1;
          return response()->json(['success'=>$contents]);
     }
