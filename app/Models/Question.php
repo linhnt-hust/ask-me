@@ -244,4 +244,10 @@ class Question extends Model
         return Question::where('approve_status', '=', 1 )->orderBy('updated_at', 'DESC')->get();
     }
 
+    public function getNoAnswerQuestion()
+    {
+        $questionId = Question::pluck('id')->toArray();
+        $commentQuestion = Comment::where('commentable_type', '=', 'App\Models\Question')->pluck('commentable_id')->toArray();
+        dd($commentQuestion);
+    }
 }

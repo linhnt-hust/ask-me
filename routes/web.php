@@ -32,7 +32,10 @@ Route::resource('profile', 'User\ProfileController');
 Route::resource('question', 'Question\QuestionController');
 
 Route::resource('comment', 'Comment\CommentController');
-Route::post('comment/loz', 'Comment\CommentController@loz')->name('comment.loz');
+Route::post('comment/delete', 'Comment\CommentController@delete')->name('comment.delete');
+Route::post('comment/upvote', 'Comment\CommentController@upvote')->name('comment.upvote');
+Route::post('comment/downvote', 'Comment\CommentController@downvote')->name('comment.downvote');
+
 Route::resource('blog','Blog\BlogController');
 
 Route::post('/reply/store', 'Comment\CommentController@replyStore')->name('reply.add');

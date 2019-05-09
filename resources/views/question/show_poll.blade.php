@@ -77,7 +77,11 @@
                                         @foreach($questionDetail->poll as $poll)
                                             <span class="progressbar-title">{{ $poll->title }}: {{$poll->votes}} votes</span>
                                             @php
-                                                $votePercent = ($poll->votes)/$sumVotes * 100;
+                                                if ( $sumVotes > 0){
+                                                    $votePercent = ($poll->votes)/$sumVotes * 100;
+                                                } else {
+                                                    $votePercent = 0;
+                                                }
                                             @endphp
                                             <div class="progressbar">
                                                 @switch (true)
@@ -229,10 +233,10 @@
                 </div><!-- End related-posts -->
 
                 <div id="commentlist" class="page-content">
-                    <div class="boxedtitle page-title"><h2>Answers ( <span class="color">{{ count($questionDetail->comments )}}</span> )</h2></div>
+                    <div class="boxedtitle page-title"><h2>Answers ( <span class="color" id="count_comment">{{ count($questionDetail->comments )}}</span> )</h2></div>
                     <ol class="commentlist clearfix">
 
-                        @foreach($questionDetail->comments as $comment)
+                        @foreach($questionDetail->comments()->orderBy('votes', 'DESC')->get() as $comment)
                             @include('partials.comment_replies', ['comment' => $comment, 'question_id' => $questionDetail->id, 'isSolved' => $questionDetail->is_solved])
                         @endforeach
 
@@ -271,13 +275,67 @@
 @section('inline_scripts')
     @parent
     <script type="text/javascript">
-        $(document).ready(function(){
-
-            $(".comment-reply").click(function() {
-                id=this.id.split("_")[1];
-                $(".respond-form-"+id).toggle();
+        function delete_comment(id, questionId){
+            $.ajax({
+                type: 'post',
+                url: "{{ route('comment.delete') }}",
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    'id': id,
+                    'question_id': questionId,
+                },
+                success: function(data) {
+                    $("#comment_"+id).remove();
+                    $("#count_comment").html(data['comments']);
+                },
+                error(data) {
+                    console.log(data);
+                }
             });
+        }
+        function reply_box(id){
+            $(".respond-form-"+id).toggle();
+        }
 
+        function up_vote(commentId, votedUser){
+            $.ajax({
+                type: 'post',
+                url: "{{ route('comment.upvote') }}",
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    'comment_id': commentId,
+                    'voted_user': votedUser,
+                },
+                success: function(data) {
+                    $("#vote_"+commentId).html(data['success']);
+                    $("#upvote_"+commentId).remove();
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function down_vote(commentId, votedUser){
+            $.ajax({
+                type: 'post',
+                url: "{{ route('comment.downvote') }}",
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    'comment_id': commentId,
+                    'voted_user': votedUser,
+                },
+                success: function(data) {
+                    $("#vote_"+commentId).html(data['success']);
+                    $("#downvote_"+commentId).remove();
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        $(document).ready(function(){
             $('#submit-comment').on('click', function(event){
                 event.preventDefault();
                 var commentBody = $('#comment-body').val();
@@ -294,6 +352,7 @@
                     },
                     success: function(data) {
                         $('.commentlist').append(data['success']);
+                        $("#count_comment").html(data['comments']);
                     },
                     error(data) {
                         console.log(data);
