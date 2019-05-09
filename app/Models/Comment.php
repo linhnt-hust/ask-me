@@ -35,6 +35,11 @@ class Comment extends Model
         return $this->hasMany('App\Models\Comment', 'parent_id');
     }
 
+    public function commentVoteHistory()
+    {
+        return $this->hasMany('App\Models\VoteCommentHistory');
+    }
+
     public function getTotalComment()
     {
         return Comment::whereNull('parent_id')->get();

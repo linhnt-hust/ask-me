@@ -22,6 +22,7 @@ $factory->define(App\Models\Comment::class, function (Faker $faker) {
         'user_id' => App\Models\User::all()->random()->id,
         'parent_id' => $faker->boolean(45) ? random_int(1,100) : null,
         'body' => $faker->sentence(15),
+        'votes' => $faker->numberBetween(0,15),
         'commentable_id' => App\Models\Question::all()->random()->id,
         'commentable_type' => $faker->randomElement($commentable),
         'created_at' => new DateTime(),

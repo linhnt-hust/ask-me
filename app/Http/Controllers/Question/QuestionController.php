@@ -84,6 +84,7 @@ class QuestionController extends Controller
         $user = Auth::user();
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
         if ($questionDetail->question_poll == 0) {
+//            dd($questionDetail->comments[1]->commentVoteHistory);
             return view('question.show', compact('questionDetail', 'user'));
         } else{
             $userVote = PollVoteHistory::where('user_id', $user->id)->Where('question_id', $questionDetail->id)->first();

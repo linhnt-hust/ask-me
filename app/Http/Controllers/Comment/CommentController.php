@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Comment;
 
 use App\Models\Comment;
 use App\Models\User;
+use App\Models\VoteCommentHistory;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Http\Controllers\Controller;
@@ -60,7 +61,7 @@ class CommentController extends Controller
 
         $view1 = \View::make('partials.comment_replies')->with(['question_id'=>$question->id])->with(compact('comment'))->with(['isSolved'=>$question->is_solved]);
          $contents = (string) $view1;
-         return response()->json(['success'=>$contents]);
+         return response()->json(['success'=>$contents, 'comments' =>count($question->comments)]);
     }
 
     public function replyStore(Request $request)
@@ -115,13 +116,53 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function loz(Request $request)
+    public function delete(Request $request)
     {
-
         $id = $request->get('id');
         $comment = Comment::find($id);
         $comment->delete();
+        $question = Question::find($request->get('question_id'));
 
-        return response()->json(['success'=>'success']);
+        return response()->json(['success'=>'success', 'comments' => count($question->comments)]);
+    }
+
+    public function upvote(Request $request)
+    {
+        $comment = Comment::find($request->get('comment_id'));
+        $comment->increment('votes');
+        $history = VoteCommentHistory::where('comment_id', $request->get('comment_id'))->where('user_id', $request->get('voted_user'));
+        if ($history->first() != null)
+        {
+            $data['up'] = 1 ;
+            $history->update($data);
+        } else {
+            VoteCommentHistory::create([
+                'comment_id' => $request->get('comment_id'),
+                'user_id' => $request->get('voted_user'),
+                'up' => 1,
+            ]);
+        }
+
+        return response()->json(['success'=>$comment->votes]);
+    }
+
+    public function downvote(Request $request)
+    {
+        $comment = Comment::find($request->get('comment_id'));
+        $comment->decrement('votes');
+        $history = VoteCommentHistory::where('comment_id', $request->get('comment_id'))->where('user_id', $request->get('voted_user'));
+        if ($history->first() == null)
+        {
+            VoteCommentHistory::create([
+                'comment_id' => $request->get('comment_id'),
+                'user_id' => $request->get('voted_user'),
+                'down' => 1,
+            ]);
+        } else {
+            $data['down'] = 1;
+            $history->update($data);
+        }
+
+        return response()->json(['success'=>$comment->votes]);
     }
 }

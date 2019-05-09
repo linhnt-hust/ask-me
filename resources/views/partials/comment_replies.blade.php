@@ -6,16 +6,27 @@
                     <div class="comment-author"><a href="#">{{ $comment->user->name }}</a></div>
                     <div class="comment-vote">
                         <ul class="question-vote">
-                            <li><a href="#" class="question-vote-up" title="Like"></a></li>
-                            <li><a href="#" class="question-vote-down" title="Dislike"></a></li>
+                            @if ($comment->commentVoteHistory->first() == null)
+                                <li id="upvote_{{ $comment->id }}"><a class="question-vote-up" title="Like" onclick="up_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
+                                <li id="downvote_{{ $comment->id }}"><a class="question-vote-down" title="Dislike" onclick="down_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
+                            @else
+                                @foreach($comment->commentVoteHistory as $history)
+                                    @if ($history->user_id == Auth::user()->id && $history->up == 1 && $history->down == 0)
+                                        <li id="downvote_{{ $comment->id }}"><a class="question-vote-down" title="Dislike" onclick="down_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
+                                    @elseif ($history->user_id == Auth::user()->id && $history->down == 1 && $history->up == 0)
+                                        <li id="upvote_{{ $comment->id }}"><a class="question-vote-up" title="Like" onclick="up_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
+                                    @elseif ($history->user_id == Auth::user()->id && $history->down == 1 && $history->up == 1)
+                                    @endif
+                                @endforeach
+                            @endif
                         </ul>
                     </div>
-                    <span class="question-vote-result">+1</span>
+                    <span class="question-vote-result" id="vote_{{$comment->id }}">{{ $comment->votes }}</span>
                     <div class="comment-meta">
                         <div class="date"><i class="icon-time"></i>{{ $comment->created_at->format('M d, Y - h:m') }}</div>
                     </div>
                     @if ($comment->user->id==\Auth::user()->id)
-                        <a class="comment-reply remove-button" id="remove_{{$comment->id}}" style="margin-left: 10px;" onclick="delete_comment({{$comment->id}})"><i class="icon-remove"></i>Remove</a>
+                        <a class="comment-reply remove-button" id="remove_{{$comment->id}}" style="margin-left: 10px;" onclick="delete_comment({{$comment->id}}, {{$question_id}})"><i class="icon-remove"></i>Remove</a>
                     @endif
                     <a class="comment-reply reply-button" id="reply-button_{{$comment->id}}" onclick="reply_box({{$comment->id}})"><i class="icon-reply"></i>Reply</a>
                 </div>
