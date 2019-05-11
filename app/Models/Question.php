@@ -66,6 +66,11 @@ class Question extends Model
         return $this->hasMany('App\Models\Poll');
     }
 
+    public function report()
+    {
+        return $this->hasMany('App\Models\Report');
+    }
+
     public function uploadFile($file, $dir)
     {
         $time = Carbon::now();
@@ -264,5 +269,22 @@ class Question extends Model
     public function getQuestionPoll()
     {
         return Question::where('question_poll', '=', 1)->where('approve_status', '=', 1)->paginate(5);
+    }
+
+    public function reportQuestion($data = array())
+    {
+        $question = Question::find($data['question_id'])->increment('reports');
+        foreach($data['report'] as $report)
+        {
+            Report::create([
+                'question_id' => $data['question_id'],
+                'user_id' => $data['user_id'],
+                'type' => $report,
+            ]);
+        }
+        if (isset($data['message'])){
+            Report::where('question_id', $data['question_id'])->where('user_id', $data['user_id'])->first()->update(['message' => $data['message']] );
+        }
+        return $question;
     }
 }
