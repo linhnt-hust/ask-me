@@ -36,7 +36,9 @@ class BlogController extends Controller
      */
     public function index()
     {
-        return view('blog.index');
+        $blogs = $this->modelBlog->getAllBlogs();
+//        dd($blogs[1]->blogUploaded[0]->filename);
+        return view('blog.index', compact('blogs'));
     }
 
     /**
@@ -76,7 +78,8 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        //
+        $blogDetail =  $this->modelBlog->getBlogDetail($id);
+        return view('blog.show', compact('blogDetail'));
     }
 
     /**
@@ -87,7 +90,11 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Auth::user();
+        $blog = $this->modelBlog->getBlogDetail($id);
+//        dd($blog->blogUploaded);
+        $categories = $this->modelCategory->getAllCategories();
+        return view('blog.edit', compact('user', 'blog', 'categories'));
     }
 
     /**
@@ -99,7 +106,13 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+        $success = $this->modelBlog->updateBlog($id, $input);
+        if ($success) {
+            return redirect()->route('user.blog')->with('success','Edit Blog sucessfully.');
+        } else {
+            return redirect()->back()->with('error','Whoops! Some error may happened. Please check again!');
+        }
     }
 
     /**

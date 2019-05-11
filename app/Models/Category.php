@@ -35,4 +35,14 @@ class Category extends Model
     {
         return Category::orderBy('name_category')->get();
     }
+
+    public function getAllCategoriesQuestion()
+    {
+        return Category::orderBy('name_category')->paginate(6);
+    }
+
+    public function searchCategory($input)
+    {
+        return Category::where('name_category', 'LIKE', '%' . $input['search'] . '%')->paginate(6);
+    }
 }

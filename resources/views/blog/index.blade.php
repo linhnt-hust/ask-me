@@ -28,77 +28,88 @@
             <br>
             <br>
             <div class="col-md-9">
-                <article class="post blog_2 clearfix">
-                    <div class="post-inner">
-                        <h2 class="post-title"><span class="post-type"><i class="icon-picture"></i></span><a href="single_post.html">This is a Standard Post.</a></h2>
-                        <div class="post-img"><a href="single_post.html"><img src="http://placehold.it/250x190/222/FFF" alt=""></a></div>
-                        <div class="post-meta">
-                            <span class="meta-author"><i class="icon-user"></i><a href="#">Administrator</a></span>
-                            <span class="meta-date"><i class="icon-time"></i>September 30 , 2013</span>
-                            <span class="meta-categories"><i class="icon-suitcase"></i><a href="#">Wordpress</a></span>
-                            <span class="meta-comment"><i class="icon-comments-alt"></i><a href="#">15 comments</a></span>
-                        </div>
-                        <div class="post-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravida odio, sit amet suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequat. Vivamus vulputate posuere nisl quis consequat.</p>
-                            <a href="single_post.html" class="post-read-more button color small">Continue reading</a>
-                        </div><!-- End post-content -->
-                    </div><!-- End post-inner -->
-                </article><!-- End article.post -->
+                @foreach ($blogs as $blog)
+                    @if ($blog->type == 1)
+                        <article class="post blog_2 clearfix">
+                            <div class="post-inner">
+                                <h2 class="post-title"><span class="post-type"><i class="icon-file-alt"></i></span><a href="">{{ $blog->title }}</a></h2>
+                                <div class="post-meta">
+                                    <span class="meta-author"><i class="icon-user"></i><a>{{$blog->user->name}}</a></span>
+                                    <span class="meta-date"><i class="icon-time"></i>{{ $blog->created_at->format('M d, Y') }}</span>
+                                    <span class="meta-categories"><i class="icon-suitcase"></i><a href="#">{{ $blog->category->first()->name_category }},...</a></span>
+                                    <span class="meta-comment"><i class="icon-comments-alt"></i><a href="#">{{count($blog->comments)}}</a></span>
+                                </div>
+                                <div class="post-content">
+                                    {{--<p>{{substr($blog->description, 0, 888)}}</p>--}}
+                                    <p>{!! substr($blog->description, 0, 888) !!}</p>
+                                    <a href="{{route('blog.show', $blog->id) }}" class="post-read-more button color small">Continue reading</a>
+                                </div><!-- End post-content -->
+                            </div><!-- End post-inner -->
+                        </article><!-- End article.post -->
+                        @elseif ($blog->type == 2)
+                        <article class="post blog_2 clearfix">
+                            <div class="post-inner">
+                                <h2 class="post-title"><span class="post-type"><i class="icon-film"></i></span><a href="">{{$blog->title}}</a></h2>
+                                <div class="flexslider blog_silder margin_b_20 post-img">
+                                    <ul class="slides">
+                                        @foreach($blog->blogUploaded as $img)
+                                        <li><img src="{{ asset('/upload/blogs/'.$img->filename) }}" alt=""></li>
+                                        @endforeach
+                                    </ul>
+                                </div><!-- End flexslider -->
+                                <div class="post-meta">
+                                    <span class="meta-author"><i class="icon-user"></i><a href="#">{{$blog->user->name}}</a></span>
+                                    <span class="meta-date"><i class="icon-time"></i>{{ $blog->created_at->format('M d, Y') }}</span>
+                                    <span class="meta-categories"><i class="icon-suitcase"></i><a href="#">{{ $blog->category->first()->name_category }},...</a></span>
+                                    <span class="meta-comment"><i class="icon-comments-alt"></i><a href="#">{{count($blog->comments)}}</a></span>
+                                </div>
+                                <div class="post-content">
+                                    <p>{!! substr($blog->description, 0, 888) !!}</p>
+                                    <a href="{{route('blog.show', $blog->id) }}" class="post-read-more button color small">Continue reading</a>
+                                </div><!-- End post-content -->
+                            </div><!-- End post-inner -->
+                        </article><!-- End article.post -->
+                        @elseif ($blog->type == 3)
+                        <article class="post blog_2 clearfix">
+                            <div class="post-inner">
+                                <h2 class="post-title"><span class="post-type"><i class="icon-play-circle"></i></span><a href="">{{ $blog->title }}</a></h2>
+                                <div class="video_embed post-img">{!! $blog->getVideoHtmlAttribute($blog->url, 500, 200) !!}</div>
+                                <div class="post-meta">
+                                    <span class="meta-author"><i class="icon-user"></i><a href="#">{{$blog->user->name}}</a></span>
+                                    <span class="meta-date"><i class="icon-time"></i>{{ $blog->created_at->format('M d, Y') }}</span>
+                                    <span class="meta-categories"><i class="icon-suitcase"></i><a href="#">{{ $blog->category->first()->name_category }},...</a></span>
+                                    <span class="meta-comment"><i class="icon-comments-alt"></i><a href="#">{{count($blog->comments)}}</a></span>
+                                </div>
+                                <div class="post-content">
+                                    {{--<p>{{substr($blog->description, 0, 888)}}</p>--}}
+                                    <p>{!! substr($blog->description, 0, 888) !!}</p>
+                                    <a href="{{route('blog.show', $blog->id) }}" class="post-read-more button color small">Continue reading</a>
+                                </div><!-- End post-content -->
+                            </div><!-- End post-inner -->
+                        </article><!-- End article.post -->
+                    @endif
+                @endforeach
 
-                <article class="post blog_2 clearfix">
-                    <div class="post-inner">
-                        <h2 class="post-title"><span class="post-type"><i class="icon-film"></i></span><a href="single_post.html">Beautiful Gallery Post.</a></h2>
-                        <div class="flexslider blog_silder margin_b_20 post-img">
-                            <ul class="slides">
-                                <li><img src="http://placehold.it/250x190/222/FFF" alt=""></li>
-                                <li><img src="http://placehold.it/250x190/555/FFF" alt=""></li>
-                            </ul>
-                        </div><!-- End flexslider -->
-                        <div class="post-meta">
-                            <span class="meta-author"><i class="icon-user"></i><a href="#">Administrator</a></span>
-                            <span class="meta-date"><i class="icon-time"></i>September 30 , 2013</span>
-                            <span class="meta-categories"><i class="icon-suitcase"></i><a href="#">Wordpress</a></span>
-                            <span class="meta-comment"><i class="icon-comments-alt"></i><a href="#">15 comments</a></span>
-                        </div>
-                        <div class="post-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravida odio, sit amet suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequat. Vivamus vulputate posuere nisl quis consequat. Donec congue commodo mi, sed commodo velit fringilla ac. Fusce placerat venenatis mi.</p>
-                            <a href="single_post.html" class="post-read-more button color small">Continue reading</a>
-                        </div><!-- End post-content -->
-                    </div><!-- End post-inner -->
-                </article><!-- End article.post -->
 
-                <article class="post blog_2 clearfix">
-                    <div class="post-inner">
-                        <h2 class="post-title"><span class="post-type"><i class="icon-play-circle"></i></span><a href="single_post.html">This is a Video Post.</a></h2>
-                        <div class="video_embed post-img"><iframe height="500" src="//www.youtube.com/embed/JuyB7NO0EYY"></iframe></div>
-                        <div class="post-meta">
-                            <span class="meta-author"><i class="icon-user"></i><a href="#">Administrator</a></span>
-                            <span class="meta-date"><i class="icon-time"></i>September 30 , 2013</span>
-                            <span class="meta-categories"><i class="icon-suitcase"></i><a href="#">Wordpress</a></span>
-                            <span class="meta-comment"><i class="icon-comments-alt"></i><a href="#">15 comments</a></span>
-                        </div>
-                        <div class="post-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravida odio, sit amet suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequat. Vivamus vulputate posuere nisl quis consequat. Donec congue commodo mi, sed commodo velit fringilla ac. Fusce placerat venenatis mi.</p>
-                            <a href="single_post.html" class="post-read-more button color small">Continue reading</a>
-                        </div><!-- End post-content -->
-                    </div><!-- End post-inner -->
-                </article><!-- End article.post -->
 
-                <article class="post blog_2 clearfix">
-                    <div class="post-inner">
-                        <h2 class="post-title"><span class="post-type"><i class="icon-file-alt"></i></span><a href="single_post.html">Post Without Image.</a></h2>
-                        <div class="post-meta">
-                            <span class="meta-author"><i class="icon-user"></i><a href="#">Administrator</a></span>
-                            <span class="meta-date"><i class="icon-time"></i>September 30 , 2013</span>
-                            <span class="meta-categories"><i class="icon-suitcase"></i><a href="#">Wordpress</a></span>
-                            <span class="meta-comment"><i class="icon-comments-alt"></i><a href="#">15 comments</a></span>
-                        </div>
-                        <div class="post-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravida odio, sit amet suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequat. Vivamus vulputate posuere nisl quis consequat. Donec congue commodo mi, sed commodo velit fringilla ac. Fusce placerat venenatis mi.</p>
-                            <a href="single_post.html" class="post-read-more button color small">Continue reading</a>
-                        </div><!-- End post-content -->
-                    </div><!-- End post-inner -->
-                </article><!-- End article.post -->
+
+
+                    {{--<article class="post blog_2 clearfix">--}}
+                        {{--<div class="post-inner">--}}
+                            {{--<h2 class="post-title"><span class="post-type"><i class="icon-picture"></i></span><a href="single_post.html">This is a Standard Post.</a></h2>--}}
+                            {{--<div class="post-img"><a href="single_post.html"><img src="http://placehold.it/250x190/222/FFF" alt=""></a></div>--}}
+                            {{--<div class="post-meta">--}}
+                                {{--<span class="meta-author"><i class="icon-user"></i><a href="#">Administrator</a></span>--}}
+                                {{--<span class="meta-date"><i class="icon-time"></i>September 30 , 2013</span>--}}
+                                {{--<span class="meta-categories"><i class="icon-suitcase"></i><a href="#">Wordpress</a></span>--}}
+                                {{--<span class="meta-comment"><i class="icon-comments-alt"></i><a href="#">15 comments</a></span>--}}
+                            {{--</div>--}}
+                            {{--<div class="post-content">--}}
+                                {{--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi adipiscing gravida odio, sit amet suscipit risus ultrices eu. Fusce viverra neque at purus laoreet consequat. Vivamus vulputate posuere nisl quis consequat.</p>--}}
+                                {{--<a href="single_post.html" class="post-read-more button color small">Continue reading</a>--}}
+                            {{--</div><!-- End post-content -->--}}
+                        {{--</div><!-- End post-inner -->--}}
+                    {{--</article><!-- End article.post -->                --}}
 
                 <div class="pagination">
                     <a href="#" class="prev-button"><i class="icon-angle-left"></i></a>

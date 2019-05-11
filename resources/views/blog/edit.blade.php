@@ -60,7 +60,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="page-title-box">
-                            <h4 class="page-title">Add Post </h4>
+                            <h4 class="page-title">Edit Post </h4>
                             <ol class="breadcrumb p-0 m-0">
                                 <li>
                                     <a href="{{route('home')}}">Ask-me</a>
@@ -69,7 +69,7 @@
                                     <a href="{{ route('blog.index') }}">Blogs </a>
                                 </li>
                                 <li class="active">
-                                    Add Post
+                                    Edit Post
                                 </li>
                             </ol>
                             <div class="clearfix"></div>
@@ -82,30 +82,31 @@
                     <div class="col-md-10 col-md-offset-1">
                         <div class="card-box">
                             <div class="">
-                                <form action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('blog.update', $blog->id) }}" method="POST" enctype="multipart/form-data">
+                                    {{ method_field('PATCH') }}
                                     {{ csrf_field() }}
                                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                                     <div class="form-group m-b-20">
                                         <label for="exampleInputEmail1">Post Title</label>
-                                        <input type="text" name="title" class="form-control" id="exampleInputEmail1" placeholder="Enter title">
+                                        <input type="text" name="title" class="form-control" id="exampleInputEmail1" placeholder="Enter title" value="{{$blog->title}}">
                                     </div>
                                     <div class="form-group m-b-20">
                                         <label class="m-b-10">Post Type</label>
                                         <br/>
                                         <div class="radio radio-info radio-inline">
                                             <input type="radio" id="inlineRadio1" value="1"
-                                                   name="type" checked>
+                                                   name="type" @if ($blog->type == 1 ) checked=checked @endif>
                                             <label for="inlineRadio1"> Text </label>
                                         </div>
                                         <div class="radio radio-info radio-inline">
                                             <input type="radio" id="inlineRadio2" value="2"
-                                                   name="type">
-                                            <label for="inlineRadio2"> SlideShow </label>
+                                                   name="type" @if ($blog->type == 2 ) checked=checked @endif>
+                                            <label for="inlineRadio3" > SlideShow </label>
                                         </div>
                                         <div class="radio radio-info radio-inline">
                                             <input type="radio" id="inlineRadio3" value="3"
-                                                   name="type">
-                                            <label for="inlineRadio3"> Video </label>
+                                                   name="type" @if ($blog->type == 3 ) checked=checked @endif>
+                                            <label for="inlineRadio4" > Video </label>
                                         </div>
                                     </div>
                                     <div class="form-group m-b-20">
@@ -117,19 +118,28 @@
                                         <label>Post Category</label>
                                         <select class="select2 form-control select2-multiple" name="categories[]" multiple="multiple" data-placeholder="Choose ...">
                                             <option value="">Select a Category</option>
-                                            @foreach( $categories as $category)
-                                                <option value="{{$category->id}}"> {{ $category->name_category }}</option>
+                                            @foreach( $categories as $cate)
+                                                <option value="{{$cate->id}}" @if($blog->category->containsStrict('id', $cate->id)) selected="selected" @endif> {{ $cate->name_category }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="form-group m-b-20" id="slide_show">
-                                        <label>Image Uploads For SlideShow</label>
+                                    <div class="form-group m-b-20" id="file_change">
+                                        <label>File Uploads</label>
+                                        <a id="change_file" onclick="changeFile()"><i class="icon-bar">change</i></a>
                                         <input type="file" name="files[]" id="filer_input1"
                                                multiple="multiple">
+
                                     </div>
-                                    <div class="form-group m-b-20" id="video_url">
-                                        <label for="videourl">Video URL</label>
-                                        <input type="text" name="url" class="form-control" id="videourl" placeholder="Enter url..">
+                                    {{--<div class="form-group m-b-20">--}}
+                                        {{--<label>File Uploaded</label>--}}
+                                        {{--@foreach($blog->blogUploaded as $upload)--}}
+                                            {{--<input type="text" name="url" class="form-control" value="{{$upload->filename}}">--}}
+                                        {{--@endforeach--}}
+                                    {{--</div>--}}
+
+                                    <div class="form-group m-b-20">
+                                        <label for="videourl">URL</label>
+                                        <input type="text" name="url" class="form-control" id="videourl" placeholder="Enter url.." value="{{$blog->url}}">
                                     </div>
                                     <button type="submit" class="btn btn-success waves-effect waves-light">Save and Post</button>
                                     <a href="{{route('blog.index')}}" type="button" class="btn btn-danger waves-effect waves-light">Discard</a>
@@ -191,28 +201,12 @@
 <script src="{{ asset('/zircos/js/jquery.app.js') }}"></script>
 
 <script>
-    jQuery(document).ready(function(){
-        $("#slide_show").hide();
-        $("#video_url").hide();
-        $("#inlineRadio1").change(function() {
-            if($(this).prop('checked')) {
-                $("#slide_show").hide();
-                $("#video_url").hide();
-            }
-        });
-        $("#inlineRadio2").change(function() {
-            if($(this).prop('checked')) {
-                $("#slide_show").show();
-                $("#video_url").hide();
-            }
-        });
-        $("#inlineRadio3").change(function() {
-            if($(this).prop('checked')) {
-                $("#slide_show").hide();
-                $("#video_url").show();
-            }
-        });
 
+    function changeFile(){
+        $(".jFiler-input-dragDrop").toggle();
+    }
+    jQuery(document).ready(function(){
+        $(".jFiler-input-dragDrop").hide();
 
         $('.summernote').summernote({
             height: 240,                 // set editor height
@@ -220,6 +214,11 @@
             maxHeight: null,             // set maximum height of editor
             focus: false                 // set focus to editable area after initializing summernote
         });
+
+        $('.summernote').summernote();
+        var content = {!! json_encode($blog->description) !!};
+        $('.summernote').summernote('code', content);
+
         // Select2
         $(".select2").select2();
 

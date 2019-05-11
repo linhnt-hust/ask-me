@@ -156,4 +156,43 @@ class QuestionController extends Controller
             return redirect()->back()->with('error','Whoops! Some error may happened. Please check again!');
         }
     }
+
+    public function questionCategory()
+    {
+        $categories = $this->modelCategory->getAllCategoriesQuestion();
+        return view('question.category', compact('categories'));
+    }
+
+    public function questionCategoryDetail($id)
+    {
+        $questions = $this->modelQuestion->getAllQuestionbyCategory($id);
+        $nameCategory = Category::where('id', $id)->value('name_category');
+        return view('question.category_detail', compact('questions', 'nameCategory'));
+    }
+
+    public function searchCategory(Request $request)
+    {
+        $input = $request->all();
+        $categories = $this->modelCategory->searchCategory($input);
+        $output = "";
+        if ($categories)
+            foreach ($categories as $category)
+            {
+                $output .= '<h4 class="accordion-title" ><a href="/category/detail/'. $category->id .'" style="background-color: #5cd08d">'. $category->name_category .'</a></h4>
+                            <br>';
+            }
+        return Response($output);
+    }
+
+    public function getQuestionSingle()
+    {
+        $questions = $this->modelQuestion->getQuestionSingle();
+        return view('question.single', compact('questions'));
+    }
+
+    public function getQuestionPoll()
+    {
+        $questions = $this->modelQuestion->getQuestionPoll();
+        return view('question.poll', compact('questions'));
+    }
 }

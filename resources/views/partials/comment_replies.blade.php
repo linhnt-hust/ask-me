@@ -32,7 +32,9 @@
                 </div>
                 <div class="text"><p> {{ $comment->body }} </p>
                 </div>
-                {{--<div class="question-answered question-answered-done"><i class="icon-ok"></i>Best Answer</div>--}}
+                {{--@if ($loop->first)--}}
+                    {{--<div class="question-answered question-answered-done"><i class="icon-ok"></i>Best Answer</div>--}}
+                {{--@endif--}}
             </div>
             <br>
             @if ($isSolved == 0)

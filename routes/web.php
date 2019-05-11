@@ -17,6 +17,7 @@ Route::group(['prefix' => '/user'], function (){
     Route::get('/question', 'User\UserController@userQuestion')->name('user.question');
     Route::get('/question/detail/{id}', 'User\UserController@questionDetail')->name('user.question.detail');
     Route::get('/blog', 'User\UserController@userBlog')->name('user.blog');
+    Route::get('/blog/detail/{id}', 'User\UserController@blogDetail')->name('user.blog.detail');
     Route::post('/vote', 'Question\QuestionController@voteQuestionPoll')->name('user.poll.vote');
     Route::get('/question/close/{id}', 'User\UserController@closeQuestion')->name('user.question.close');
     Route::get('/question/reopen/{id}', 'User\UserController@reopenQuestion')->name('user.question.reopen');
@@ -31,7 +32,17 @@ Route::resource('profile', 'User\ProfileController');
 
 Route::resource('question', 'Question\QuestionController');
 
+Route::get('/single/question', 'Question\QuestionController@getQuestionSingle')->name('question.single');
+Route::get('/poll/question', 'Question\QuestionController@getQuestionPoll')->name('question.poll');
+Route::get('/category/question', 'Question\QuestionController@questionCategory')->name('question.category');
+
+Route::get('/category/detail/{id}', 'Question\QuestionController@questionCategoryDetail')->name('question.category.detail');
+
+Route::post('/category/search', 'Question\QuestionController@searchCategory')->name('category.search');
+
 Route::resource('comment', 'Comment\CommentController');
+Route::post('comment/storeBlog', 'Comment\CommentController@storeBlog')->name('comment.storeBlog');
+
 Route::post('comment/delete', 'Comment\CommentController@delete')->name('comment.delete');
 Route::post('comment/upvote', 'Comment\CommentController@upvote')->name('comment.upvote');
 Route::post('comment/downvote', 'Comment\CommentController@downvote')->name('comment.downvote');

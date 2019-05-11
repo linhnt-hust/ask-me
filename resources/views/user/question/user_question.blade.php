@@ -162,20 +162,6 @@
 
                 <div class="height_20"></div>
 
-                {{--<div class="pagination">--}}
-                    {{--<a href="#" class="prev-button"><i class="icon-angle-left"></i></a>--}}
-                    {{--<span class="current">1</span>--}}
-                    {{--<a href="#">2</a>--}}
-                    {{--<a href="#">3</a>--}}
-                    {{--<a href="#">4</a>--}}
-                    {{--<a href="#">5</a>--}}
-                    {{--<span>...</span>--}}
-                    {{--<a href="#">11</a>--}}
-                    {{--<a href="#">12</a>--}}
-                    {{--<a href="#">13</a>--}}
-                    {{--<a href="#" class="next-button"><i class="icon-angle-right"></i></a>--}}
-                {{--</div><!-- End pagination -->--}}
-                {!! $userQuestions->render() !!}
                 <!-- if no questions
                 <p>No questions yet</p>
                 -->
