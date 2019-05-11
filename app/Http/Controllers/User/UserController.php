@@ -43,6 +43,13 @@ class UserController extends Controller
         }
     }
 
+    public function blogDetail($id)
+    {
+        $user = Auth::user();
+        $blogDetail =  $this->modelBlog->getBlogDetail($id);
+        return view('user.blog.blog_detail', compact('user','blogDetail'));
+    }
+
     public function userHome()
     {
         $user = Auth::user();

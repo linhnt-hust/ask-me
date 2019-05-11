@@ -250,4 +250,19 @@ class Question extends Model
         $commentQuestion = Comment::where('commentable_type', '=', 'App\Models\Question')->pluck('commentable_id')->toArray();
         dd($commentQuestion);
     }
+
+    public function getAllQuestionbyCategory($categoryId)
+    {
+        return Question::where('category_id', $categoryId)->paginate(10);
+    }
+
+    public function getQuestionSingle()
+    {
+        return Question::where('question_poll', '=', 0)->where('approve_status', '=', 1)->paginate(5);
+    }
+
+    public function getQuestionPoll()
+    {
+        return Question::where('question_poll', '=', 1)->where('approve_status', '=', 1)->paginate(5);
+    }
 }

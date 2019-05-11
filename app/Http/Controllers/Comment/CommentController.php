@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Comment;
 
+use App\Models\Blog;
 use App\Models\Comment;
 use App\Models\User;
 use App\Models\VoteCommentHistory;
@@ -74,6 +75,19 @@ class CommentController extends Controller
         $question->comments()->save($reply);
 
         return back();
+    }
+
+    public function storeBlog(Request $request)
+    {
+        $comment = new Comment;
+        $comment->body = $request->get('comment_body');
+        $comment->user()->associate($request->user());
+        $blog = Blog::find($request->get('blog_id'));
+        $blog->comments()->save($comment);
+
+        $view1 = \View::make('partials.comment_replies')->with(['question_id'=>$blog->id])->with(compact('comment'))->with(['isSolved'=>0]);
+        $contents = (string) $view1;
+        return response()->json(['success'=>$contents, 'comments' =>count($blog->comments)]);
     }
 
     /**

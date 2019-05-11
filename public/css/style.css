@@ -207,7 +207,7 @@ body {
 }
 .header-search {
 	float: right;
-	position: relative;
+    position: relative;
 }
 .header-search input {
 	margin-bottom: 0;
