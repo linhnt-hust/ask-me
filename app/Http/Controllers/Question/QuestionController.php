@@ -84,7 +84,7 @@ class QuestionController extends Controller
         $user = Auth::user();
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
         if ($questionDetail->question_poll == 0) {
-//            dd($questionDetail->comments[1]->commentVoteHistory);
+//            dd($questionDetail->report->first());
             return view('question.show', compact('questionDetail', 'user'));
         } else{
             $userVote = PollVoteHistory::where('user_id', $user->id)->Where('question_id', $questionDetail->id)->first();
@@ -178,8 +178,7 @@ class QuestionController extends Controller
         if ($categories)
             foreach ($categories as $category)
             {
-                $output .= '<h4 class="accordion-title" ><a href="/category/detail/'. $category->id .'" style="background-color: #5cd08d">'. $category->name_category .'</a></h4>
-                            <br>';
+                $output .= '<h4 class="accordion-title" ><a href="/category/detail/'. $category->id .'" style="background-color: #5cd08d">'. $category->name_category .'</a></h4><br>';
             }
         return Response($output);
     }
@@ -194,5 +193,15 @@ class QuestionController extends Controller
     {
         $questions = $this->modelQuestion->getQuestionPoll();
         return view('question.poll', compact('questions'));
+    }
+
+    public function reportQuestion(Request $request)
+    {
+        $input = $request->all();
+        $success = $this->modelQuestion->reportQuestion($input);
+        if ($success)
+        {
+            return response()->json(['success'=>'success']);
+        }
     }
 }

@@ -11,7 +11,7 @@ $factory->define(App\Models\Blog::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence(15),
         'user_id' => App\Models\User::all()->random()->id,
-        'type' => $faker->randomElement([1,2,3,4]),
+        'type' => $faker->randomElement([1,2,3]),
         'approve_status' => $faker->randomElement([0,1,2]),
         'description' => $faker->paragraph(55),
         'url' => $faker->url,

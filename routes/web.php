@@ -35,6 +35,7 @@ Route::resource('question', 'Question\QuestionController');
 Route::get('/single/question', 'Question\QuestionController@getQuestionSingle')->name('question.single');
 Route::get('/poll/question', 'Question\QuestionController@getQuestionPoll')->name('question.poll');
 Route::get('/category/question', 'Question\QuestionController@questionCategory')->name('question.category');
+Route::post('/report/question', 'Question\QuestionController@reportQuestion')->name('question.report');
 
 Route::get('/category/detail/{id}', 'Question\QuestionController@questionCategoryDetail')->name('question.category.detail');
 
