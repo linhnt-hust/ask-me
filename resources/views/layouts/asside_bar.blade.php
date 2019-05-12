@@ -3,8 +3,8 @@
             <h3 class="widget_title">Stats</h3>
             <div class="ul_list ul_list-icon-ok">
                 <ul>
-                    <li><i class="icon-question-sign"></i>Questions ( <span>20</span> )</li>
-                    <li><i class="icon-comment"></i>Answers ( <span>50</span> )</li>
+                    <li><i class="icon-question-sign"></i>Questions ( <span>{{ count($recentQuestions) }}</span> )</li>
+                    <li><i class="icon-comment"></i>Answers ( <span></span> )</li>
                 </ul>
             </div>
         </div>
@@ -126,14 +126,14 @@
             <h3 class="widget_title">Recent Questions</h3>
             <ul class="related-posts">
                 <li class="related-item">
-                    <h3><a href="#">This is my first Question</a></h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <div class="clear"></div><span>Feb 22, 2014</span>
+                    <h3><a href="#">{{ substr($recentQuestions[0]->details, 0, 10) }}...</a></h3>
+                    <p>{{ substr($recentQuestions[0]->details, 0, 20) }}...</p>
+                    <div class="clear"></div><span>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $recentQuestions[0]->updated_at)->diffForHumans() }}</span>
                 </li>
                 <li class="related-item">
-                    <h3><a href="#">This Is My Second Poll Question</a></h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <div class="clear"></div><span>Feb 22, 2014</span>
+                    <h3><a href="#">{{ substr($recentQuestions[1]->details, 0, 10) }}...</a></h3>
+                    <p>{{ substr($recentQuestions[1]->details, 0, 20) }}...</p>
+                    <div class="clear"></div><span>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $recentQuestions[1]->updated_at)->diffForHumans() }}</span>
                 </li>
             </ul>
         </div>

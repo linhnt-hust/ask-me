@@ -80,17 +80,17 @@
                             <th>Author</th>
                             <th>Comments</th>
                             <th>Status</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach( $blogs as $blog)
-                            <tr>
-{{--<td><a href="#"> <img class="media-object" alt="64x64" src="{{ asset('/upload/blogs/'.$blog->blogUploaded->filename) }}" style="width: 100px; height: 66px;"> </a></td>--}}
+                            <tr id="itemBlog_{{$blog->id}}">
                                 <td>{{ $loop->iteration }}</td>
                                 <td><a href="{{ route('admin.blog.detail', $blog->id) }}"> {{ $blog->title }}</a></td>
                                 <td>{{ \App\Models\Blog::$type[$blog->type] }}</td>
                                 <td>{{ $blog->user->name }}</td>
-                                <td>984</td>
+                                <td>{{ count($blog->comments) }}</td>
 
                                 @switch( $blog->approve_status)
                                     @case (0)
@@ -103,7 +103,9 @@
                                     <td><span class="label label-danger">Denied</span></td>
                                     @break;
                                 @endswitch
-
+                                <td>
+                                    <button class="btn btn-icon waves-effect waves-light btn-danger delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = "{{$blog->id}}"> <i class="fa fa-trash-o"></i> </button>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -112,6 +114,30 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade bs-example-modal-lg" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myLargeModalLabel">Delete modal</h4>
+                </div>
+                <input type="hidden" id="id_delete">
+                <div class="modal-body">
+                    <h4 class="text-center">Are you sure you want to delete the following blog?</h4>
+                    <p class="text-center">Bạn có chắc muốn xoá blog này không?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger delete" data-dismiss="modal">
+                        <span id="delete_modal" class='glyphicon glyphicon-trash'></span> Delete
+                    </button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">
+                        <span class='glyphicon glyphicon-remove'></span> Close
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <script>
         var resizefunc = [];
@@ -125,4 +151,34 @@
 
     <!-- Dashboard Init js -->
     <script src="{{asset('/zircos/pages/jquery.blog-dashboard.js')}}"></script>
+@endsection
+@section ('page_scripts')
+    @parent
+    <!-- toastr notifications -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).on('click', '.delete-modal', function() {
+            $('#id_delete').val($(this).data('id'));
+            $('#deleteModal').modal('show');
+            id = $('#id_delete').val();
+            console.log(id);
+        });
+        $('.modal-footer').on('click', '.delete', function() {
+            $.ajax({
+                type: 'DELETE',
+                url: '/blog/' + id,
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                },
+                success: function(data) {
+                    toastr.success('Successfully deleted Question!', 'Success Alert', {timeOut: 5000});
+                    $('#itemBlog_' + data['id']).remove();
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        });
+    </script>
 @endsection

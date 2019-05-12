@@ -5,6 +5,9 @@
 @section('title')
     User Questions
 @endsection
+@section('page_header')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+@endsection
 @section('content')
     <div class="breadcrumbs">
         <section class="container">

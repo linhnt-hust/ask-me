@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 
 class Question extends Model
 {
@@ -287,4 +288,25 @@ class Question extends Model
         }
         return $question;
     }
+
+    public function getTopCategoryQuestion()
+    {
+        $result = Question::selectRaw("category_id,count(id) as questionAmount")
+            ->groupBy('category_id')
+            ->orderBy('questionAmount','DESC')
+            ->limit('6')
+            ->get();
+        foreach ($result as $query)
+        {
+            $name = Category::where('id', $query->category_id)->pluck('name_category')->first();
+            $query['name_category'] = $name;
+        }
+        return $result;
+    }
+
+    public function getMostReportQuestion()
+    {
+        return Question::orderBy('reports', 'DESC')->limit(6)->get();
+    }
+
 }

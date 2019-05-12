@@ -2,6 +2,9 @@
 @section('page_title')
     Question Detail
 @endsection
+@section('page_header')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+@endsection
 @section('content')
     <div class="blog-list-wrapper">
         <div class="row">
@@ -34,52 +37,64 @@
                                 <span class="label label-danger">Denied</span>
                                 @break;
                             @endswitch
+                                <img src="{{ asset('upload/questions/'.$question->filename) }}" alt="" class="img-responsive">
                         </div>
                         <div class="text-muted"><span>by <a class="text-dark font-secondary">{{ $question->user->name }}</a>,</span> <span>{{ $question->created_at->format('M d,Y') }}</span></div>
                         <div class="post-title">
                             <h3><a href="javascript:void(0);">{{ $question->title }}</a></h3>
                         </div>
+
+                        @if ($question->question_poll == 1)
+                        @php
+                            $sumVotes = $question->poll->sum('votes');
+                        @endphp
+                            @foreach($question->poll as $poll)
+                                @php
+                                    $votePercent = ($poll->votes)/$sumVotes * 100;
+                                @endphp
+
+                                @switch (true)
+                                    @case($votePercent <= 20)
+                                        <div class="progress progress-md">
+                                            <div class="progress-bar progress-bar-purple" role="progressbar" aria-valuenow="{{$votePercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$votePercent}}%;">
+                                                {{ $poll->title }}
+                                            </div>
+                                        </div>
+                                    @break
+                                    @case(20 < $votePercent && $votePercent <= 40)
+                                        <div class="progress progress-md">
+                                            <div class="progress-bar progress-bar-inverse" role="progressbar" aria-valuenow="{{$votePercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$votePercent}}%;">
+                                                {{ $poll->title }}
+                                            </div>
+                                        </div>
+                                    @break
+                                    @case(40 < $votePercent && $votePercent <= 60)
+                                        <div class="progress progress-md">
+                                            <div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="{{$votePercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$votePercent}}%;">
+                                                {{ $poll->title }}
+                                            </div>
+                                        </div>
+                                    @break
+                                    @case(60 < $votePercent && $votePercent <= 80)
+                                        <div class="progress progress-md">
+                                            <div class="progress-bar progress-bar-pink" role="progressbar" aria-valuenow="{{$votePercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$votePercent}}%;">
+                                                {{ $poll->title }}
+                                            </div>
+                                        </div>
+                                    @break
+                                    @case(80 < $votePercent && $votePercent <= 100)
+                                        <div class="progress progress-md">
+                                            <div class="progress-bar progress-bar-green" role="progressbar" aria-valuenow="{{$votePercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$votePercent}}%;">
+                                                {{ $poll->title }}
+                                            </div>
+                                        </div>
+                                    @break
+                                @endswitch
+                            @endforeach
+                        @endif
                         <div>
                             <p>{{ $question->details }}
                             </p>
-
-                            {{--<blockquote class="custom-blockquote margin-t-30">--}}
-                                {{--<p>--}}
-                                    {{--When an unknown printer took a galley of type and scrambled it to--}}
-                                    {{--make a type specimen book. It has survived not only five centuries.--}}
-                                {{--</p>--}}
-                                {{--<footer>--}}
-                                    {{--Someone famous in <cite title="Source Title">Source Title</cite>--}}
-                                {{--</footer>--}}
-                            {{--</blockquote>--}}
-
-                            {{--<p>Praesentium voluptatum deleniti atque corrupti quos dolores et quas--}}
-                                {{--molestias excepturi sint occaecati cupiditate non provident,--}}
-                                {{--similique sunt in culpa qui officia deserunt mollitia animi, id est--}}
-                                {{--laborum et dolorum fuga. Et harum quidem rerum facilis est et--}}
-                                {{--expedita distinctio.--}}
-                            {{--</p>--}}
-
-                            {{--<div class="text-center p-20">--}}
-                                {{--<h4 class="text-danger"><i>"Excepturi sint occaecati cupiditate non provident deserunt mollitia anim"</i></h4>--}}
-                            {{--</div>--}}
-
-                            {{--<p class="text-muted">Praesentium voluptatum deleniti atque corrupti quos dolores et quas--}}
-                                {{--molestias excepturi sint occaecati cupiditate non provident,--}}
-                                {{--similique sunt in culpa qui officia deserunt mollitia animi, id est--}}
-                                {{--laborum et dolorum fuga. Et harum quidem rerum facilis est et--}}
-                                {{--expedita distinctio.--}}
-                            {{--</p>--}}
-
-                            {{--<blockquote class="blockquote-reverse margin-t-30">--}}
-                                {{--<p>--}}
-                                    {{--When an unknown printer took a galley of type and scrambled it to--}}
-                                    {{--make a type specimen book. It has survived not only five centuries.--}}
-                                {{--</p>--}}
-                                {{--<footer>--}}
-                                    {{--Someone famous in <cite title="Source Title">Source Title</cite>--}}
-                                {{--</footer>--}}
-                            {{--</blockquote>--}}
                         </div>
 
                     </div>
@@ -105,6 +120,7 @@
                     <hr/>
                     <div class="m-t-50 blog-post-comment">
                         <h4 class="text-uppercase">Comments <small>({{ count($question->comments )}})</small></h4>
+
                         <div class="border m-b-20"></div>
 
                         <ul class="media-list">
@@ -112,7 +128,7 @@
                                 @include('admin.comment_replies',['comment' => $comment])
                             @endforeach
                         </ul>
-
+                        <h4 class="text-uppercase" style="color: red">Reports ({{ $question->reports }})</h4>
                         <h4 class="text-uppercase m-t-50">Leave message for question owner</h4>
                         <div class="border m-b-20"></div>
 
@@ -144,6 +160,7 @@
                                             @break;
                                         @endswitch
                                         <a href="{{ route('admin.question') }}" class="btn btn-default waves-effect waves-light">Back</a>
+                                        <a class="btn btn-danger waves-effect waves-light delete-modal" style="float: right;" data-toggle="modal" data-target=".bs-example-modal-lg" data-id="{{$question->id}}" data-url="{!! URL::route('admin.delete.question', ['id' => $question->id]) !!}"><i class="fa fa-trash-o"></i> Delete</a>
                                     </div>
 
                                 </div> <!-- /col -->
@@ -174,56 +191,11 @@
                         <div class="border m-b-20"></div>
 
                         <ul class="blog-categories-list list-unstyled">
-                            <li><a href="#">Lifestyle</a></li>
-                            <li><a href="#">Music</a></li>
-                            <li><a href="#">Travel</a></li>
-                            <li><a href="#">Fashion</a></li>
-                            <li><a href="#">Videos</a></li>
+                            @foreach ($categories as $category)
+                            <li><a href="#">{{ $category->name_category }}</a></li>
+                            @endforeach
                         </ul>
                     </div>
-
-                    <div class="m-t-50">
-                        <h4 class="text-uppercase">Latest Post</h4>
-                        <div class="border m-b-20"></div>
-
-                        <div class="media latest-post-item">
-                            <div class="media-left">
-                                <a href="#"> <img class="media-object" alt="64x64" src="assets/images/small/img-1.jpg" style="width: 100px; height: 66px;"> </a>
-                            </div>
-                            <div class="media-body">
-                                <h5 class="media-heading"><a href="#">Exclusive: Get a First Look at the Fall Collection</a> </h5>
-                                <p class="font-13 text-muted">
-                                    Sep 03, 2016 | John Deo
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="media latest-post-item">
-                            <div class="media-left">
-                                <a href="#"> <img class="media-object" alt="64x64" src="assets/images/small/img-3.jpg" style="width: 100px; height: 66px;"> </a>
-                            </div>
-                            <div class="media-body">
-                                <h5 class="media-heading"><a href="#">The Most Impressive London Streets</a> </h5>
-                                <p class="font-13 text-muted">
-                                    Sep 03, 2016 | John Deo
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="media latest-post-item">
-                            <div class="media-left">
-                                <a href="#"> <img class="media-object" alt="64x64" src="assets/images/small/img-4.jpg" style="width: 100px; height: 66px;"> </a>
-                            </div>
-                            <div class="media-body">
-                                <h5 class="media-heading"><a href="#">How To Beat The Heat</a> </h5>
-                                <p class="font-13 text-muted">
-                                    Aug 21, 2016 | John Deo
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
-
 
                     <div class="m-t-50">
                         <h4 class="text-uppercase">Newsletter</h4>
@@ -244,4 +216,63 @@
         </div>
         <!-- end row -->
     </div>
+
+    <div class="modal fade bs-example-modal-lg" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myLargeModalLabel">Delete modal</h4>
+                </div>
+                <form class="form-confirm" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    {{ csrf_field() }}
+                    <input type="hidden" id="id_delete" name="question_id">
+                    <input type="hidden" id="url_delete">
+                    <div class="modal-body">
+                        <h4 class="text-center">Are you sure you want to delete the following question?</h4>
+                        <p class="text-center">Bạn có chắc muốn xoá câu hỏi này không?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger delete" data-dismiss="modal">
+                            <span id="delete_modal" class='glyphicon glyphicon-trash'></span> Delete
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='glyphicon glyphicon-remove'></span> Close
+                        </button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+@endsection
+@section ('page_scripts')
+    @parent
+    <!-- toastr notifications -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).on('click', '.delete-modal', function() {
+            $('#id_delete').val($(this).data('id'));
+            $('#deleteModal').modal('show');
+            id = $('#id_delete').val();
+            console.log(id);
+        });
+        $('.modal-footer').on('click', '.delete', function() {
+            $.ajax({
+                type: 'DELETE',
+                url: '/question/' + id,
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                },
+                success: function() {
+                    window.location.href = "http://localhost:8000/admin/question";
+                    toastr.success('Successfully deleted Question!', 'Success Alert', {timeOut: 5000});
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        });
+    </script>
 @endsection
