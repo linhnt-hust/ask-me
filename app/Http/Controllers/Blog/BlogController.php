@@ -123,6 +123,9 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $blog = Blog::findOrFail($id);
+        $blog->delete();
+
+        return response()->json($blog);
     }
 }

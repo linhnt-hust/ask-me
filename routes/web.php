@@ -32,6 +32,7 @@ Route::resource('profile', 'User\ProfileController');
 
 Route::resource('question', 'Question\QuestionController');
 
+
 Route::get('/single/question', 'Question\QuestionController@getQuestionSingle')->name('question.single');
 Route::get('/poll/question', 'Question\QuestionController@getQuestionPoll')->name('question.poll');
 Route::get('/category/question', 'Question\QuestionController@questionCategory')->name('question.category');
@@ -66,5 +67,6 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function (){
     Route::get('/blog', 'Admincontroller@getBlogToApprove')->name('admin.blog');
     Route::get('/blog/detail/{id}','Admincontroller@detailBlogApprove')->name('admin.blog.detail');
     Route::post('/blog/verify', 'AdminController@verifyBlog')->name('admin.blog.verify');
+    Route::get('/delete/question/{id}','AdminController@deleteQuestion' )->name('admin.delete.question');
 });
 

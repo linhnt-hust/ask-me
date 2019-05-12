@@ -49,13 +49,16 @@ class AdminController extends Controller
         $totalComments = $this->modelComment->getTotalComment();
         $totalCategories =  $this->modelCategory->getAllCategories();
         $verified = $this->modelQuestion->getRecentQuestions();
-        return view('admin.question_dashboard', compact('questions', 'totalComments', 'totalCategories', 'verified'));
+        $topCategory = $this->modelQuestion->getTopCategoryQuestion();
+        $mostReport = $this->modelQuestion->getMostReportQuestion();
+        return view('admin.question_dashboard', compact('questions', 'totalComments', 'totalCategories', 'verified', 'topCategory', 'mostReport'));
     }
 
     public function detailQuestionApprove($id)
     {
         $question = $this->modelQuestion->getQuestionDetail($id);
-        return view('admin.question_detail', compact('question'));
+        $categories = $this->modelCategory->getAllCategoriesQuestion();
+        return view('admin.question_detail', compact('question', 'categories'));
     }
 
     public function verifyQuestion(Request $request)
@@ -93,5 +96,10 @@ class AdminController extends Controller
         } else {
             return redirect()->back()->with('error', 'Whoops!! Something is wrong.');
         }
+    }
+
+    public function deleteQuestion($id)
+    {
+        dd($id);
     }
 }

@@ -50,7 +50,7 @@
                     @endphp
                     <div class="question-inner">
                         <div class="clearfix"></div>
-                        @if ($message = Session::get('success') || $voted == 1))
+                        @if ($message = Session::get('success') || $voted == 1)
                             <div class="question-desc">
                                 <div class="progressbar-warp">
                                     @foreach($questionDetail->poll as $poll)

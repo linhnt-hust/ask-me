@@ -2,6 +2,9 @@
 @section('title')
     Question Details
 @endsection
+@section('page_header')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+@endsection
 @section('content')
     <div class="breadcrumbs">
         <section class="container">
@@ -28,7 +31,13 @@
                     <h2>
                         <a href="">{{ $questionDetail->title }}</a>
                     </h2>
-                    <a class="question-report" href="#">Report</a>
+                    @if ($questionDetail->report->first() != null)
+                        @if ($questionDetail->report->first()->user_id != Auth::user()->id)
+                            <a class="question-report" href="#">Report</a>
+                        @endif
+                    @else
+                        <a class="question-report" href="#">Report</a>
+                    @endif
                     <div class="question-type-main"><i class="icon-signal"></i>Poll</div>
 
                     @php
@@ -243,6 +252,7 @@
                     </ol><!-- End commentlist -->
                 </div><!-- End page-content -->
 
+                @if ($questionDetail->is_solved == 0)
                 <div id="respond" class="comment-respond page-content clearfix">
                     <div class="boxedtitle page-title"><h2>Leave a reply</h2></div>
                     <form  id="commentform" class="comment-form" method="POST" action="{{route('comment.store')}}">
@@ -265,6 +275,47 @@
                         </p>
                     </form>
                 </div>
+                @endif
+                <br>
+                <div class="page-content" id="report_form">
+                    <div class="boxedtitle page-title"><h2>Report Form</h2></div>
+                    <form class="form-style form-style-3 form-style-5" action="{{ route('question.report') }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
+                        <input type="hidden" name="question_id" id="question_id" value="{{ $questionDetail->id }}">
+                        <div class="form-inputs clearfix" id="question-submit">
+                            <p class="question_poll_p">
+                                <label class="required">Reasons<span>*</span></label>
+                                <input type="checkbox" id="report_type" value="1" name="report[]">
+                                <span class="question_poll">Spam</span>
+                                <span class="poll-description">Đây là 1 nội dung spam .</span>
+                            </p>
+                            <p class="question_poll_p">
+                                <label for="question_poll" ></label>
+                                <input type="checkbox" value="2" id="report_type" name="report[]">
+                                <span class="question_poll">Content inappropriate</span>
+                                <span class="poll-description">Có nội dung không phù hợp .</span>
+                            </p>
+                            <p class="question_poll_p">
+                                <label for="question_poll"></label>
+                                <input type="checkbox" value="3" id="report_type" name="report[]">
+                                <span class="question_poll">Contains sensitive or violent images</span>
+                                <span class="poll-description">Có hứa hình ảnh nhạy cảm hoặc bạo lực .</span>
+                            </p>
+
+                        </div>
+                        <div class="form-textarea">
+                            <p>
+                                <label class="required">Message</label>
+                                <textarea aria-required="true" cols="58" rows="5" id="message" name="message"></textarea>
+                            </p>
+                        </div>
+                        <p class="form-submit">
+                            <input type="submit" value="Submit" id="submit_report" class="submit button medium color">
+                            {{--<a class= "button small color">--}}
+                        </p>
+                    </form>
+                </div>
             </div><!-- End main -->
 
             @include('layouts.asside_bar')
@@ -274,6 +325,8 @@
 @endsection
 @section('inline_scripts')
     @parent
+    <!-- toastr notifications -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script type="text/javascript">
         function delete_comment(id, questionId){
             $.ajax({
@@ -336,6 +389,7 @@
         }
 
         $(document).ready(function(){
+            $("#report_form").hide();
             $('#submit-comment').on('click', function(event){
                 event.preventDefault();
                 var commentBody = $('#comment-body').val();
@@ -359,6 +413,44 @@
                     }
                 });
                 $('#comment-body').val('');
+            });
+            $(".question-report").click(function() {
+                $("#report_form").show();
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: $("#report_form").offset().top
+                }, 2000);
+            });
+
+            $('#submit_report').on('click', function(event){
+                event.preventDefault();
+                var message = $('#message').val();
+                var question_id = $('#question_id').val();
+                var user_id = $('#user_id').val();
+                // var report  = $('#report_type:checked').val();
+                var report = [];
+                $('#report_type:checked').each(function(i){
+                    report[i] = $(this).val();
+                });
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('question.report') }}",
+                    data: {
+                        '_token': $('input[name=_token]').val(),
+                        'report': report,
+                        'question_id': question_id,
+                        'user_id': user_id,
+                        'message': message,
+                    },
+                    success: function(data) {
+                        $("#report_form").remove();
+                        $(".question-report").remove();
+                        $(window).scrollTop(0);
+                        toastr.success('Thanks you for your report!', 'Success Alert', {timeOut: 5000});
+                    },
+                    error(data) {
+                        console.log(data);
+                    }
+                });
             });
         });
     </script>

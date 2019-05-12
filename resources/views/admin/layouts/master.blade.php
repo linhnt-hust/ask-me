@@ -28,10 +28,13 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+
+    <script src="{{ asset('/zircos/plugins/morris/morris.min.js')}}"></script>
+    <script src="{{ asset('/zircos/plugins/raphael/raphael-min.js')}}"></script>
     <![endif]-->
 
     <script src="{{ asset('/zircos/js/modernizr.min.js') }}"></script>
-
+    @yield('page_header')
 </head>
 
 
@@ -76,6 +79,6 @@
 </div>
 
 @include('admin.layouts.bottom_jquery')
-
+@yield('page_scripts')
 </body>
 </html>

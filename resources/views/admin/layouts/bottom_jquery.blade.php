@@ -13,9 +13,7 @@
 <script src="{{ asset('/zircos/plugins/waypoints/jquery.waypoints.min.js')}}"></script>
 <script src="{{ asset('/zircos/plugins/counterup/jquery.counterup.min.js')}}"></script>
 
-<!--Morris Chart-->
-<script src="{{ asset('/zircos/plugins/morris/morris.min.js')}}"></script>
-<script src="{{ asset('/zircos/plugins/raphael/raphael-min.js')}}"></script>
+
 
 <!-- Dashboard init -->
 <script src="{{ asset('/zircos/pages/jquery.dashboard.js')}}"></script>
