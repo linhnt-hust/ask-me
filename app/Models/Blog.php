@@ -259,6 +259,11 @@ class Blog extends Model
 
     public function getAllBlogs()
     {
-        return Blog::where('approve_status', '=', 1 )->orderBy('updated_at', 'DESC')->get();
+        return Blog::where('approve_status', '=', 1 )->orderBy('updated_at', 'DESC')->paginate(5);
+    }
+
+    public function searchBlog($input)
+    {
+        return Blog::where('title', 'LIKE', '%' . $input['search_text'] . '%')->paginate(6);
     }
 }

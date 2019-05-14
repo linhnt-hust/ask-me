@@ -64,7 +64,7 @@ Ask me – Anything you wanted to know
                                     @endif
                                     {{--<span class="question-favorite"><i class="icon-star"></i>5</span>--}}
                                 </div>
-                                <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($recentQuestion->category)->name_category }}</a></span>
+                                <span class="question-category"><a href="{{route('question.category.detail',optional($recentQuestion->category)->id )}}"><i class="icon-folder-close"></i>{{ optional($recentQuestion->category)->name_category }}</a></span>
                                 <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $recentQuestion->updated_at)->diffForHumans() }}</span>
                                 <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer</a></span>
                                 <span class="question-view"><i class="icon-user"></i>70 views</span>
@@ -72,28 +72,6 @@ Ask me – Anything you wanted to know
                             </div>
                         </article>
                         @endforeach
-                        {{--<article class="question question-type-poll">--}}
-                            {{--<h2>--}}
-                                {{--<a href="single_question_poll.html">This Is My Second Poll Question</a>--}}
-                            {{--</h2>--}}
-                            {{--<a class="question-report" href="#">Report</a>--}}
-                            {{--<div class="question-type-main"><i class="icon-signal"></i>Poll</div>--}}
-                            {{--<div class="question-author">--}}
-                                {{--<a href="#" original-title="ahmed" class="question-author-img tooltip-n"><span></span><img alt="" src="http://placehold.it/60x60/FFF/444"></a>--}}
-                            {{--</div>--}}
-                            {{--<div class="question-inner">--}}
-                                {{--<div class="clearfix"></div>--}}
-                                {{--<p class="question-desc">Duis dapibus aliquam mi, eget euismod sem scelerisque ut. Vivamus at elit quis urna adipiscing iaculis. Curabitur vitae velit in neque dictum blandit. Proin in iaculis neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur vitae velit in neque dictum blandit.</p>--}}
-                                {{--<div class="question-details">--}}
-                                    {{--<span class="question-favorite"><i class="icon-star"></i>5</span>--}}
-                                {{--</div>--}}
-                                {{--<span class="question-category"><a href="#"><i class="icon-folder-close"></i>wordpress</a></span>--}}
-                                {{--<span class="question-date"><i class="icon-time"></i>4 mins ago</span>--}}
-                                {{--<span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer</a></span>--}}
-                                {{--<span class="question-view"><i class="icon-user"></i>70 views</span>--}}
-                                {{--<div class="clearfix"></div>--}}
-                            {{--</div>--}}
-                        {{--</article>--}}
                         <a href="#" class="load-questions"><i class="icon-refresh"></i>Load More Questions</a>
                     </div>
                 </div>

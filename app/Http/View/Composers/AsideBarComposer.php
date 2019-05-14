@@ -4,6 +4,7 @@ namespace App\Http\View\Composers;
 
 use App\Models\Comment;
 use App\Models\Question;
+use App\Models\Tag;
 use Illuminate\View\View;
 
 class AsideBarComposer
@@ -15,6 +16,7 @@ class AsideBarComposer
      */
     protected $modelQuestion;
     protected $modelComment;
+    protected $modalTag;
 
     /**
      * Create a new profile composer.
@@ -22,10 +24,14 @@ class AsideBarComposer
      * @param  UserRepository  $users
      * @return void
      */
-    public function __construct( Question $question, Comment $comment)
-    {
+    public function __construct(
+        Question $question,
+        Comment $comment,
+        Tag $tag
+    ){
         $this->modelQuestion = $question;
         $this->modelComment = $comment;
+        $this->modalTag = $tag;
     }
 
     /**
@@ -38,8 +44,7 @@ class AsideBarComposer
     {
         $recentQuestions = $this->modelQuestion->getRecentQuestions();
         $comments = $this->modelComment->getTotalComment();
-        $user = Auth::user();
-//        $view->with('recentQuestion', $recentQuestions)->with('user', $user)->with('comments', $comments);
-        $view->with(compact('recentQuestions','user'));
+        $tags = $this->modelQuestion->getPopularTags();
+        $view->with(compact('recentQuestions', 'comments', 'tags'));
     }
 }

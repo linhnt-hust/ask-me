@@ -21,6 +21,7 @@ Route::group(['prefix' => '/user'], function (){
     Route::post('/vote', 'Question\QuestionController@voteQuestionPoll')->name('user.poll.vote');
     Route::get('/question/close/{id}', 'User\UserController@closeQuestion')->name('user.question.close');
     Route::get('/question/reopen/{id}', 'User\UserController@reopenQuestion')->name('user.question.reopen');
+    Route::post('/search', 'User\UserController@search')->name('user.search');
 });
 
 Auth::routes();

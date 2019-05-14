@@ -22,8 +22,8 @@
                         <li><a href="{{ route('profile.index') }}">User Profile</a></li>
                         <li><a href="{{ route('user.question') }}">User Questions</a></li>
                         <li><a href="{{ route('user.blog') }}">User Blogs</a></li>
-                        <li><a href="user_answers.html">User Answers</a></li>
-                        <li><a href="user_favorite_questions.html">User Favorite Questions</a></li>
+                        {{--<li><a href="user_answers.html">User Answers</a></li>--}}
+                        {{--<li><a href="user_favorite_questions.html">User Favorite Questions</a></li>--}}
                         <li><a href="{{ route('profile.edit', Auth::user()->id) }}">Edit Profile</a></li>
                     </ul>
                 </li>

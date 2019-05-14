@@ -3,8 +3,8 @@
             <h3 class="widget_title">Stats</h3>
             <div class="ul_list ul_list-icon-ok">
                 <ul>
-                    <li><i class="icon-question-sign"></i>Questions ( <span>{{ count($recentQuestions) }}</span> )</li>
-                    <li><i class="icon-comment"></i>Answers ( <span></span> )</li>
+                    <li><i class="icon-question-sign"></i>Questions ( <span>{{count($recentQuestions)}}</span> )</li>
+                    <li><i class="icon-comment"></i>Answers ( <span>{{ count($comments) }}</span> )</li>
                 </ul>
             </div>
         </div>
@@ -112,26 +112,21 @@
         
         <div class="widget widget_tag_cloud">
             <h3 class="widget_title">Tags</h3>
-            <a href="#">projects</a>
-            <a href="#">Portfolio</a>
-            <a href="#">Wordpress</a>
-            <a href="#">Html</a>
-            <a href="#">Css</a>
-            <a href="#">jQuery</a>
-            <a href="#">2code</a>
-            <a href="#">vbegy</a>
+            @foreach($tags as $tag)
+                <a href="#">{{$tag->name_tag}}</a>
+            @endforeach
         </div>
         
         <div class="widget">
             <h3 class="widget_title">Recent Questions</h3>
             <ul class="related-posts">
                 <li class="related-item">
-                    <h3><a href="#">{{ substr($recentQuestions[0]->details, 0, 10) }}...</a></h3>
+                    <h3><a href="{{ route('question.show', $recentQuestions[0]->id) }}">{{ substr($recentQuestions[0]->details, 0, 10) }}...</a></h3>
                     <p>{{ substr($recentQuestions[0]->details, 0, 20) }}...</p>
                     <div class="clear"></div><span>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $recentQuestions[0]->updated_at)->diffForHumans() }}</span>
                 </li>
                 <li class="related-item">
-                    <h3><a href="#">{{ substr($recentQuestions[1]->details, 0, 10) }}...</a></h3>
+                    <h3><a href="{{ route('question.show', $recentQuestions[1]->id) }}">{{ substr($recentQuestions[1]->details, 0, 10) }}...</a></h3>
                     <p>{{ substr($recentQuestions[1]->details, 0, 20) }}...</p>
                     <div class="clear"></div><span>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $recentQuestions[1]->updated_at)->diffForHumans() }}</span>
                 </li>

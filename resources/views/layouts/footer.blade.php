@@ -23,9 +23,9 @@
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('question.create') }}">Ask Question</a></li>
                         <li><a href="#">About</a></li>
-                        <li><a href="cat_question.html">Questions</a></li>
+                        <li><a href="{{ route('question.category') }}">Questions</a></li>
                         <li><a href="{{ route('profile.index') }}">Users</a></li>
-                        <li><a href="blog_1.html">Blog</a></li>
+                        <li><a href="{{ route('blog.index') }}">Blog</a></li>
                         <li><a href="contact_us.html">Contact Us</a></li>
                         <li><a href="#">FAQs</a></li>
                     </ul>
@@ -33,17 +33,17 @@
             </div>
             <div class="col-md-3">
                 <div class="widget">
-                    <h3 class="widget_title">Popular Questions</h3>
+                    <h3 class="widget_title">Recent Questions</h3>
                     <ul class="related-posts">
                         <li class="related-item">
-                            <h3><a href="#">This is my first Question</a></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lorem quam.</p>
-                            <div class="clear"></div><span>Jan 01, 2019</span>
+                            <h3><a href="{{ route('question.show', $recentQuestions[0]->id) }}">{{ substr($recentQuestions[0]->details, 0, 10) }}...</a></h3>
+                            <p>{{ substr($recentQuestions[0]->details, 0, 20) }}...</p>
+                            <div class="clear"></div><span>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $recentQuestions[0]->updated_at)->diffForHumans() }}</span>
                         </li>
                         <li class="related-item">
-                            <h3><a href="#">This Is My Second Poll Question</a></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lorem quam.</p>
-                            <div class="clear"></div><span>Jan 01, 2019</span>
+                            <h3><a href="{{ route('question.show', $recentQuestions[1]->id) }}">{{ substr($recentQuestions[1]->details, 0, 10) }}...</a></h3>
+                            <p>{{ substr($recentQuestions[1]->details, 0, 20) }}...</p>
+                            <div class="clear"></div><span>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $recentQuestions[1]->updated_at)->diffForHumans() }}</span>
                         </li>
                     </ul>
                 </div>	

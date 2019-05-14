@@ -83,16 +83,17 @@ class QuestionController extends Controller
     {
         $user = Auth::user();
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
+        $relatedQuestions = $this->modelQuestion->getRelatedQuestion($id);
         if ($questionDetail->question_poll == 0) {
-            return view('question.show', compact('questionDetail', 'user'));
+            return view('question.show', compact('questionDetail', 'user', 'relatedQuestions'));
         } else{
             $userVote = PollVoteHistory::where('user_id', $user->id)->Where('question_id', $questionDetail->id)->first();
             if ($userVote != null){
                 $voted = 1;
-                return view('question.show_poll', compact('questionDetail', 'user', 'voted'));
+                return view('question.show_poll', compact('questionDetail', 'user', 'voted','relatedQuestions'));
             } else {
                 $voted = 0;
-                return view('question.show_poll', compact('questionDetail', 'user', 'voted'));
+                return view('question.show_poll', compact('questionDetail', 'user', 'voted','relatedQuestions'));
             }
         }
     }

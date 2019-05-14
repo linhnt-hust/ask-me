@@ -37,7 +37,6 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = $this->modelBlog->getAllBlogs();
-//        dd($blogs[1]->blogUploaded[0]->filename);
         return view('blog.index', compact('blogs'));
     }
 
