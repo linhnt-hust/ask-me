@@ -32,10 +32,10 @@
                         <a href="">{{ $questionDetail->title }}</a>
                     </h2>
                     @if ($questionDetail->report->first() != null)
-                        @if ($questionDetail->report->first()->user_id != Auth::user()->id)
+                        @if ($questionDetail->report->first()->user_id !== Auth::user()->id)
                             <a class="question-report" href="#">Report</a>
                         @endif
-                    @else
+                    @elseif ($questionDetail->user_id != Auth::user()->id)
                         <a class="question-report" href="#">Report</a>
                     @endif
                     <div class="question-type-main"><i class="icon-signal"></i>Poll</div>
@@ -46,7 +46,7 @@
 
                     <div class="question-inner">
                         <div class="clearfix"></div>
-                        @if ($message = Session::get('success') || $voted == 1))
+                        @if ($message = Session::get('success') || $voted == 1)
                         <div class="question-desc">
                             <div class="progressbar-warp">
                                 @foreach($questionDetail->poll as $poll)
@@ -139,8 +139,12 @@
                             </div>
                         @endif
                         <div class="question-details">
-                            <span class="question-answered question-answered-done"><i class="icon-ok"></i>solved</span>
-                            <span class="question-favorite"><i class="icon-star"></i>5</span>
+                            @if ($questionDetail->is_solved == 0)
+                                <div class="question-answered"><i class="icon-ok"></i>in progress</div>
+                            @else
+                                <div class="question-answered question-answered-done"><i class="icon-ok"></i>solved</div>
+                            @endif
+                            {{--<span class="question-favorite"><i class="icon-star"></i>5</span>--}}
                         </div>
                         <span class="question-category"><a href="{{route('question.category.detail',optional($questionDetail->category)->id )}}"><i class="icon-folder-close"></i>{{ optional($questionDetail->category)->name_category }}</a></span>
                         <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $questionDetail->updated_at)->diffForHumans() }}</span>

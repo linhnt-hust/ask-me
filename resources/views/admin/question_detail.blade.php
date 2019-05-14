@@ -50,7 +50,11 @@
                         @endphp
                             @foreach($question->poll as $poll)
                                 @php
-                                    $votePercent = ($poll->votes)/$sumVotes * 100;
+                                    if ( $sumVotes > 0){
+                                        $votePercent = ($poll->votes)/$sumVotes * 100;
+                                    } else {
+                                        $votePercent = 0;
+                                    }
                                 @endphp
 
                                 @switch (true)

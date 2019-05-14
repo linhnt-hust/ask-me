@@ -29,7 +29,13 @@
                         <h2>
                             <a href="{{ route('question.show', $question->id) }}"> {{ $question->title }}</a>
                         </h2>
-                        <a class="question-report" href="#">Report</a>
+                        @if ($question->report->first() != null)
+                            @if ($question->report->first()->user_id !== Auth::user()->id)
+                                <a class="question-report" href="#">Report</a>
+                            @endif
+                        @elseif ($question->user_id != Auth::user()->id)
+                            <a class="question-report" href="#">Report</a>
+                        @endif
                         @if ( $question->question_poll == 0)
                             <div class="question-type-main"><i class="icon-question-sign"></i>Question</div>
                         @else

@@ -86,14 +86,4 @@ class UserController extends Controller
         $search = $request->get('search_text');
         return view('search_result',compact('questions','search','blogs'));
     }
-
-//    public function searchAjax(Request $request)
-//    {
-//        $input = $request->all();
-//        $questions = $this->modelQuestion->searchQuestion($input);
-//        $blogs = $this->modelBlog->searchBlog($input);
-//        $search = $request->get('search_text');
-////        return view('search_result',compact('questions','search','blogs'));
-//        return response()->json(['success'=>'success']);
-//    }
 }
