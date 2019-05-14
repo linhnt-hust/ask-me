@@ -7,6 +7,7 @@ use App\Models\Blog;
 use App\Models\PollVoteHistory;
 use Auth;
 use App\Models\Question;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -29,16 +30,17 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
+        $relatedQuestions = $this->modelQuestion->getRelatedQuestion($id);
         if ($questionDetail->question_poll == 0) {
-            return view('user.question.question_detail', compact('questionDetail', 'user'));
+            return view('user.question.question_detail', compact('questionDetail', 'user','relatedQuestions'));
         } else{
             $userVote = PollVoteHistory::where('user_id', $user->id)->Where('question_id', $questionDetail->id)->first();
             if ($userVote != null){
                 $voted = 1;
-                return view('user.question.question_poll_detail', compact('questionDetail', 'user', 'voted'));
+                return view('user.question.question_poll_detail', compact('questionDetail', 'user', 'voted','relatedQuestions'));
             } else {
                 $voted = 0;
-                return view('user.question.question_poll_detail', compact('questionDetail', 'user', 'voted'));
+                return view('user.question.question_poll_detail', compact('questionDetail', 'user', 'voted','relatedQuestions'));
             }
         }
     }
@@ -75,4 +77,23 @@ class UserController extends Controller
         $this->modelQuestion->reopenQuestion($id);
         return redirect()->back();
     }
+
+    public function search(Request $request)
+    {
+        $input = $request->all();
+        $questions = $this->modelQuestion->searchQuestion($input);
+        $blogs = $this->modelBlog->searchBlog($input);
+        $search = $request->get('search_text');
+        return view('search_result',compact('questions','search','blogs'));
+    }
+
+//    public function searchAjax(Request $request)
+//    {
+//        $input = $request->all();
+//        $questions = $this->modelQuestion->searchQuestion($input);
+//        $blogs = $this->modelBlog->searchBlog($input);
+//        $search = $request->get('search_text');
+////        return view('search_result',compact('questions','search','blogs'));
+//        return response()->json(['success'=>'success']);
+//    }
 }

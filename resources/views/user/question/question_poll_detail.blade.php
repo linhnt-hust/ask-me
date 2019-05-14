@@ -150,7 +150,7 @@
                             @endif
                             {{--<span class="question-favorite"><i class="icon-star"></i>5</span>--}}
                         </div>
-                        <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($questionDetail->category)->name_category }}</a></span>
+                        <span class="question-category"><a href="{{route('question.category.detail',optional($questionDetail->category)->id )}}"><i class="icon-folder-close"></i>{{ optional($questionDetail->category)->name_category }}</a></span>
                         <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $questionDetail->updated_at)->diffForHumans() }}</span>
                         <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer</a></span>
                         <span class="question-view"><i class="icon-user"></i>70 views</span>
@@ -242,10 +242,9 @@
                 <div id="related-posts">
                     <h2>Related questions</h2>
                     <ul class="related-posts">
-                        <li class="related-item"><h3><a href="#"><i class="icon-double-angle-right"></i>This Is My Second Poll Question</a></h3></li>
-                        <li class="related-item"><h3><a href="#"><i class="icon-double-angle-right"></i>This is my third Question</a></h3></li>
-                        <li class="related-item"><h3><a href="#"><i class="icon-double-angle-right"></i>This is my fourth Question</a></h3></li>
-                        <li class="related-item"><h3><a href="#"><i class="icon-double-angle-right"></i>This is my fifth Question</a></h3></li>
+                        @foreach($relatedQuestions as $relate)
+                            <li class="related-item"><h3><a href="{{route('question.show', $relate->id)}}"><i class="icon-double-angle-right"></i>{{ $relate->title }}</a></h3></li>
+                        @endforeach
                     </ul>
                 </div><!-- End related-posts -->
 

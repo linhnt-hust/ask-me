@@ -19,10 +19,38 @@
             </ul>
         </nav>
         <div class="header-search">
-            <form>
-                <input type="text" value="Search here ..." onfocus="if(this.value=='Search here ...')this.value='';" onblur="if(this.value=='')this.value='Search here ...';">
-                <button type="submit" class="search-submit"></button>
+            <form action="{{route('user.search')}}" method="POST">
+                {{ csrf_field() }}
+                <input type="text" id="search_text" name="search_text" value="Search here ..." onfocus="if(this.value=='Search here ...')this.value='';" onblur="if(this.value=='')this.value='Search here ...';">
+                <button type="submit" class="search-submit" id="search_button"></button>
             </form>
         </div>
     </section><!-- End container -->
 </div><!-- End header-top -->
+{{--@section('page_scripts')--}}
+    {{--@parent--}}
+    {{--<script type="text/javascript">--}}
+        {{--$(document).ready(function(){--}}
+            {{--$('#search_button').on('click', function(event){--}}
+                {{--event.preventDefault();--}}
+                {{--var search = $('#search_text').val();--}}
+                {{--$.ajax({--}}
+                    {{--type: 'post',--}}
+                    {{--url: "{{ route('user.search.ajax') }}",--}}
+                    {{--data: {--}}
+                        {{--'_token': $('input[name=_token]').val(),--}}
+                        {{--'search_text': search,--}}
+                    {{--},--}}
+                    {{--success: function() {--}}
+                        {{--// $('.toggle-accordion').html(data);--}}
+                        {{--window.location.href="http://localhost:8000/user/search";--}}
+
+                    {{--},--}}
+                    {{--error(data) {--}}
+                        {{--console.log(data);--}}
+                    {{--}--}}
+                {{--});--}}
+            {{--});--}}
+        {{--});--}}
+    {{--</script>--}}
+{{--@endsection--}}

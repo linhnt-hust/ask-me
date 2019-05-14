@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
-use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
 
 class Question extends Model
 {
@@ -19,9 +18,12 @@ class Question extends Model
         'details',
         'user_id',
         'category_id',
-        'status',
         'filename',
         'is_solved',
+        'reports',
+        'approve_status',
+        'verify_author',
+        'verified_at'
     ];
 
     protected $date = [
@@ -98,6 +100,11 @@ class Question extends Model
     {
         $query = Question::findOrFail($id);
         return $query;
+    }
+
+    public function searchQuestion($input)
+    {
+        return Question::where('title', 'LIKE', '%' . $input['search_text'] . '%')->paginate(6);
     }
 
     public function createQuestion($params)
@@ -304,9 +311,59 @@ class Question extends Model
         return $result;
     }
 
+    public function getPopularTags()
+    {
+        $result = QuestionTag::selectRaw("tag_id,count(id) as popularTag")
+            ->groupBy('tag_id')
+            ->orderBy('popularTag','DESC')
+            ->limit('6')
+            ->get();
+        foreach ($result as $query)
+        {
+            $name = Tag::where('id', $query->tag_id)->pluck('name_tag')->first();
+            $query['name_tag'] = $name;
+        }
+        return $result;
+    }
+
     public function getMostReportQuestion()
     {
         return Question::orderBy('reports', 'DESC')->limit(6)->get();
     }
 
+    public function getRelatedQuestion($id)
+    {
+        $question = Question::findOrFail($id);
+        $sameCategory = Question::where('category_id', $question->category_id)->where('id', '<>', $id)->pluck('id')->toArray();
+        $sameTagAndCategory =[];
+        foreach($question->tag as $tag)
+        {
+            foreach ($tag->question as $q)
+            {
+                if (in_array($q->id, $sameCategory)){
+                    $sameTagAndCategory = $q->id;
+                }
+            }
+        }
+
+        if(!is_array($sameTagAndCategory)){
+            $key = array_search($sameTagAndCategory, $sameCategory);
+            unset($sameCategory[$key]);
+            array_unshift($sameCategory, $sameTagAndCategory);
+        } else {
+            foreach($sameTagAndCategory as $catTag)
+            {
+                $key = array_search($catTag, $sameCategory);
+                unset($sameCategory[$key]);
+                array_unshift($sameCategory, $catTag);
+            }
+        }
+
+        $relatedQuestions = [];
+        foreach($sameCategory as $key => $relate)
+        {
+            $relatedQuestions[$key] = Question::find($relate);
+        }
+        return $relatedQuestions;
+    }
 }

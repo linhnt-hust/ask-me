@@ -34,7 +34,7 @@ class QuestionsTableSeeder extends Seeder
 
         }
 
-        factory(App\Models\Question::class, 25)->create();
+        factory(App\Models\Question::class, 50)->create();
 
         Schema::enableForeignKeyConstraints();
     }

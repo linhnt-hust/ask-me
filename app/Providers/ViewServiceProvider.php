@@ -25,7 +25,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer(
-            'layouts.asside_bar', 'App\Http\View\Composers\AsideBarComposer'
+            ['layouts.asside_bar','layouts.footer'], 'App\Http\View\Composers\AsideBarComposer@compose'
         );
     }
 }
