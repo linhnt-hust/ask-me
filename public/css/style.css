@@ -987,6 +987,11 @@ div[class*="slider_shadow"]:before, div[class^="header_shadow"] {
 .single-question-vote-up:hover {
 	background-color: #338338;
 }
+
+
+
+
+
 .single-question-vote-down:hover {
 	background-color: #990707;
 }

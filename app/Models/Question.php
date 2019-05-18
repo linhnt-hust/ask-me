@@ -74,6 +74,11 @@ class Question extends Model
         return $this->hasMany('App\Models\Report');
     }
 
+    public function follow()
+    {
+        return $this->hasMany('App\Models\FollowHistory');
+    }
+
     public function uploadFile($file, $dir)
     {
         $time = Carbon::now();

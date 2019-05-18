@@ -79,13 +79,13 @@
 								</p>
 							</div>
 							<div class="form-style form-style-2">
-								<div class="user-profile-img"><img src="http://placehold.it/60x60/FFF/444" alt="admin"></div>
+								<div class="user-profile-img"><img src="{{ asset('/avatar/users/'.$user->avatar) }}" alt="admin"></div>
 								<p class="user-profile-p">
 									<label>Profile Picture</label>
 									<div class="fileinputs">
 										<input type="file" class="file" name="avatar" value="avatar">
 										<div class="fakefile">
-											<button type="button" class="button small margin_0">Select file</button>
+											<button type="button" id="buttonUpload" class="button small margin_0">Select file</button>
 											<span><i class="icon-arrow-up"></i>Browse</span>
 										</div>
 									</div>
@@ -126,4 +126,15 @@
 
 		</div><!-- End row -->
 	</section><!-- End container -->
+@endsection
+@section('page_scripts')
+    @parent
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('input[type="file"]').change(function(e){
+                var fileName = e.target.files[0].name;
+                $("#buttonUpload").text(fileName);
+            });
+        });
+    </script>
 @endsection

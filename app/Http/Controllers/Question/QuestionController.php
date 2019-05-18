@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Question;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\FollowHistory;
 use App\Models\Poll;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -203,5 +204,39 @@ class QuestionController extends Controller
         {
             return response()->json(['success'=>'success']);
         }
+    }
+
+    public function follow(Request $request)
+    {
+        $input = $request->all();
+        FollowHistory::create($input);
+        $output = "";
+        $output .='<a class="unfollow-button" onclick="unfollow_question('. $input['question_id'].', '. $input['user_id'].')" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
+                              background-color: white;
+                              color: black;
+                              padding: 5px 15px;
+                              font-size: 11px;
+                              color: dodgerblue;
+                              cursor: pointer;">Unfollow</a>
+                            <div class="clearfix"></div>';
+
+        return response()->json($output);
+    }
+
+    public function unfollow(Request $request)
+    {
+        $input = $request->all();
+        FollowHistory::where('user_id', $input['user_id'])->where('question_id', $input['question_id'])->delete();
+        $output = "";
+        $output .='<a class="follow-button" onclick="follow_question('. $input['question_id'].', '. $input['user_id'].')" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
+                              background-color: white;
+                              color: black;
+                              padding: 5px 15px;
+                              font-size: 11px;
+                              color: dodgerblue;
+                              cursor: pointer;"><i class="icon-ok"></i> Follow</a>
+                            <div class="clearfix"></div>';
+
+        return response()->json($output);
     }
 }

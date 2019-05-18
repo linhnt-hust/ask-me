@@ -14,6 +14,6 @@ class QuestionsTagsTableSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         DB::table('question_tag')->truncate();
         Schema::enableForeignKeyConstraints();
-        factory(App\Models\QuestionTag::class, 100)->create();
+        factory(App\Models\QuestionTag::class, 80)->create();
     }
 }

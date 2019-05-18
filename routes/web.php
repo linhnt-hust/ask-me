@@ -50,6 +50,9 @@ Route::post('comment/delete', 'Comment\CommentController@delete')->name('comment
 Route::post('comment/upvote', 'Comment\CommentController@upvote')->name('comment.upvote');
 Route::post('comment/downvote', 'Comment\CommentController@downvote')->name('comment.downvote');
 
+Route::post('/follow', 'Question\QuestionController@follow')->name('question.follow');
+Route::post('/unfollow', 'Question\QuestionController@unfollow')->name('question.unfollow');
+
 Route::resource('blog','Blog\BlogController');
 
 Route::post('/reply/store', 'Comment\CommentController@replyStore')->name('reply.add');
