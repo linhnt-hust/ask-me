@@ -4,24 +4,27 @@
             <div class="comment-text">
                 <div class="author clearfix">
                     <div class="comment-author"><a href="#">{{ $comment->user->name }}</a></div>
-                    <div class="comment-vote">
-                        <ul class="question-vote">
-                            @if ($comment->commentVoteHistory->first() == null)
-                                <li id="upvote_{{ $comment->id }}"><a class="question-vote-up" title="Like" onclick="up_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
-                                <li id="downvote_{{ $comment->id }}"><a class="question-vote-down" title="Dislike" onclick="down_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
-                            @else
-                                @foreach($comment->commentVoteHistory as $history)
-                                    @if ($history->user_id == Auth::user()->id && $history->up == 1 && $history->down == 0)
+                    @if ($comment->parent_id==0)
+                        <div class="comment-vote">
+                                <ul class="question-vote">
+                                    @if ($comment->commentVoteHistory->first() == null)
+                                        <li id="upvote_{{ $comment->id }}"><a id="a_{{ $comment->id }}" class="question-vote-up" title="Like" onclick="up_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
                                         <li id="downvote_{{ $comment->id }}"><a class="question-vote-down" title="Dislike" onclick="down_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
-                                    @elseif ($history->user_id == Auth::user()->id && $history->down == 1 && $history->up == 0)
-                                        <li id="upvote_{{ $comment->id }}"><a class="question-vote-up" title="Like" onclick="up_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
-                                    @elseif ($history->user_id == Auth::user()->id && $history->down == 1 && $history->up == 1)
+                                    @else
+                                        @foreach($comment->commentVoteHistory as $history)
+                                            @if ($history->user_id == Auth::user()->id && $history->up == 1 && $history->down == 0)
+                                                <li id="upvote_{{ $comment->id }}"><a class="question-vote-up" style="color: white !important; pointer-events: none; cursor: default;" title="Like" onclick="up_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
+                                                <li id="downvote_{{ $comment->id }}"><a class="question-vote-down" title="Dislike" onclick="down_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
+                                            @elseif ($history->user_id == Auth::user()->id && $history->down == 1 && $history->up == 0)
+                                                <li id="upvote_{{ $comment->id }}"><a class="question-vote-up" title="Like" onclick="up_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
+                                            @elseif ($history->user_id == Auth::user()->id && $history->down == 1 && $history->up == 1)
+                                            @endif
+                                        @endforeach
                                     @endif
-                                @endforeach
-                            @endif
-                        </ul>
-                    </div>
-                    <span class="question-vote-result" id="vote_{{$comment->id }}">{{ $comment->votes }}</span>
+                                </ul>
+                        </div>
+                        <span class="question-vote-result" id="vote_{{$comment->id }}">{{ $comment->votes }}</span>
+                    @endif
                     <div class="comment-meta">
                         <div class="date"><i class="icon-time"></i>{{ $comment->created_at->format('M d, Y - h:m') }}</div>
                     </div>
@@ -30,7 +33,11 @@
                     @endif
                     <a class="comment-reply reply-button" id="reply-button_{{$comment->id}}" onclick="reply_box({{$comment->id}})"><i class="icon-reply"></i>Reply</a>
                 </div>
-                <div class="text"><p> {{ $comment->body }} </p>
+                @if ($comment->user_id == \Auth::user()->id)
+                    <div class="text"><p id="text_{{$comment->id}}" onclick="text_edit({{$comment->id}})"> {{ $comment->body }} </p>
+                @else
+                    <div class="text"><p> {{ $comment->body }} </p>
+                @endif
                 </div>
                 {{--@if ($loop->first)--}}
                     {{--<div class="question-answered question-answered-done"><i class="icon-ok"></i>Best Answer</div>--}}

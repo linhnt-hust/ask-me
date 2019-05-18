@@ -241,6 +241,10 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <script type="text/javascript">
+        function text_edit(id){
+            $content = $("#text_"+id).html();
+            $("#text_"+id).replaceWith("<input type='text' name='content' value='"+$content+"'>");
+        }
         function delete_comment(id, questionId){
             $.ajax({
                 type: 'post',
@@ -274,7 +278,11 @@
                 },
                 success: function(data) {
                     $("#vote_"+commentId).html(data['success']);
-                    $("#upvote_"+commentId).remove();
+                    // alert("dsdas");
+                    $("#a_"+commentId).attr('style', 'color: white !important');
+                    $("#a_"+commentId).css("pointer-events", "none");
+                    $("#a_"+commentId).css("cursor", "default");
+
                 },
                 error(data) {
                     console.log(data);
