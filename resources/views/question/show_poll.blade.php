@@ -150,11 +150,27 @@
                         <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $questionDetail->updated_at)->diffForHumans() }}</span>
                         <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer</a></span>
                         <span class="question-view"><i class="icon-user"></i>70 views</span>
-                        <span class="single-question-vote-result">+22</span>
-                        <ul class="single-question-vote">
-                            <li><a href="#" class="single-question-vote-down" title="Dislike"><i class="icon-thumbs-down"></i></a></li>
-                            <li><a href="#" class="single-question-vote-up" title="Like"><i class="icon-thumbs-up"></i></a></li>
-                        </ul>
+                        <div  id = "question_follow_parent">
+                            @if ($questionDetail->follow()->exists() == false)
+                                <a class="follow-button" onclick="follow_question( {{$questionDetail->id}}, {{ Auth::user()->id }})" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
+                              background-color: white;
+                              color: black;
+                              padding: 5px 15px;
+                              font-size: 11px;
+                              color: dodgerblue;
+                              cursor: pointer;"><i class="icon-ok"></i> Follow</a>
+                                <div class="clearfix"></div>
+                            @else
+                                <a class="unfollow-button" onclick="unfollow_question( {{$questionDetail->id}}, {{ Auth::user()->id }})" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
+                              background-color: white;
+                              color: black;
+                              padding: 5px 15px;
+                              font-size: 11px;
+                              color: dodgerblue;
+                              cursor: pointer;">Unfollow</a>
+                                <div class="clearfix"></div>
+                            @endif
+                        </div>
                         <div class="clearfix"></div>
                     </div>
                 </article>
@@ -384,6 +400,46 @@
                 success: function(data) {
                     $("#vote_"+commentId).html(data['success']);
                     $("#downvote_"+commentId).remove();
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function follow_question(questionId, followedUser){
+            $.ajax({
+                type: 'post',
+                url: "{{ route('question.follow') }}",
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    'question_id': questionId,
+                    'user_id': followedUser,
+                },
+                success: function(data) {
+                    toastr.success('successfully follow question!', 'Success Alert', {timeOut: 5000});
+                    $(".follow-button").remove();
+                    $("#question_follow_parent").html(data);
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function unfollow_question(questionId, unfollowedUser){
+            $.ajax({
+                type: 'post',
+                url: "{{ route('question.unfollow') }}",
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    'question_id': questionId,
+                    'user_id': unfollowedUser,
+                },
+                success: function(data) {
+                    toastr.success('successfully unfollow question!', 'Success Alert', {timeOut: 5000});
+                    $(".unfollow-button").remove();
+                    $("#question_follow_parent").html(data);
                 },
                 error(data) {
                     console.log(data);

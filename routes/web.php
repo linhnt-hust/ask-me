@@ -34,6 +34,7 @@ Route::resource('profile', 'User\ProfileController');
 Route::resource('question', 'Question\QuestionController');
 
 
+Route::post('/tag', 'Question\QuestionController@tagGenerate')->name('tag.generate');
 Route::get('/single/question', 'Question\QuestionController@getQuestionSingle')->name('question.single');
 Route::get('/poll/question', 'Question\QuestionController@getQuestionPoll')->name('question.poll');
 Route::get('/category/question', 'Question\QuestionController@questionCategory')->name('question.category');

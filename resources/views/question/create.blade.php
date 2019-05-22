@@ -101,11 +101,13 @@
                             
                         </div>
                         <div id="form-textarea">
-                            <p>
-                                <label class="required">Details<span>*</span></label>
-                                <textarea id="question-details" aria-required="true" cols="58" rows="8" name="details"></textarea>
-                                <span class="form-description">Type the description thoroughly and in detail .</span>
-                            </p>
+                                <p>
+                                    <label class="required">Details<span>*</span></label>
+                                    <textarea id="question-details" aria-required="true" cols="58" rows="8" name="details"></textarea>
+                                    <span class="form-description">Type the description thoroughly and in detail .</span>
+                                </p>
+                            <div class="button small lime-green-button custom-button" id="tag_generate">Auto generate Tag</div>
+                            {{--<a id="tag_generate" class="button small lime-green-button custom-button">Auto generate Tag</a>--}}
                         </div>
                         <p class="form-submit">
                             <input type="submit" id="publish-question" value="Publish Your Question" class="button color small submit">
@@ -122,11 +124,29 @@
 @endsection
 @section('page_scripts')
     @parent
+    <script src="https://algorithmia.com/v1/clients/js/algorithmia-0.2.0.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('input[type="file"]').change(function(e){
                 var fileName = e.target.files[0].name;
                 $("#buttonUpload").text(fileName);
+            });
+
+            $("#tag_generate").on('click', function(){
+                var input = $("#question-details").val();
+                Algorithmia.client("simIPNBrbvumkpUsto9/Oogy+2W1")
+                    .algo("nlp/AutoTag/1.0.1?timeout=300")
+                    .pipe(input)
+                    .then(function(output) {
+                        output.result.forEach(function(element) {
+                            var e = jQuery.Event("keypress");
+                            e.which = 13;
+                            $(".input :input").val(element);
+                            $(".input :input").trigger(e);
+                        });
+
+                        console.log(vl);
+                    });
             });
         });
     </script>
