@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": "^7.1.3",
+        "algorithmia/algorithmia": "^1.0",
         "cohensive/embed": "5.5.*",
         "fideloper/proxy": "^4.0",
         "jorenvanhocht/laravel-share": "^2.0",
