@@ -77,7 +77,7 @@ class User extends Authenticatable
         if (isset($data['avatar'])) {
             $data['image'] = $this->uploadImage($data['avatar'], User::FOLDER_IMAGE);
         } else {
-            $data['image'] = null;
+            $data['image'] = $user->avatar;
         }
 
         $input = [ 

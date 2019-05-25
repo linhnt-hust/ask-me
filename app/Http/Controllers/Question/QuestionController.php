@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\FollowHistory;
 use App\Models\Poll;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
@@ -227,8 +228,9 @@ class QuestionController extends Controller
     {
         $input = $request->all();
         FollowHistory::where('user_id', $input['user_id'])->where('question_id', $input['question_id'])->delete();
+        $userEmail = User::where('id', $input['user_id'])->pluck('email')->first();
         $output = "";
-        $output .='<a class="follow-button" onclick="follow_question('. $input['question_id'].', '. $input['user_id'].')" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
+        $output .='<a class="follow-button" data-toggle="modal" data-target=".bs-example-modal-lg" data-email=" '. $userEmail .' " style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
                               background-color: white;
                               color: black;
                               padding: 5px 15px;

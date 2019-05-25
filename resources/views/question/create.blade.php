@@ -141,11 +141,8 @@
                         output.result.forEach(function(element) {
                             var e = jQuery.Event("keypress");
                             e.which = 13;
-                            $(".input :input").val(element);
-                            $(".input :input").trigger(e);
+                            $(".input :input").val(element).trigger(e);
                         });
-
-                        console.log(vl);
                     });
             });
         });

@@ -249,6 +249,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
 @endsection
 @section ('page_scripts')
     @parent
@@ -260,7 +261,6 @@
             $('#id_delete').val($(this).data('id'));
             $('#deleteModal').modal('show');
             id = $('#id_delete').val();
-            console.log(id);
         });
         $('.modal-footer').on('click', '.delete', function() {
             $.ajax({
