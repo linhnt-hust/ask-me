@@ -2,6 +2,14 @@
 @section('title')
     Blog detail
 @endsection
+@section('page_header')
+    <link href="{{ asset('/zircos/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" >
+    <style>
+        a {
+            text-decoration: none !important;
+        }
+    </style>
+@endsection
 @section('content')
     <div class="breadcrumbs">
         <section class="container">
@@ -41,6 +49,17 @@
                             <div class="video_embed post-img">{!! $blogDetail->getVideoHtmlAttribute($blogDetail->url, 500, 500) !!}</div>
                         @endif
                         <h2 class="post-title"><span class="post-type"><i class="icon-film"></i></span>{{ $blogDetail->title }}</h2>
+                            @switch( $blogDetail->approve_status )
+                                @case (0)
+                                <div class="question-type-main" style="background-color: #ee9900"><i class="icon-spinner"></i>Pending</div>
+                                @break;
+                                @case (1)
+                                <div class="question-type-main" style="background-color: #2fa360"><i class="icon-ok"></i>Approved</div>
+                                @break;
+                                @case (2)
+                                <div class="question-type-main" style="background-color: red"><i class="icon-remove"></i>Denied</div>
+                                @break;
+                            @endswitch
                         <div class="post-meta">
                             <span class="meta-author"><i class="icon-user"></i><a href="#">{{ $blogDetail->user->name }}</a></span>
                             <span class="meta-date"><i class="icon-time"></i>{{ $blogDetail->created_at->format('M d, Y') }}</span>
@@ -172,18 +191,50 @@
                 @if ($blogDetail->approve_status != 1)
                     <br>
                     <div>
-                        {{--<a class="button small color" style="background-color: red; float: right" data-toggle="modal" data-target="#modal-confirm" data-url="{!! URL::route('question.destroy', ['id' => $questionDetail->id]) !!}">Delete</a>--}}
-                        <a href="{{route('blog.edit', $blogDetail->id)}}" class="button small color" style="background-color: #5bc0de; float: right">Edit</a>
+                        <a class="btn btn-danger delete-modal" style="background-color: red; float: right" data-toggle="modal" data-target=".bs-example-modal-lg" data-id="{{$blogDetail->id}}">
+                            <span id="delete_modal" class='glyphicon glyphicon-trash'></span>Delete</a>
+                        <a href="{{route('blog.edit', $blogDetail->id)}}" class="btn btn-success" style="background-color: #5bc0de; float: right">
+                            <span id="delete_modal" class='glyphicon glyphicon-edit'></span>Edit</a>
                     </div>
                 @endif
             </div><!-- End main -->
 
             @include('layouts.asside_bar')
 
+
         </div><!-- End row -->
     </section><!-- End container -->
+    <div class="modal fade bs-example-modal-lg" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myLargeModalLabel">Delete modal</h4>
+                </div>
+                <form class="form-confirm" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    {{ csrf_field() }}
+                    <input type="hidden" id="id_delete" name="blog_id">
+                    <input type="hidden" id="url_delete">
+                    <div class="modal-body">
+                        <h4 class="text-center">Are you sure you want to delete the following blogs?</h4>
+                        <p class="text-center">Bạn có chắc muốn xoá bài đăng này không?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger delete" data-dismiss="modal">
+                            <span id="delete_modal" class='glyphicon glyphicon-trash'></span> Delete
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='glyphicon glyphicon-remove'></span> Close
+                        </button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 @section('inline_scripts')
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>
     @parent
     <script type="text/javascript">
         var popupSize = {
@@ -292,6 +343,28 @@
                     }
                 });
                 $('#comment-body').val('');
+            });
+        });
+
+        $(document).on('click', '.delete-modal', function() {
+            $('#id_delete').val($(this).data('id'));
+            $('#deleteModal').modal('show');
+            id = $('#id_delete').val();
+        });
+        $('.modal-footer').on('click', '.delete', function() {
+            $.ajax({
+                type: 'DELETE',
+                url: '/blog/' + id,
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                },
+                success: function() {
+                    window.location.href = "http://localhost:8000/user/blog";
+                    toastr.success('Successfully delete Blog!', 'Success Alert', {timeOut: 5000});
+                },
+                error(data) {
+                    console.log(data);
+                }
             });
         });
     </script>

@@ -115,6 +115,7 @@
                                             @break;
                                         @endswitch
                                         <a href="{{ route('admin.blog') }}" class="btn btn-default waves-effect waves-light">Back</a>
+                                            <a class="btn btn-danger waves-effect waves-light delete-modal" style="float: right;" data-toggle="modal" data-target=".bs-example-modal-lg" data-id="{{$blog->id}}"><i class="fa fa-trash-o"></i> Delete</a>
                                     </div>
 
                                 </div> <!-- /col -->
@@ -174,4 +175,61 @@
         </div>
         <!-- end row -->
     </div>
+    <div class="modal fade bs-example-modal-lg" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myLargeModalLabel">Delete modal</h4>
+                </div>
+                <form class="form-confirm" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    {{ csrf_field() }}
+                    <input type="hidden" id="id_delete" name="question_id">
+                    <input type="hidden" id="url_delete">
+                    <div class="modal-body">
+                        <h4 class="text-center">Are you sure you want to delete the following blogs?</h4>
+                        <p class="text-center">Bạn có chắc muốn xoá bài đăng này không?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger delete" data-dismiss="modal">
+                            <span id="delete_modal" class='glyphicon glyphicon-trash'></span> Delete
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='glyphicon glyphicon-remove'></span> Close
+                        </button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+@endsection
+@section ('page_scripts')
+    @parent
+    <!-- toastr notifications -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).on('click', '.delete-modal', function() {
+            $('#id_delete').val($(this).data('id'));
+            $('#deleteModal').modal('show');
+            id = $('#id_delete').val();
+        });
+        $('.modal-footer').on('click', '.delete', function() {
+            $.ajax({
+                type: 'DELETE',
+                url: '/blog/' + id,
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                },
+                success: function() {
+                    window.location.href = "http://localhost:8000/admin/blog";
+                    toastr.success('Successfully delete Blog!', 'Success Alert', {timeOut: 5000});
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        });
+    </script>
 @endsection

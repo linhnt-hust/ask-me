@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Mail;
 
 class Question extends Model
 {
@@ -240,6 +241,8 @@ class Question extends Model
                             'verify_author' => $verifiedAuthor,
                             'note' => $note,
                         ]);
+
+
         return $builder;
     }
 
