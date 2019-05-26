@@ -65,6 +65,7 @@ class Question extends Model
         return $this->belongsTo('App\Models\Admin', 'verify_author', 'id');
     }
 
+
     public function comments()
     {
         return $this->morphMany('App\Models\Comment', 'commentable')->whereNull('parent_id');
