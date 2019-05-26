@@ -236,6 +236,14 @@
                     <div class="modal-body">
                         <h4 class="text-center">Are you sure you want to delete the following question?</h4>
                         <p class="text-center">Bạn có chắc muốn xoá câu hỏi này không?</p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group no-margin">
+                                    <label for="field-7" class="control-label">Reason:</label>
+                                    <textarea class="form-control autogrow" id="reason" placeholder="Write down reason to delete for owner" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 104px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-danger delete" data-dismiss="modal">
@@ -263,11 +271,15 @@
             id = $('#id_delete').val();
         });
         $('.modal-footer').on('click', '.delete', function() {
+            reason = $('#reason').val();
             $.ajax({
-                type: 'DELETE',
-                url: '/question/' + id,
+                type: 'post',
+                async: false,
+                url: "{{ route('admin.delete.question') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
+                    question_id: id,
+                    reason: reason,
                 },
                 success: function() {
                     window.location.href = "http://localhost:8000/admin/question";

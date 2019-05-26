@@ -25,6 +25,7 @@ class CreateBlogsTable extends Migration
             $table->dateTime('verified_at')->nullable();
             $table->longText('description');
             $table->string('url')->nullable();
+            $table->longText('delete_reason')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

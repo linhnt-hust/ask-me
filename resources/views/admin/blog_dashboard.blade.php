@@ -2,6 +2,9 @@
 @section('page_title')
     Blog Dashboard
 @endsection
+@section('page_header')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+@endsection
 @section('content')
     <div class="row">
         @if ($message = Session::get('success'))
@@ -115,6 +118,9 @@
         </div>
     </div>
 
+    <script>
+        var resizefunc = [];
+    </script>
     <div class="modal fade bs-example-modal-lg" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -122,35 +128,35 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title" id="myLargeModalLabel">Delete modal</h4>
                 </div>
-                <input type="hidden" id="id_delete">
-                <div class="modal-body">
-                    <h4 class="text-center">Are you sure you want to delete the following blog?</h4>
-                    <p class="text-center">Bạn có chắc muốn xoá blog này không?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger delete" data-dismiss="modal">
-                        <span id="delete_modal" class='glyphicon glyphicon-trash'></span> Delete
-                    </button>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal">
-                        <span class='glyphicon glyphicon-remove'></span> Close
-                    </button>
-                </div>
+                <form class="form-confirm" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    {{ csrf_field() }}
+                    <input type="hidden" id="id_delete" name="question_id">
+                    <input type="hidden" id="url_delete">
+                    <div class="modal-body">
+                        <h4 class="text-center">Are you sure you want to delete the following blog?</h4>
+                        <p class="text-center">Bạn có chắc muốn xoá bài đăng này không?</p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group no-margin">
+                                    <label for="field-7" class="control-label">Reason:</label>
+                                    <textarea class="form-control autogrow" id="reason" placeholder="Write down reason to delete for owner" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 104px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger delete" data-dismiss="modal">
+                            <span id="delete_modal" class='glyphicon glyphicon-trash'></span> Delete
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='glyphicon glyphicon-remove'></span> Close
+                        </button>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-    <script>
-        var resizefunc = [];
-    </script>
-
-    <!-- Load page level scripts-->
-    <script src="{{asset('/zircos/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
-    <script src="{{asset('/zircos/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
-    <script src="{{asset('/zircos/plugins/jvectormap/gdp-data.js')}}"></script>
-    <script src="{{asset('/zircos/plugins/jvectormap/jquery-jvectormap-us-aea-en.js')}}"></script>
-
-    <!-- Dashboard Init js -->
-    <script src="{{asset('/zircos/pages/jquery.blog-dashboard.js')}}"></script>
 @endsection
 @section ('page_scripts')
     @parent
@@ -162,17 +168,19 @@
             $('#id_delete').val($(this).data('id'));
             $('#deleteModal').modal('show');
             id = $('#id_delete').val();
-            console.log(id);
         });
         $('.modal-footer').on('click', '.delete', function() {
+            reason = $('#reason').val();
             $.ajax({
-                type: 'DELETE',
-                url: '/blog/' + id,
+                type: 'post',
+                url: "{{ route('admin.delete.blog') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
+                    blog_id : id,
+                    reason: reason,
                 },
                 success: function(data) {
-                    toastr.success('Successfully deleted Question!', 'Success Alert', {timeOut: 5000});
+                    toastr.success('Successfully deleted Blog!', 'Success Alert', {timeOut: 5000});
                     $('#itemBlog_' + data['id']).remove();
                 },
                 error(data) {

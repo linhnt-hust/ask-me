@@ -212,19 +212,32 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title" id="myLargeModalLabel">Delete modal</h4>
                 </div>
-                <input type="hidden" id="id_delete">
-                <div class="modal-body">
-                    <h4 class="text-center">Are you sure you want to delete the following question?</h4>
-                    <p class="text-center">Bạn có chắc muốn xoá câu hỏi này không?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger delete" data-dismiss="modal">
-                        <span id="delete_modal" class='glyphicon glyphicon-trash'></span> Delete
-                    </button>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal">
-                        <span class='glyphicon glyphicon-remove'></span> Close
-                    </button>
-                </div>
+                <form class="form-confirm" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    {{ csrf_field() }}
+                    <input type="hidden" id="id_delete" name="question_id">
+                    <input type="hidden" id="url_delete">
+                    <div class="modal-body">
+                        <h4 class="text-center">Are you sure you want to delete the following question?</h4>
+                        <p class="text-center">Bạn có chắc muốn xoá câu hỏi này không?</p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group no-margin">
+                                    <label for="field-7" class="control-label">Reason:</label>
+                                    <textarea class="form-control autogrow" id="reason" placeholder="Write down reason to delete for owner" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 104px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger delete" data-dismiss="modal">
+                            <span id="delete_modal" class='glyphicon glyphicon-trash'></span> Delete
+                        </button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">
+                            <span class='glyphicon glyphicon-remove'></span> Close
+                        </button>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -250,18 +263,20 @@
 
     <script type="text/javascript">
         $(document).on('click', '.delete-modal', function() {
-            // $('.modal-title').text('Delete');
             $('#id_delete').val($(this).data('id'));
             $('#deleteModal').modal('show');
             id = $('#id_delete').val();
-            console.log(id);
             });
             $('.modal-footer').on('click', '.delete', function() {
+                reason = $('#reason').val();
                 $.ajax({
-                    type: 'DELETE',
-                    url: '/question/' + id,
+                    type: 'post',
+                    async: false,
+                    url: "{{ route('admin.delete.question') }}",
                     data: {
                         '_token': $('input[name=_token]').val(),
+                        question_id: id,
+                        reason: reason,
                     },
                     success: function(data) {
                         toastr.success('Successfully deleted Question!', 'Success Alert', {timeOut: 5000});

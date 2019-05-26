@@ -69,7 +69,7 @@
                         <span class="question-view"><i class="icon-user"></i>70 views</span>
                         <div  id = "question_follow_parent">
                         @if ($questionDetail->follow()->exists() == false)
-                            <a class="follow-button" data-question-id="{{$questionDetail->id}}" data-email="{{ $user->email }}" data-follow-user="{{ Auth::user()->id }}" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
+                            <a class="follow-button" data-question-id="{{$questionDetail->id}}" data-email="{{ Auth::user()->email }}" data-follow-user="{{ Auth::user()->id }}" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
                               background-color: white;
                               color: black;
                               padding: 5px 15px;
@@ -279,7 +279,7 @@
                         <button type="submit" class="btn btn-success follow" data-dismiss="modal">
                             <span id="delete_modal" class='glyphicon glyphicon-check'></span> Yes
                         </button>
-                        <a class="btn btn-warning" href="{{route('profile.edit', $user->id)}}">
+                        <a class="btn btn-warning" href="{{route('profile.edit', Auth::user()->id)}}">
                             <span class='glyphicon glyphicon-remove'></span> No
                         </a>
                     </div>
@@ -354,26 +354,6 @@
                 }
             });
         }
-
-        {{--function follow_question(questionId, followedUser){--}}
-            {{--$.ajax({--}}
-                {{--type: 'post',--}}
-                {{--url: "{{ route('question.follow') }}",--}}
-                {{--data: {--}}
-                    {{--'_token': $('input[name=_token]').val(),--}}
-                    {{--'question_id': questionId,--}}
-                    {{--'user_id': followedUser,--}}
-                {{--},--}}
-                {{--success: function(data) {--}}
-                    {{--toastr.success('you are now following this question! You will get an email everytime this question got new update', 'Success Alert', {timeOut: 5000});--}}
-                    {{--$(".follow-button").remove();--}}
-                    {{--$("#question_follow_parent").html(data);--}}
-                {{--},--}}
-                {{--error(data) {--}}
-                    {{--console.log(data);--}}
-                {{--}--}}
-            {{--});--}}
-        {{--}--}}
 
         function unfollow_question(questionId, unfollowedUser){
             $.ajax({
