@@ -41,6 +41,11 @@ class Admin extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function verifiedQuestions()
+    {
+        return $this->hasMany('App\Models\Question','verify_author', 'id');
+    }
+
     public function uploadImage($file, $dir)
     {
         $time = Carbon::now();

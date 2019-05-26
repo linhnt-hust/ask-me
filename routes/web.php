@@ -59,7 +59,6 @@ Route::resource('blog','Blog\BlogController');
 Route::post('/reply/store', 'Comment\CommentController@replyStore')->name('reply.add');
 
 Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function (){
-
     Route::get('/', 'Auth\LoginController@showLoginForm')->name('admin.login');
     Route::get('/index','AdminController@index')->name('admin.index');
     Route::post('/login', 'Auth\LoginController@login');
@@ -72,6 +71,7 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function (){
     Route::get('/blog', 'Admincontroller@getBlogToApprove')->name('admin.blog');
     Route::get('/blog/detail/{id}','Admincontroller@detailBlogApprove')->name('admin.blog.detail');
     Route::post('/blog/verify', 'AdminController@verifyBlog')->name('admin.blog.verify');
-    Route::get('/delete/question/{id}','AdminController@deleteQuestion' )->name('admin.delete.question');
+    Route::post('/delete/question/','AdminController@deleteQuestion' )->name('admin.delete.question');
+    Route::post('/blog/question/','AdminController@deleteBlog' )->name('admin.delete.blog');
 });
 

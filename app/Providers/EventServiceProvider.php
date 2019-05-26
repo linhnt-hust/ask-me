@@ -18,6 +18,15 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        'App\Events\SendMailApprove' => [
+            'App\Listeners\SendMailApproveQuestion',
+        ],
+        'App\Events\SendMailDeleteQuestion' => [
+            'App\Listeners\SendMailDeleteQuestionAdmin',
+        ],
+        'App\Events\SendMailDeleteBlog' => [
+            'App\Listeners\SendMailDeleteBlogAdmin',
+        ],
     ];
 
     /**

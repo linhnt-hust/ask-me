@@ -29,6 +29,7 @@ class CreateQuestionsTable extends Migration
             $table->integer('verify_author')->nullable();
             $table->longText('note')->nullable();
             $table->dateTime('verified_at')->nullable();
+            $table->longText('delete_reason')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

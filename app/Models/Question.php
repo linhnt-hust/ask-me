@@ -60,6 +60,11 @@ class Question extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function verifyAuthor()
+    {
+        return $this->belongsTo('App\Models\Admin', 'verify_author', 'id');
+    }
+
     public function comments()
     {
         return $this->morphMany('App\Models\Comment', 'commentable')->whereNull('parent_id');
@@ -241,9 +246,32 @@ class Question extends Model
                             'verify_author' => $verifiedAuthor,
                             'note' => $note,
                         ]);
-
-
+        $this->sendMailApprove($request);
         return $builder;
+    }
+
+    public function sendMailApprove($request)
+    {
+        $question = Question::find($request['question_id']);
+        if (isset($question->user->email)
+            && filter_var($question->user->email, FILTER_VALIDATE_EMAIL)) {
+            event(new \App\Events\SendMailApprove($question));
+        }
+    }
+
+    public function sendMailDeteleQuestion($id)
+    {
+        $question = Question::find($id);
+        try {
+            if (isset($question->user->email)
+                && filter_var($question->user->email, FILTER_VALIDATE_EMAIL)) {
+                event(new \App\Events\SendMailDeleteQuestion($question));
+            }
+        } catch (Exception $e) {
+            \Log::info($e);
+            return false;
+        }
+        return true;
     }
 
     public function closeQuestion($id)

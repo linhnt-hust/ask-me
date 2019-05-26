@@ -3,7 +3,13 @@
     Question Details
 @endsection
 @section('page_header')
+    <link href="{{ asset('/zircos/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <style>
+        a {
+            text-decoration: none !important;
+        }
+    </style>
 @endsection
 @section('content')
     <div class="breadcrumbs">
@@ -152,7 +158,7 @@
                         <span class="question-view"><i class="icon-user"></i>70 views</span>
                         <div  id = "question_follow_parent">
                             @if ($questionDetail->follow()->exists() == false)
-                                <a class="follow-button" onclick="follow_question( {{$questionDetail->id}}, {{ Auth::user()->id }})" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
+                                <a class="follow-button" data-question-id="{{$questionDetail->id}}" data-email="{{ Auth::user()->email }}" data-follow-user="{{ Auth::user()->id }}" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
                               background-color: white;
                               color: black;
                               padding: 5px 15px;
@@ -341,11 +347,45 @@
 
         </div><!-- End row -->
     </section><!-- End container -->
+
+    <div class="modal fade bs-example-modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myLargeModalLabel">Confirm modal</h4>
+                </div>
+                <form class="form-confirm" method="post">
+                    <input type="hidden" id="question_id" />
+                    <input type="hidden" id="follow_user_id">
+                    {{ csrf_field() }}
+                    <input type="hidden" id="id_delete" name="question_id">
+                    <div class="modal-body">
+                        <h4 class="text-center">Is this your email address?</h4>
+                        <p class="text-center">Đây có phải địa chỉ email của bạn ko?</p>
+                        <div>
+                            <input type="text" class="text-center" style="margin:0 auto;" id="user_email" disabled>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success follow" data-dismiss="modal">
+                            <span id="delete_modal" class='glyphicon glyphicon-check'></span> Yes
+                        </button>
+                        <a class="btn btn-warning" href="{{route('profile.edit', Auth::user()->id)}}">
+                            <span class='glyphicon glyphicon-remove'></span> No
+                        </a>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 @endsection
 @section('inline_scripts')
     @parent
     <!-- toastr notifications -->
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         function delete_comment(id, questionId){
             $.ajax({
@@ -407,25 +447,25 @@
             });
         }
 
-        function follow_question(questionId, followedUser){
-            $.ajax({
-                type: 'post',
-                url: "{{ route('question.follow') }}",
-                data: {
-                    '_token': $('input[name=_token]').val(),
-                    'question_id': questionId,
-                    'user_id': followedUser,
-                },
-                success: function(data) {
-                    toastr.success('successfully follow question!', 'Success Alert', {timeOut: 5000});
-                    $(".follow-button").remove();
-                    $("#question_follow_parent").html(data);
-                },
-                error(data) {
-                    console.log(data);
-                }
-            });
-        }
+        {{--function follow_question(questionId, followedUser){--}}
+            {{--$.ajax({--}}
+                {{--type: 'post',--}}
+                {{--url: "{{ route('question.follow') }}",--}}
+                {{--data: {--}}
+                    {{--'_token': $('input[name=_token]').val(),--}}
+                    {{--'question_id': questionId,--}}
+                    {{--'user_id': followedUser,--}}
+                {{--},--}}
+                {{--success: function(data) {--}}
+                    {{--toastr.success('successfully follow question!', 'Success Alert', {timeOut: 5000});--}}
+                    {{--$(".follow-button").remove();--}}
+                    {{--$("#question_follow_parent").html(data);--}}
+                {{--},--}}
+                {{--error(data) {--}}
+                    {{--console.log(data);--}}
+                {{--}--}}
+            {{--});--}}
+        {{--}--}}
 
         function unfollow_question(questionId, unfollowedUser){
             $.ajax({
@@ -511,6 +551,35 @@
                     }
                 });
             });
+
+            $(document).on('click', '.follow-button', function() {
+                $("#user_email").val($(this).data('email'));
+                $('#follow_user_id').val($(this).data('follow-user'));
+                $('#question_id').val($(this).data('question-id'));
+                var questionId = $('#question_id').val();
+                var followedUser = $("#follow_user_id").val();
+                $('#editModal').modal('show');
+                $('.modal-footer').on('click', '.follow', function() {
+                    $.ajax({
+                        type: 'post',
+                        url: "{{ route('question.follow') }}",
+                        data: {
+                            '_token': $('input[name=_token]').val(),
+                            'question_id': questionId,
+                            'user_id': followedUser,
+                        },
+                        success: function(data) {
+                            toastr.success('you are now following this question! You will get an email everytime this question got new update', 'Success Alert', {timeOut: 5000});
+                            $(".follow-button").remove();
+                            $("#question_follow_parent").html(data);
+                        },
+                        error(data) {
+                            console.log(data);
+                        }
+                    });
+                });
+            });
+
         });
     </script>
 @stop

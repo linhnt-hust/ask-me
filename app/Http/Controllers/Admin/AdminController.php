@@ -98,8 +98,35 @@ class AdminController extends Controller
         }
     }
 
-    public function deleteQuestion($id)
+    public function deleteQuestion(Request $request)
     {
-        dd($id);
+        $question = Question::findOrFail($request['question_id']);
+        $question->delete_reason = $request['reason'];
+        $question->save();
+        $question->delete();
+
+        if (isset($question->user->email)
+            && filter_var($question->user->email, FILTER_VALIDATE_EMAIL)) {
+            event(new \App\Events\SendMailDeleteQuestion($question));
+        }
+
+        return response()->json($question);
+
+    }
+
+    public function deleteBlog(Request $request)
+    {
+        $blog = Blog::findOrFail($request['blog_id']);
+        $blog->delete_reason = $request['reason'];
+        $blog->save();
+        $blog->delete();
+
+        if (isset($blog->user->email)
+            && filter_var($blog->user->email, FILTER_VALIDATE_EMAIL)) {
+            event(new \App\Events\SendMailDeleteBlog($blog));
+        }
+
+        return response()->json($blog);
+
     }
 }
