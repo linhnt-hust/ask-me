@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SendMailApprove' => [
             'App\Listeners\SendMailApproveQuestion',
         ],
+        'App\Events\SendMailApproveBlog' => [
+            'App\Listeners\SendMailApproveBlogAdmin',
+        ],
         'App\Events\SendMailDeleteQuestion' => [
             'App\Listeners\SendMailDeleteQuestionAdmin',
         ],
