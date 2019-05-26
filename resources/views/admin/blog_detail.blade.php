@@ -96,7 +96,7 @@
                             <!-- /Form-email -->
                             <input name="verify_author" type="hidden" value="{{ Auth::guard('admin')->user()->id }}">
                             <input name="approve_status" type="hidden" value="{{ $blog->approve_status }}">
-                            <input name="question_id" type="hidden" value="{{ $blog->id }}">
+                            <input name="blog_id" type="hidden" value="{{ $blog->id }}">
                             <div class="form-group">
                                 <textarea class="form-control" id="message2" name="note" rows="5" placeholder="Message" required=""></textarea>
                             </div>

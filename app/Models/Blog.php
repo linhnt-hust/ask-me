@@ -68,6 +68,11 @@ class Blog extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function verifyAuthor()
+    {
+        return $this->belongsTo('App\Models\Admin', 'verify_author', 'id');
+    }
+
     public function comments()
     {
         return $this->morphMany('App\Models\Comment', 'commentable')->whereNull('parent_id');
@@ -243,18 +248,28 @@ class Blog extends Model
             $approvedActual = 2;
         }
 
-        $questionId = $request['question_id'];
+        $blogId = $request['blog_id'];
         $verifiedAuthor = $request['verify_author'];
         $note = $request['note'] ?? null;
 
-        $builder = Blog::where('id', $questionId)
+        $builder = Blog::where('id', $blogId)
             ->update([
                 'verified_at' => $verifiedAt,
                 'approve_status' => $approvedActual,
                 'verify_author' => $verifiedAuthor,
                 'note' => $note,
             ]);
+        $this->sendMailApproveBlog($request);
         return $builder;
+    }
+
+    public function sendMailApproveBlog($request)
+    {
+        $blog = Blog::find($request['blog_id']);
+        if (isset($blog->user->email)
+            && filter_var($blog->user->email, FILTER_VALIDATE_EMAIL)) {
+            event(new \App\Events\SendMailApproveBlog($blog));
+        }
     }
 
     public function getAllBlogs()

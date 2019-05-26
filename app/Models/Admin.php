@@ -46,6 +46,11 @@ class Admin extends Authenticatable
         return $this->hasMany('App\Models\Question','verify_author', 'id');
     }
 
+    public function verifiedBlogs()
+    {
+        return $this->hasMany('App\Models\Blog','verify_author', 'id');
+    }
+
     public function uploadImage($file, $dir)
     {
         $time = Carbon::now();
