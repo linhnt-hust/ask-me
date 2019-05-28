@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FeedBackRequest;
 use App\Models\Blog;
+use App\Models\FeedBack;
 use App\Models\PollVoteHistory;
 use Auth;
 use App\Models\Question;
@@ -30,6 +32,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
+        visits($questionDetail,'tag1')->increment();
         $relatedQuestions = $this->modelQuestion->getRelatedQuestion($id);
         if ($questionDetail->question_poll == 0) {
             return view('user.question.question_detail', compact('questionDetail', 'user','relatedQuestions'));
@@ -85,5 +88,18 @@ class UserController extends Controller
         $blogs = $this->modelBlog->searchBlog($input);
         $search = $request->get('search_text');
         return view('search_result',compact('questions','search','blogs'));
+    }
+
+    public function contract()
+    {
+        $user = Auth::user();
+        return vieW('contract_us', compact('user'));
+    }
+    public function feedback(Request $request)
+    {
+        $input = $request->all();
+        $feedback = FeedBack::create($input);
+
+        return response()->json($feedback);
     }
 }

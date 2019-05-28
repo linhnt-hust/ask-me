@@ -1,11 +1,28 @@
 @extends('admin.layouts.master')
-@section('page_title')
-    Blog Dashboard
-@endsection
 @section('page_header')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 @endsection
 @section('content')
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="btn-group pull-right">
+                    <ol class="breadcrumb hide-phone p-0 m-0">
+                        <li>
+                            <a href="{{ route('admin.index') }}">Ask-me</a>
+                        </li>
+                        <li class="active">
+                            Blog Dashboard
+                        </li>
+                    </ol>
+                </div>
+                <h4 class="page-title"> Blogs Statistical</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+
     <div class="row">
         @if ($message = Session::get('success'))
             <div class="alert alert-icon alert-info alert-dismissible fade in" role="alert">
@@ -114,6 +131,9 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="text-right">
+                {{ $blogs->render('admin.elements.pagination') }}
             </div>
         </div>
     </div>

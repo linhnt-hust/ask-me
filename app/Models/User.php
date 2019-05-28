@@ -50,6 +50,21 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Question');
     }
 
+    public function userBlogs()
+    {
+        return $this->hasMany('App\Models\Blog');
+    }
+
+    public function userComments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    public function follow()
+    {
+        return $this->hasMany('App\Models\FollowHistory');
+    }
+
     public function uploadImage($file, $dir)
     {
         $time = Carbon::now();
@@ -62,7 +77,7 @@ class User extends Authenticatable
 
     public function getNewUser()
     {
-        return User::orderBy('created_at','DESC')->paginate(5);
+        return User::orderBy('created_at','DESC')->paginate(10);
     }
 
     public function updateUser(array $data , $id)

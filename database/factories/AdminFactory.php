@@ -20,7 +20,7 @@ $factory->define(App\Models\Admin::class, function (Faker $faker) {
         'password' => Hash::make(123456),
         'remember_token' => str_random(10),
         'address' => $faker->address,
-        'avatar' => $faker->image($dir='public/avatar/admins', $width=640, $height=480, null, false),
+        'avatar' => $faker->image($dir='public/avatar/admins', $width=120, $height=120, null, false),
         'description' => $faker->sentence(50),
         'created_at' => new DateTime(),
         'updated_at' => new DateTime(),

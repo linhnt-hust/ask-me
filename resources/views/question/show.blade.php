@@ -66,28 +66,30 @@
                         <span class="question-category"><a href="{{route('question.category.detail',optional($questionDetail->category)->id )}}"><i class="icon-folder-close"></i>{{ optional($questionDetail->category)->name_category }}</a></span>
                         <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $questionDetail->updated_at)->diffForHumans() }}</span>
                         <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer</a></span>
-                        <span class="question-view"><i class="icon-user"></i>70 views</span>
-                        <div  id = "question_follow_parent">
-                        @if ($questionDetail->follow()->exists() == false)
-                            <a class="follow-button" data-question-id="{{$questionDetail->id}}" data-email="{{ Auth::user()->email }}" data-follow-user="{{ Auth::user()->id }}" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
-                              background-color: white;
-                              color: black;
-                              padding: 5px 15px;
-                              font-size: 11px;
-                              color: dodgerblue;
-                              cursor: pointer;"><i class="icon-ok"></i> Follow</a>
-                            <div class="clearfix"></div>
-                        @else
-                            <a class="unfollow-button" onclick="unfollow_question( {{$questionDetail->id}}, {{ Auth::user()->id }})" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
-                              background-color: white;
-                              color: black;
-                              padding: 5px 15px;
-                              font-size: 11px;
-                              color: dodgerblue;
-                              cursor: pointer;">Unfollow</a>
-                            <div class="clearfix"></div>
+                        <span class="question-view"><i class="icon-user"></i>{{ visits($questionDetail)->count() }} views</span>
+                        @if ($questionDetail->user->id != Auth::user()->id)
+                            <div  id = "question_follow_parent">
+                                @if ($questionDetail->follow()->exists() == false)
+                                    <a class="follow-button" data-question-id="{{$questionDetail->id}}" data-email="{{ Auth::user()->email }}" data-follow-user="{{ Auth::user()->id }}" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
+                                      background-color: white;
+                                      color: black;
+                                      padding: 5px 15px;
+                                      font-size: 11px;
+                                      color: dodgerblue;
+                                      cursor: pointer;"><i class="icon-ok"></i> Follow</a>
+                                    <div class="clearfix"></div>
+                                @else
+                                    <a class="unfollow-button" onclick="unfollow_question( {{$questionDetail->id}}, {{ Auth::user()->id }})" style="float: right; border: 2px solid dodgerblue ;border-radius: 5px;
+                                      background-color: white;
+                                      color: black;
+                                      padding: 5px 15px;
+                                      font-size: 11px;
+                                      color: dodgerblue;
+                                      cursor: pointer;">Unfollow</a>
+                                    <div class="clearfix"></div>
+                                @endif
+                            </div>
                         @endif
-                        </div>
                     </div>
                 </article>
 

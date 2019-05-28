@@ -43,15 +43,14 @@
 
 				<div class="page-content">
                     <div class="boxedtitle page-title"><h2>Edit Profile</h2></div>
-                    
-					<div class="form-style form-style-4">
-						<form action="{{ route('profile.update', $user->id ) }}" method="POST" enctype="multipart/form-data">
-                            {{ method_field('PATCH') }}   
+					<div class="form-style form-style-4 ">
+						<form class="form-edit-user" action="{{ route('profile.update', $user->id ) }}" method="POST" enctype="multipart/form-data">
+                            {{ method_field('PATCH') }}
                             {{ csrf_field() }}
 							<div class="form-inputs clearfix">
 								<p>
 									<label>First Name</label>
-									<input type="text" name="name" value="{{ $user->name }}">
+									<input type="text" id="name" name="name" value="{{ $user->name }}">
 								</p>
 								<p>
 									<label>Address</label>
@@ -59,7 +58,7 @@
 								</p>
 								<p>
 									<label class="required">E-Mail<span>*</span></label>
-									<input type="email" name="email" value="{{ $user->email }}">
+									<input type="email" id="mail" name="email" value="{{ $user->email }}">
 								</p>
 								<p>
 									<label>Website</label>
@@ -135,6 +134,24 @@
                 var fileName = e.target.files[0].name;
                 $("#buttonUpload").text(fileName);
             });
+            $(".form-edit-user").submit(function () {
+                var thisform = $(this);
+                $('.required-error',thisform).remove();
+                var name	= $("#name").val();
+                var mail = $("#mail").val();
+                console.log(name);
+                if (name == "") {
+                    $("#name").after('<span class="form-description required-error">Please fill the required field.</span>');
+                }else {
+                    $("#name").parent().find('.required-error').remove();
+                }
+                if (mail == "") {
+                    $("#mail").after('<span class="form-description required-error">Please fill the required field.</span>');
+                }else {
+                    $("#mail").parent().find('.required-error').remove();
+                }
+            });
+
         });
     </script>
 @endsection

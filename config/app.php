@@ -156,6 +156,8 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         Cohensive\Embed\EmbedServiceProvider::class,
         Jorenvh\Share\Providers\ShareServiceProvider::class,
+        awssat\Visits\VisitsServiceProvider::class,
+        Kryptonit3\Counter\CounterServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -219,6 +221,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Embed' => Cohensive\Embed\Facades\Embed::class,
         'Share' => Jorenvh\Share\ShareFacade::class,
+        'Counter' => Kryptonit3\Counter\Facades\CounterFacade::class,
     ],
 
 ];

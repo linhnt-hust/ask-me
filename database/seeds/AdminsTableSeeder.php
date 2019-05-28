@@ -17,7 +17,7 @@ class AdminsTableSeeder extends Seeder
         DB::table('admins')->truncate();
 
         $users = [
-            ['adminRin', 'admin@gmail.com', '111111', 'truong dinh, ha noi', 'users.png', 'dang cong san viet nam quang vinh muon nam'],
+            ['adminRin', 'admin@gmail.com', '111111', 'truong dinh, ha noi', 'admin.png', 'dang cong san viet nam quang vinh muon nam'],
         ];
 
         foreach ($users as $user) {

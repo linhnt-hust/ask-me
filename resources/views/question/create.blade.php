@@ -37,7 +37,7 @@
             <div class="page-content ask-question">
                 <div class="boxedtitle page-title"><h2>Ask Question</h2></div>
                                 
-                <div class="form-style form-style-3" id="question-submit">
+                <div class="form-style form-style-3 form-create" id="question-submit">
                     <form action="{{ route('question.store') }}" method="POST" role="form" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <input type="hidden" name="user_id" value="{{ $user->id }}">
@@ -55,7 +55,7 @@
                             <p>
                                 <label class="required">Category<span>*</span></label>
                                 <span class="styled-select">
-                                    <select name="category">
+                                    <select name="category" id="category">
                                         <option value="">Select a Category</option>
                                         @foreach( $categories as $category)
                                             <option value="{{$category->id}}"> {{ $category->name_category }}</option>
@@ -107,7 +107,6 @@
                                     <span class="form-description">Type the description thoroughly and in detail .</span>
                                 </p>
                             <div class="button small lime-green-button custom-button" id="tag_generate">Auto generate Tag</div>
-                            {{--<a id="tag_generate" class="button small lime-green-button custom-button">Auto generate Tag</a>--}}
                         </div>
                         <p class="form-submit">
                             <input type="submit" id="publish-question" value="Publish Your Question" class="button color small submit">
@@ -144,6 +143,29 @@
                             $(".input :input").val(element).trigger(e);
                         });
                     });
+            });
+
+            $(".form-create").submit(function () {
+                var thisform = $(this);
+                jQuery('.required-error',thisform).remove();
+                var title	= $("#question-title").val();
+                var category = $("#category").val();
+                var details	= $("#question-details").val();
+                if (title == "") {
+                    $("#question-title").after('<span class="form-description required-error">Please fill the required field.</span>');
+                }else {
+                    $("#question-title").parent().find('.required-error').remove();
+                }
+                if (category == "") {
+                    $("#category").parent().after('<span class="form-description required-error">Please fill the required field.</span>');
+                }else {
+                    $("#category").parent().find('.required-error').remove();
+                }
+                if (details == "") {
+                    $("#question-details").after('<span class="form-description required-error">Please fill the required field.</span>');
+                }else {
+                    $("#question-details").parent().find('.required-error').remove();
+                }
             });
         });
     </script>

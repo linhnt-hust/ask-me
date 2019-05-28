@@ -1,11 +1,31 @@
 @extends('admin.layouts.master')
-@section('page_title')
-    Blog Detail
-@endsection
 @section('page_header')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 @endsection
 @section('content')
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="btn-group pull-right">
+                    <ol class="breadcrumb hide-phone p-0 m-0">
+                        <li>
+                            <a href="{{ route('admin.index') }}">Ask-me</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.question') }}">Blogs Statistical</a>
+                        </li>
+                        <li class="active">
+                            Blog Detail
+                        </li>
+                    </ol>
+                </div>
+                <h4 class="page-title"> Blog Detail</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+
     <div class="blog-list-wrapper">
         <div class="row">
             @if ($message = Session::get('error'))

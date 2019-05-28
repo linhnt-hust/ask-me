@@ -85,6 +85,7 @@ class QuestionController extends Controller
     {
         $user = Auth::user();
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
+        visits($questionDetail)->increment();
         $relatedQuestions = $this->modelQuestion->getRelatedQuestion($id);
         if ($questionDetail->question_poll == 0) {
             return view('question.show', compact('questionDetail', 'user', 'relatedQuestions'));

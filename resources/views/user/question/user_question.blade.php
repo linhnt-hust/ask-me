@@ -1,12 +1,15 @@
 @extends('layouts.master')
-@section('page_header')
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-@endsection
 @section('title')
     User Questions
 @endsection
 @section('page_header')
+    <link href="{{ asset('/zircos/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <style>
+        a {
+            text-decoration: none !important;
+        }
+    </style>
 @endsection
 @section('content')
     <div class="breadcrumbs">

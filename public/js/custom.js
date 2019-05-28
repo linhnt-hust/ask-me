@@ -819,43 +819,7 @@ jQuery(document).ready(function($) {
 	
 	/* Contact us */
 	
-	jQuery(".form-js").submit(function () {
-		var thisform = jQuery(this);
-		jQuery('.required-error',thisform).remove();
-		var name	= jQuery("#name").val();
-		var mail	= jQuery("#mail").val();
-		var url		= jQuery("#url").val();
-		var message	= jQuery("#message").val();
-		var data = {'name':name,'mail':mail,'url':url,'message':message};
-		if (name == "") {
-			jQuery("#name").after('<span class="form-description required-error">Please fill the required field.</span>');
-		}else {
-			jQuery("#name").parent().find('.required-error').remove();
-		}
-		if (mail == "") {
-			jQuery("#mail").after('<span class="form-description required-error">Please fill the required field.</span>');
-		}else {
-			jQuery("#mail").parent().find('.required-error').remove();
-		}
-		if (message == "") {
-			jQuery("#message").after('<span class="form-description required-error">Please fill the required field.</span>');
-		}else {
-			jQuery("#message").parent().find('.required-error').remove();
-		}
-		
-		if (name != "" && mail != "" && message != "") {
-			jQuery.post("contact_us.php",data,function (result) {
-				if (result == "done") {
-					thisform.prepend("<div class='alert-message success'><i class='icon-ok'></i><p><span>Thank you "+name+"!</span><br> We'll be in touch real soon .</p></div>");
-					jQuery("#name").val("");
-					jQuery("#mail").val("");
-					jQuery("#url").val("");
-					jQuery("#message").val("");
-				}
-			});
-		}
-		return false;
-	});
+
 	
 	/* Widget Menu jQuery */
 	
