@@ -89,5 +89,6 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function (){
     Route::post('/delete/category','AdminController@deleteCategory' )->name('admin.delete.category');
     Route::post('/search/category','AdminController@searchCategory' )->name('admin.category.search');
     Route::post('/add/category','AdminController@addCategory' )->name('admin.add.category');
+    Route::post('/update/category','AdminController@updateCategory' )->name('admin.update.category');
 });
 

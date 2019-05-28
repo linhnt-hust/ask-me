@@ -82,7 +82,7 @@
                                     {{ $category->created_at }}
                                 </td>
                                 <td>
-                                    <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                    <a href="#" class="table-action-btn h3 edit-modal" data-toggle="modal" data-target="#con-close-modal-edit" data-id = "{{$category->id}}" data-name="{{$category->name_category}}"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
                                     <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = "{{$category->id}}"><i class="mdi mdi-close-box-outline text-danger"></i></a>
                                 </td>
                             </tr>
@@ -152,6 +152,30 @@
             </div>
         </div>
     </div><!-- /.modal -->
+
+    <div id="con-close-modal-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Edit Category</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="id_edit">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="name_category" class="control-label">Name Category</label>
+                            <input type="text" class="form-control" id="name_category" name="name_category" style="color: #00aff0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success waves-effect waves-light update-category" data-dismiss="modal">Update</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.modal -->
 @endsection
 @section ('page_scripts')
     @parent
@@ -173,6 +197,31 @@
                 success: function(data) {
                     toastr.success('Successfully deleted category!', 'Success Alert', {timeOut: 5000});
                     $('#deleteItem_' + data['id']).remove();
+                },
+                error(data) {
+                    console.log(data);
+                }
+            });
+        });
+
+        $(document).on('click', '.edit-modal', function() {
+            $('#id_edit').val($(this).data('id'));
+            $('input[name="name_category"]').val($(this).data('name'));
+        });
+        $('.modal-footer').on('click', '.update-category', function() {
+            var id = $('#id_edit').val();
+            var name = $('input[name="name_category"]').val();
+            $.ajax({
+                type: 'post',
+                url: "{{ route('admin.update.category') }}",
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    id: id,
+                    name_category: name,
+                },
+                success: function(data) {
+                    toastr.success('Successfully update category!', 'Success Alert', {timeOut: 5000});
+                    $('#deleteItem_' + data['id']).replaceWith(data['output']);
                 },
                 error(data) {
                     console.log(data);
