@@ -107,7 +107,7 @@ class Blog extends Model
 
     public function getBlogToApprove()
     {
-        $query = Blog::orderBy('created_at', 'DESC')->get();
+        $query = Blog::orderBy('created_at', 'DESC')->paginate(10);
         return $query;
     }
 

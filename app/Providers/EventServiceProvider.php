@@ -30,6 +30,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SendMailDeleteBlog' => [
             'App\Listeners\SendMailDeleteBlogAdmin',
         ],
+        'App\Events\SendMailCloseOpenQuestion' => [
+            'App\Listeners\SendMailOpenCloseAnnounce',
+        ],
     ];
 
     /**

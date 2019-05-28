@@ -22,6 +22,8 @@ Route::group(['prefix' => '/user'], function (){
     Route::get('/question/close/{id}', 'User\UserController@closeQuestion')->name('user.question.close');
     Route::get('/question/reopen/{id}', 'User\UserController@reopenQuestion')->name('user.question.reopen');
     Route::post('/search', 'User\UserController@search')->name('user.search');
+    Route::get('/contract', 'User\UserController@contract')->name('contract');
+    Route::post('/feedback', 'User\UserController@feedback')->name('feedback');
 });
 
 Auth::routes();
@@ -63,6 +65,9 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function (){
     Route::get('/index','AdminController@index')->name('admin.index');
     Route::post('/login', 'Auth\LoginController@login');
     Route::post('logout', 'Auth\LoginController@logout')->name('admin.logout');
+    Route::get('/profile', 'AdminController@showProfile')->name('admin.profile');
+    Route::get('/profile/{id}/edit', 'AdminController@editProfile')->name('admin.profile.edit');
+    Route::post('/profile/update', 'AdminController@updateProfile')->name('admin.profile.update');
     Route::get('register', 'Auth\RegisterController@showRegistrationForm');
     Route::post('register', 'Auth\RegisterController@register')->name('admin.register');
     Route::get('/question', 'Admincontroller@getQuestionToApprove')->name('admin.question');

@@ -134,9 +134,8 @@
                             <li class="text-center">
                                 <h5>Hi, {{Auth::guard('admin')->user()->name}}</h5>
                             </li>
-                            <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Profile</a></li>
-                            <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Settings</a></li>
-                            <li><a href="javascript:void(0)"><i class="ti-lock m-r-5"></i> Lock screen</a></li>
+                            <li><a href="{{ route('admin.profile') }}"><i class="ti-user m-r-5"></i> Profile</a></li>
+                            <li><a href="{{ route('admin.profile.edit',Auth::guard('admin')->user()->id) }}"><i class="ti-settings m-r-5"></i> Edit Profile</a></li>
                             <li><a href="javascript:void(0)" href="{{ route('logout') }}" onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();"><i class="ti-power-off m-r-5"></i> Logout</a></li>
                             <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
@@ -171,7 +170,7 @@
                 <ul class="navigation-menu">
 
                     <li class="has-submenu">
-                        <a href="{{ route('admin.index') }}"><i class="mdi mdi-view-dashboard"></i>Dashboard</a>
+                        <a href="{{ route('admin.index') }}"><i class="mdi mdi-view-dashboard"></i>Users</a>
                     </li>
 
                     <li class="has-submenu">
@@ -180,6 +179,7 @@
                     <li class="has-submenu">
                         <a href="{{ route('admin.blog') }}"><i class="mdi mdi-book-multiple"></i>Blogs</a>
                     </li>
+
                 </ul>
                 <!-- End navigation menu -->
             </div> <!-- end #navigation -->

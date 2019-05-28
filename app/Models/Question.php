@@ -65,7 +65,6 @@ class Question extends Model
         return $this->belongsTo('App\Models\Admin', 'verify_author', 'id');
     }
 
-
     public function comments()
     {
         return $this->morphMany('App\Models\Comment', 'commentable')->whereNull('parent_id');
@@ -104,7 +103,7 @@ class Question extends Model
 
     public function getQuestionToApprove()
     {
-        $query = Question::orderBy('created_at', 'DESC')->get();
+        $query = Question::orderBy('created_at', 'DESC')->paginate(10);
         return $query;
     }
 
@@ -279,14 +278,34 @@ class Question extends Model
     {
         $question = Question::find($id);
         $data['is_solved'] = 1 ;
-        return $question->update($data);
+        $question->update($data);
+        $this->sendMailCloseOpenQuestion($question);
+        return $question;
     }
 
     public function reopenQuestion($id)
     {
         $question = Question::find($id);
         $data['is_solved'] = 0 ;
-        return $question->update($data);
+        $question->update($data);
+        $this->sendMailCloseOpenQuestion($question);
+        return $question;
+    }
+
+    public function sendMailCloseOpenQuestion($question)
+    {
+        foreach ($question->follow as $follow) {
+            try {
+                if (isset($follow->user->email)
+                    && filter_var($follow->user->email, FILTER_VALIDATE_EMAIL)) {
+                    event(new \App\Events\SendMailCloseOpenQuestion($question, $follow->user));
+                }
+            } catch (Exception $e) {
+                \Log::info($e);
+                return false;
+            }
+            return true;
+        }
     }
 
     public function getRecentQuestions()

@@ -82,7 +82,7 @@
                     <div class="col-md-10 col-md-offset-1">
                         <div class="card-box">
                             <div class="">
-                                <form action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data" class="form-create-blog">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                                     <div class="form-group m-b-20">
@@ -110,12 +110,12 @@
                                     </div>
                                     <div class="form-group m-b-20">
                                         <label>Description</label>
-                                        <textarea class="summernote" name="summetnoteInput">
+                                        <textarea class="summernote" id="details" name="summetnoteInput">
                                         </textarea>
                                     </div>
                                     <div class="form-group m-b-20">
                                         <label>Post Category</label>
-                                        <select class="select2 form-control select2-multiple" name="categories[]" multiple="multiple" data-placeholder="Choose ...">
+                                        <select class="select2 form-control select2-multiple" id="category" name="categories[]" multiple="multiple" data-placeholder="Choose ...">
                                             <option value="">Select a Category</option>
                                             @foreach( $categories as $category)
                                                 <option value="{{$category->id}}"> {{ $category->name_category }}</option>

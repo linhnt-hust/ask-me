@@ -7,9 +7,11 @@
     "require": {
         "php": "^7.1.3",
         "algorithmia/algorithmia": "^1.0",
+        "awssat/laravel-visits": "^1.5",
         "cohensive/embed": "5.5.*",
         "fideloper/proxy": "^4.0",
         "jorenvanhocht/laravel-share": "^2.0",
+        "kryptonit3/counter": "5.2.*",
         "laracasts/flash": "^3.0",
         "laravel/framework": "5.7.*",
         "laravel/socialite": "^4.1",

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Blog;
 use App\Models\BlogUploaded;
 use App\Models\Category;
@@ -41,6 +42,25 @@ class AdminController extends Controller
     {
         $newUsers = $this->modelUser->getNewUser();
         return view('admin.index', compact('newUsers'));
+    }
+
+    public function showProfile()
+    {
+        $admin = Auth::guard('admin')->user();
+        return view('admin.profile.show', compact('admin'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $input = $request->all();
+        $profile = Admin::find($input['id']);
+        $profile->update([
+            'name' => $input['name'],
+            'email'=>$input['email'],
+            'address' => $input['address'],
+            'description' => $input['description'],
+        ]);
+        return response()->json($profile);
     }
 
     public function getQuestionToApprove()
@@ -127,6 +147,5 @@ class AdminController extends Controller
         }
 
         return response()->json($blog);
-
     }
 }

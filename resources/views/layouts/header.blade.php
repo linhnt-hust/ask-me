@@ -28,7 +28,7 @@
                     </ul>
                 </li>
                 @endguest
-                <li><a href="contact_us.html">Contact Us</a></li>
+                <li><a href="{{ route('contract') }}">Contact Us</a></li>
             </ul>
         </nav>
     </section><!-- End container -->
