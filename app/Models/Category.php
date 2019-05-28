@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Question;
 
 class Category extends Model
 {
@@ -33,7 +34,12 @@ class Category extends Model
 
     public function getAllCategories()
     {
-        return Category::orderBy('name_category')->get();
+        return Category::orderBy('name_category')->paginate(10);
+    }
+
+    public function getRecentCategories()
+    {
+        return Category::orderBy('created_at', 'DESC')->paginate(10);
     }
 
     public function getAllCategoriesQuestion()
@@ -44,5 +50,10 @@ class Category extends Model
     public function searchCategory($input)
     {
         return Category::where('name_category', 'LIKE', '%' . $input['search'] . '%')->paginate(6);
+    }
+
+    public function countQuestionByCategory($categoryId)
+    {
+        return Question::where('category_id', $categoryId)->get()->count();
     }
 }

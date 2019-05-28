@@ -148,4 +148,338 @@ class AdminController extends Controller
 
         return response()->json($blog);
     }
+
+    public function deleteUser(Request $request)
+    {
+        $user = User::find($request['user_id']);
+        $user->delete();
+        return response()->json($user);
+    }
+
+    public function searchUser(Request $request)
+    {
+        $input = $request->all();
+        $users = $this->modelUser->searchUser($input);
+        $output = "";
+        if ($users)
+            foreach ($users as $user)
+            {
+                $output .= '<tr id="deleteItem_'.$user->id.'">
+                            <td>
+                                <img src="/avatar/users/'.$user->avatar.'" alt="contact-img" title="contact-img" class="img-circle thumb-sm" />
+                            </td>
+
+                            <td>
+                                '.$user->name.'
+                            </td>
+
+                            <td>
+                                <a href="#">'.$user->email.'</a>
+                            </td>
+
+                            <td>
+                                '. $user->userQuestions->count() .'
+                            </td>
+                            <td>
+                                '. $user->userBlogs->count() .'
+                            </td>
+                            <td>
+                                '. $user->userComments->count() .'
+                            </td>
+                            <td>
+                                '. $user->created_at .'
+                            </td>
+                            <td>
+                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $user->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                            </td>
+                        </tr>';
+            }
+        return Response($output);
+    }
+
+    public function oldestUser(Request $request)
+    {
+        $oldUsers = $this->modelUser->getOldUser();
+        $output = "";
+        if ($oldUsers)
+            foreach ($oldUsers as $user)
+            {
+                $output .= '<tr id="deleteItem_'.$user->id.'">
+                            <td>
+                                <img src="/avatar/users/'.$user->avatar.'" alt="contact-img" title="contact-img" class="img-circle thumb-sm" />
+                            </td>
+
+                            <td>
+                                '.$user->name.'
+                            </td>
+
+                            <td>
+                                <a href="#">'.$user->email.'</a>
+                            </td>
+
+                            <td>
+                                '. $user->userQuestions->count() .'
+                            </td>
+                            <td>
+                                '. $user->userBlogs->count() .'
+                            </td>
+                            <td>
+                                '. $user->userComments->count() .'
+                            </td>
+                            <td>
+                                '. $user->created_at .'
+                            </td>
+                            <td>
+                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $user->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                            </td>
+                        </tr>';
+            }
+        return Response($output);
+    }
+
+    public function newestUser(Request $request)
+    {
+        $oldUsers = $this->modelUser->getNewUser();
+        $output = "";
+        if ($oldUsers)
+            foreach ($oldUsers as $user)
+            {
+                $output .= '<tr id="deleteItem_'.$user->id.'">
+                            <td>
+                                <img src="/avatar/users/'.$user->avatar.'" alt="contact-img" title="contact-img" class="img-circle thumb-sm" />
+                            </td>
+
+                            <td>
+                                '.$user->name.'
+                            </td>
+
+                            <td>
+                                <a href="#">'.$user->email.'</a>
+                            </td>
+
+                            <td>
+                                '. $user->userQuestions->count() .'
+                            </td>
+                            <td>
+                                '. $user->userBlogs->count() .'
+                            </td>
+                            <td>
+                                '. $user->userComments->count() .'
+                            </td>
+                            <td>
+                                '. $user->created_at .'
+                            </td>
+                            <td>
+                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $user->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                            </td>
+                        </tr>';
+            }
+        return Response($output);
+    }
+
+    public function mostQuestionUser(Request $request)
+    {
+        $oldUsers = $this->modelUser->getMostQuestionsUser();
+        $output = "";
+        if ($oldUsers)
+            foreach ($oldUsers as $user)
+            {
+                $output .= '<tr id="deleteItem_'.$user->id.'">
+                            <td>
+                                <img src="/avatar/users/'.$user->avatar.'" alt="contact-img" title="contact-img" class="img-circle thumb-sm" />
+                            </td>
+
+                            <td>
+                                '.$user->name.'
+                            </td>
+
+                            <td>
+                                <a href="#">'.$user->email.'</a>
+                            </td>
+
+                            <td>
+                                '. $user->userQuestions->count() .'
+                            </td>
+                            <td>
+                                '. $user->userBlogs->count() .'
+                            </td>
+                            <td>
+                                '. $user->userComments->count() .'
+                            </td>
+                            <td>
+                                '. $user->created_at .'
+                            </td>
+                            <td>
+                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $user->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                            </td>
+                        </tr>';
+            }
+        return Response($output);
+    }
+
+    public function mostBlogUser(Request $request)
+    {
+        $oldUsers = $this->modelUser->getMostBlogsUser();
+        $output = "";
+        if ($oldUsers)
+            foreach ($oldUsers as $user)
+            {
+                $output .= '<tr id="deleteItem_'.$user->id.'">
+                            <td>
+                                <img src="/avatar/users/'.$user->avatar.'" alt="contact-img" title="contact-img" class="img-circle thumb-sm" />
+                            </td>
+
+                            <td>
+                                '.$user->name.'
+                            </td>
+
+                            <td>
+                                <a href="#">'.$user->email.'</a>
+                            </td>
+
+                            <td>
+                                '. $user->userQuestions->count() .'
+                            </td>
+                            <td>
+                                '. $user->userBlogs->count() .'
+                            </td>
+                            <td>
+                                '. $user->userComments->count() .'
+                            </td>
+                            <td>
+                                '. $user->created_at .'
+                            </td>
+                            <td>
+                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $user->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                            </td>
+                        </tr>';
+            }
+        return Response($output);
+    }
+
+    public function mostCommentUser(Request $request)
+    {
+        $oldUsers = $this->modelUser->getMostCommentsUser();
+        $output = "";
+        if ($oldUsers)
+            foreach ($oldUsers as $user)
+            {
+                $output .= '<tr id="deleteItem_'.$user->id.'">
+                            <td>
+                                <img src="/avatar/users/'.$user->avatar.'" alt="contact-img" title="contact-img" class="img-circle thumb-sm" />
+                            </td>
+
+                            <td>
+                                '.$user->name.'
+                            </td>
+
+                            <td>
+                                <a href="#">'.$user->email.'</a>
+                            </td>
+
+                            <td>
+                                '. $user->userQuestions->count() .'
+                            </td>
+                            <td>
+                                '. $user->userBlogs->count() .'
+                            </td>
+                            <td>
+                                '. $user->userComments->count() .'
+                            </td>
+                            <td>
+                                '. $user->created_at .'
+                            </td>
+                            <td>
+                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $user->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                            </td>
+                        </tr>';
+            }
+        return Response($output);
+    }
+
+    public function getCategoriesList()
+    {
+        $categories = $this->modelCategory->getRecentCategories();
+        return view('admin.category.index', compact('categories'));
+    }
+
+    public function deleteCategory(Request $request)
+    {
+        $category = Category::find($request['category_id']);
+        $category->delete();
+        return response()->json($category);
+    }
+
+    public function searchCategory(Request $request)
+    {
+        $input = $request->all();
+        $categories = $this->modelCategory->searchCategory($input);
+        $output = "";
+        if ($categories)
+            foreach ($categories as $key => $category)
+            {
+                $key = $key+1;
+                $output .= '<tr id="deleteItem_'.$category->id.'">
+                            <td>
+                                '.$key.'
+                            </td>
+
+                            <td>
+                                '.$category->name_category.'
+                            </td>
+
+                            <td>
+                                '. $category->countQuestionByCategory($category->id).'
+                            </td>
+                            <td>
+                                '. $category->blog->count() .'
+                            </td>
+                            <td>
+                                '. $category->created_at .'
+                            </td>
+                            <td>
+                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $category->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                            </td>
+                        </tr>';
+            }
+        return Response($output);
+    }
+
+    public function addCategory(Request $request)
+    {
+        $input = $request->all();
+        $category = Category::create($input);
+        $output = "";
+        $output .= '<tr id="deleteItem_'.$category->id.'">
+                            <td>
+                                '.$category->id.'
+                            </td>
+
+                            <td>
+                                '.$category->name_category.'
+                            </td>
+
+                            <td>
+                                '. $category->countQuestionByCategory($category->id).'
+                            </td>
+                            <td>
+                                '. $category->blog->count() .'
+                            </td>
+                            <td>
+                                '. $category->created_at.'
+                            </td>
+                            <td>
+                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $category->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                            </td>
+                        </tr>';
+        return response()->json($output);
+    }
 }
