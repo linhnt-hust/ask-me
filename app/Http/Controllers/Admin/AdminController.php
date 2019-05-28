@@ -444,7 +444,7 @@ class AdminController extends Controller
                                 '. $category->created_at .'
                             </td>
                             <td>
-                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 edit-modal" data-toggle="modal" data-target="#con-close-modal-edit" data-id = "'.$category->id.'" data-name="'.$category->name_category.'"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
                                 <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $category->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
                             </td>
                         </tr>';
@@ -476,10 +476,42 @@ class AdminController extends Controller
                                 '. $category->created_at.'
                             </td>
                             <td>
-                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 edit-modal" data-toggle="modal" data-target="#con-close-modal-edit" data-id = "'.$category->id.'" data-name="'.$category->name_category.'"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
                                 <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $category->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
                             </td>
                         </tr>';
         return response()->json($output);
+    }
+
+    public function updateCategory(Request $request)
+    {
+        $input = $request->all();
+        $category = Category::find($input['id']);
+        $category->update(['name_category' => $input['name_category']]);
+        $output = "";
+        $output .= '<tr id="deleteItem_'.$category->id.'">
+                            <td>
+                                '.$category->id.'
+                            </td>
+
+                            <td>
+                                '.$category->name_category.'
+                            </td>
+
+                            <td>
+                                '. $category->countQuestionByCategory($category->id).'
+                            </td>
+                            <td>
+                                '. $category->blog->count() .'
+                            </td>
+                            <td>
+                                '. $category->created_at.'
+                            </td>
+                            <td>
+                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = " '. $category->id .'"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                            </td>
+                        </tr>';
+        return response()->json(['id' => $category->id, 'output'=>$output]);
     }
 }
