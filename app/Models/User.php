@@ -111,4 +111,31 @@ class User extends Authenticatable
         ];
         return $user->update($input);
     }
+
+    public function searchUser($input)
+    {
+        return User::where('name', 'LIKE', '%' . $input['search'] . '%')
+            ->orWhere('email', 'LIKE', '%' .$input['search'] . '%')
+            ->paginate(10);
+    }
+
+    public function getOldUser()
+    {
+        return User::orderBy('created_at','ASC')->paginate(10);
+    }
+
+    public function getMostQuestionsUser()
+    {
+        return User::withCount("userQuestions as questions")->orderBy('questions', 'DESC')->paginate(10);
+    }
+
+    public function getMostBlogsUser()
+    {
+        return User::withCount("userBlogs as blogs")->orderBy('blogs', 'DESC')->paginate(10);
+    }
+
+    public function getMostCommentsUser()
+    {
+        return User::withCount("userComments as comments")->orderBy('comments', 'DESC')->paginate(10);
+    }
 }

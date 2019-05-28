@@ -78,5 +78,16 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function (){
     Route::post('/blog/verify', 'AdminController@verifyBlog')->name('admin.blog.verify');
     Route::post('/delete/question/','AdminController@deleteQuestion' )->name('admin.delete.question');
     Route::post('/blog/question/','AdminController@deleteBlog' )->name('admin.delete.blog');
+    Route::post('/delete/user','AdminController@deleteUser' )->name('admin.delete.user');
+    Route::post('/search/user','AdminController@searchUser' )->name('user.search');
+    Route::post('/sort/user/oldest','AdminController@oldestUser' )->name('sort.user.oldest');
+    Route::post('/sort/user/newest','AdminController@newestUser' )->name('sort.user.newest');
+    Route::post('/sort/user/mostQuestion','AdminController@mostQuestionUser' )->name('sort.user.mostQuestion');
+    Route::post('/sort/user/mostBlog','AdminController@mostBlogUser' )->name('sort.user.mostBlog');
+    Route::post('/sort/user/mostComment','AdminController@mostCommentUser' )->name('sort.user.mostComment');
+    Route::get('/category', 'Admincontroller@getCategoriesList')->name('admin.category');
+    Route::post('/delete/category','AdminController@deleteCategory' )->name('admin.delete.category');
+    Route::post('/search/category','AdminController@searchCategory' )->name('admin.category.search');
+    Route::post('/add/category','AdminController@addCategory' )->name('admin.add.category');
 });
 

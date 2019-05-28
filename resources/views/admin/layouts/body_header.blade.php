@@ -168,7 +168,6 @@
             <div id="navigation">
                 <!-- Navigation Menu-->
                 <ul class="navigation-menu">
-
                     <li class="has-submenu">
                         <a href="{{ route('admin.index') }}"><i class="mdi mdi-view-dashboard"></i>Users</a>
                     </li>
@@ -178,6 +177,9 @@
                     </li>
                     <li class="has-submenu">
                         <a href="{{ route('admin.blog') }}"><i class="mdi mdi-book-multiple"></i>Blogs</a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="{{ route('admin.category') }}"><i class="mdi mdi-layers"></i>Categories</a>
                     </li>
 
                 </ul>

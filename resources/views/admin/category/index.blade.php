@@ -13,11 +13,11 @@
                             <a href="{{ route('admin.index') }}">Ask-me</a>
                         </li>
                         <li class="active">
-                            Users
+                            Categories
                         </li>
                     </ol>
                 </div>
-                <h4 class="page-title"> User Statistical</h4>
+                <h4 class="page-title"> Category Statistical</h4>
             </div>
         </div>
     </div>
@@ -31,14 +31,14 @@
                         <form>
                             <div class="form-group search-box">
                                 <input type="text" id="search_input" class="form-control product-search" placeholder="Search here...">
-                                <button type="submit" class="btn btn-search search-user"><i class="fa fa-search"></i></button>
+                                <button type="submit" class="btn btn-search search-category"><i class="fa fa-search"></i></button>
                             </div>
                         </form>
                     </div>
-                    {{--<div class="col-sm-4">--}}
-                        {{--<a href="#custom-modal" class="btn btn-success btn-rounded btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal"--}}
-                           {{--data-overlaySpeed="200" data-overlayColor="#36404a"><i class="md md-add"></i> Add New Agent</a>--}}
-                    {{--</div>--}}
+                    <div class="col-sm-4">
+                    <a href="#custom-modal" class="btn btn-success btn-rounded btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal"
+                    data-overlaySpeed="200" data-overlayColor="#36404a" data-toggle="modal" data-target="#con-close-modal"><i class="md md-add"></i> Add New Category</a>
+                    </div>
                 </div>
 
                 <div class="table-responsive">
@@ -53,53 +53,39 @@
                                         <li><a href="#" id="oldest">Oldest</a></li>
                                         <li><a href="#" id="most-question">Most Questions User</a></li>
                                         <li><a href="#" id="most-blog">Most Blogs User</a></li>
-                                        <li><a href="#" id="most-comment">Most Comments User</a></li>
-                                        {{--<li class="divider"></li>--}}
-                                        {{--<li><a href="#">Separated link</a></li>--}}
                                     </ul>
                                 </div>
                             </th>
                             <th>Name</th>
-                            <th>Email</th>
                             <th>Questions</th>
                             <th>Blogs</th>
-                            <th>Comments</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody class="item-user">
-                        @foreach($newUsers as $user)
-                        <tr id="deleteItem_{{$user->id}}">
-                            <td>
-                                <img src="{{ asset('/avatar/users/'.$user->avatar) }}" alt="contact-img" title="contact-img" class="img-circle thumb-sm" />
-                            </td>
-
-                            <td>
-                                {{ $user->name }}
-                            </td>
-
-                            <td>
-                                <a href="#">{{$user->email}}</a>
-                            </td>
-
-                            <td>
-                                {{ $user->userQuestions->count() }}
-                            </td>
-                            <td>
-                                {{ $user->userBlogs->count() }}
-                            </td>
-                            <td>
-                                {{ $user->userComments->count() }}
-                            </td>
-                            <td>
-                                {{ $user->created_at }}
-                            </td>
-                            <td>
-                                <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
-                                <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = "{{$user->id}}"><i class="mdi mdi-close-box-outline text-danger"></i></a>
-                            </td>
-                        </tr>
+                        @foreach($categories as $category)
+                            <tr id="deleteItem_{{$category->id}}">
+                                <td>
+                                    {{ $loop->iteration }}
+                                </td>
+                                <td>
+                                    {{ $category->name_category }}
+                                </td>
+                                <td>
+                                    {{ $category->countQuestionByCategory($category->id) }}
+                                </td>
+                                <td>
+                                    {{ $category->blog->count() }}
+                                </td>
+                                <td>
+                                    {{ $category->created_at }}
+                                </td>
+                                <td>
+                                    <a href="#" class="table-action-btn h3"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                    <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = "{{$category->id}}"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                                </td>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>
@@ -107,7 +93,7 @@
             </div> <!-- end card-box -->
 
             <div class="text-right">
-                {{ $newUsers->render('admin.elements.pagination') }}
+                {{ $categories->render('admin.elements.pagination') }}
             </div>
 
         </div> <!-- end col -->
@@ -126,8 +112,8 @@
                     {{ csrf_field() }}
                     <input type="hidden" id="id_delete" name="question_id">
                     <div class="modal-body">
-                        <h4 class="text-center">Are you sure you want to delete the following user?</h4>
-                        <p class="text-center">Bạn có chắc muốn xoá người dùng này không?</p>
+                        <h4 class="text-center">Are you sure you want to delete the following category?</h4>
+                        <p class="text-center">Bạn có chắc muốn xoá chủ đề này không?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-danger delete" data-dismiss="modal">
@@ -141,28 +127,51 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+
+    <div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Add New Category</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="field-3" class="control-label">Name Category</label>
+                            <input type="text" class="form-control" id="name_category" placeholder="Write down name of category that you want" style="color: #00aff0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success waves-effect waves-light add-category" data-dismiss="modal">Save changes</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.modal -->
 @endsection
 @section ('page_scripts')
     @parent
     <!-- toastr notifications -->
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
     <script type="text/javascript">
         $(document).on('click', '.delete-modal', function() {
             $('#id_delete').val($(this).data('id'));
-            $('#deleteModal').modal('show');
             id = $('#id_delete').val();
         });
         $('.modal-footer').on('click', '.delete', function() {
             $.ajax({
                 type: 'post',
-                url: "{{ route('admin.delete.user') }}",
+                url: "{{ route('admin.delete.category') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
-                    user_id: id,
+                    category_id: id,
                 },
                 success: function(data) {
-                    toastr.success('Successfully deleted user!', 'Success Alert', {timeOut: 5000});
+                    toastr.success('Successfully deleted category!', 'Success Alert', {timeOut: 5000});
                     $('#deleteItem_' + data['id']).remove();
                 },
                 error(data) {
@@ -171,12 +180,12 @@
             });
         });
 
-        $('.search-user').on('click', function(event){
+        $('.search-category').on('click', function(event){
             event.preventDefault();
             var search = $('#search_input').val();
             $.ajax({
                 type: 'post',
-                url: "{{ route('user.search') }}",
+                url: "{{ route('admin.category.search') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
                     'search': search,
@@ -190,84 +199,18 @@
             });
         });
 
-        $('#oldest').on('click', function(event){
-            event.preventDefault();
+        $('.modal-footer').on('click', '.add-category', function() {
+            var name = $('#name_category').val();
             $.ajax({
                 type: 'post',
-                url: "{{ route('sort.user.oldest') }}",
+                url: "{{ route('admin.add.category') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
+                    name_category: name,
                 },
                 success: function(data) {
-                    $('.item-user').html(data);
-                },
-                error(data) {
-                    console.log(data);
-                }
-            });
-        });
-
-        $('#newest').on('click', function(event){
-            event.preventDefault();
-            $.ajax({
-                type: 'post',
-                url: "{{ route('sort.user.newest') }}",
-                data: {
-                    '_token': $('input[name=_token]').val(),
-                },
-                success: function(data) {
-                    $('.item-user').html(data);
-                },
-                error(data) {
-                    console.log(data);
-                }
-            });
-        });
-
-        $('#most-question').on('click', function(event){
-            event.preventDefault();
-            $.ajax({
-                type: 'post',
-                url: "{{ route('sort.user.mostQuestion') }}",
-                data: {
-                    '_token': $('input[name=_token]').val(),
-                },
-                success: function(data) {
-                    $('.item-user').html(data);
-                },
-                error(data) {
-                    console.log(data);
-                }
-            });
-        });
-
-        $('#most-blog').on('click', function(event){
-            event.preventDefault();
-            $.ajax({
-                type: 'post',
-                url: "{{ route('sort.user.mostBlog') }}",
-                data: {
-                    '_token': $('input[name=_token]').val(),
-                },
-                success: function(data) {
-                    $('.item-user').html(data);
-                },
-                error(data) {
-                    console.log(data);
-                }
-            });
-        });
-
-        $('#most-comment').on('click', function(event){
-            event.preventDefault();
-            $.ajax({
-                type: 'post',
-                url: "{{ route('sort.user.mostComment') }}",
-                data: {
-                    '_token': $('input[name=_token]').val(),
-                },
-                success: function(data) {
-                    $('.item-user').html(data);
+                    toastr.success('Successfully add category!', 'Success Alert', {timeOut: 5000});
+                    $('.item-user').append(data);
                 },
                 error(data) {
                     console.log(data);
