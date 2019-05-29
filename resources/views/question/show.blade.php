@@ -66,7 +66,7 @@
                         <span class="question-category"><a href="{{route('question.category.detail',optional($questionDetail->category)->id )}}"><i class="icon-folder-close"></i>{{ optional($questionDetail->category)->name_category }}</a></span>
                         <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $questionDetail->updated_at)->diffForHumans() }}</span>
                         <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer</a></span>
-                        <span class="question-view"><i class="icon-user"></i>{{ visits($questionDetail)->count() }} views</span>
+                        {{--<span class="question-view"><i class="icon-user"></i>{{ visits($questionDetail)->count() }} views</span>--}}
                         @if ($questionDetail->user->id != Auth::user()->id)
                             <div  id = "question_follow_parent">
                                 @if ($questionDetail->follow()->exists() == false)

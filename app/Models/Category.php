@@ -29,7 +29,7 @@ class Category extends Model
 
     public function categoryQuestion()
     {
-        return $this->belongsTo('App\Models\Question');
+        return $this->hasMany('App\Models\Question');
     }
 
     public function getAllCategories()
@@ -55,5 +55,25 @@ class Category extends Model
     public function countQuestionByCategory($categoryId)
     {
         return Question::where('category_id', $categoryId)->get()->count();
+    }
+
+    public function getNewCategory()
+    {
+        return Category::orderBy('created_at','DESC')->paginate(10);
+    }
+
+    public function getOldCategory()
+    {
+        return Category::orderBy('created_at','ASC')->paginate(10);
+    }
+
+    public function getMostQuestionCategory()
+    {
+        return Category::withCount("categoryQuestion as questions")->orderBy('questions', 'DESC')->paginate(10);
+    }
+
+    public function getMostBlogCategory()
+    {
+        return Category::withCount("blog as blogs")->orderBy('blogs', 'DESC')->paginate(10);
     }
 }

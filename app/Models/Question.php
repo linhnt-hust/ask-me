@@ -47,7 +47,7 @@ class Question extends Model
 
     public function category()
     {
-        return $this->hasOne('App\Models\Category', 'id', 'category_id');
+        return $this->belongsTo('App\Models\Category');
     }
 
     public function tag()
@@ -384,7 +384,7 @@ class Question extends Model
 
     public function getMostReportQuestion()
     {
-        return Question::orderBy('reports', 'DESC')->limit(6)->get();
+        return Question::orderBy('reports', 'DESC')->limit(10)->get();
     }
 
     public function getRelatedQuestion($id)

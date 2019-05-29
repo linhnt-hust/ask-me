@@ -108,9 +108,8 @@
                             </th>
                             <td>
                                 <h5 class="m-0" > {{ $top->name_category }}</h5>
-                                {{--<p class="m-0 text-muted font-13"><small> </small></p>--}}
                             </td>
-                            <td class="text-center"> {{ $top->questionAmount }}</td>
+                            <td class="text-center"> {{ $top->questions }}</td>
                         </tr>
                     @endforeach
                     </tbody>

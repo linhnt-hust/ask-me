@@ -90,5 +90,20 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function (){
     Route::post('/search/category','AdminController@searchCategory' )->name('admin.category.search');
     Route::post('/add/category','AdminController@addCategory' )->name('admin.add.category');
     Route::post('/update/category','AdminController@updateCategory' )->name('admin.update.category');
+    Route::post('/sort/category/newest','AdminController@newestCategory' )->name('sort.category.newest');
+    Route::post('/sort/category/oldest','AdminController@oldestCategory' )->name('sort.category.oldest');
+    Route::post('/sort/category/mostQuestion','AdminController@mostQuestionCategory' )->name('sort.category.mostQuestion');
+    Route::post('/sort/category/mostBlog','AdminController@mostBlogCategory' )->name('sort.category.mostBlog');
+
+    Route::get('/tag', 'Admincontroller@getTagsList')->name('admin.tag');
+    Route::post('/delete/tag','AdminController@deleteTag' )->name('admin.delete.tag');
+    Route::post('/update/tag','AdminController@updateTag' )->name('admin.update.tag');
+    Route::post('/search/tag','AdminController@searchTag' )->name('admin.tag.search');
+    Route::post('/add/tag','AdminController@addTag' )->name('admin.add.tag');
+    Route::post('/sort/tag/newest','AdminController@newestTag' )->name('sort.tag.newest');
+    Route::post('/sort/tag/oldest','AdminController@oldestTag' )->name('sort.tag.oldest');
+    Route::post('/sort/tag/mostQuestion','AdminController@mostQuestionTag' )->name('sort.tag.mostQuestion');
+
+
 });
 
