@@ -37,6 +37,11 @@ class Category extends Model
         return Category::orderBy('name_category')->paginate(10);
     }
 
+    public function getAllCategory()
+    {
+        return Category::orderBy('name_category')->get();
+    }
+
     public function getRecentCategories()
     {
         return Category::orderBy('created_at', 'DESC')->paginate(10);

@@ -54,7 +54,7 @@ class QuestionController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $categories = $this->modelCategory->getAllCategories();
+        $categories = $this->modelCategory->getAllCategory();
         return view('question.create', compact('user', 'categories'));
     }
 
@@ -239,6 +239,28 @@ class QuestionController extends Controller
                               cursor: pointer;"><i class="icon-ok"></i> Follow</a>
                             <div class="clearfix"></div>';
 
+        return response()->json($output);
+    }
+
+    public function recommendTagByCategory(Request $request)
+    {
+        $input = $request->all();
+        $recommendTags = $this->modelTag->recommendTagByCategory($input['id']);
+        $output = "";
+        $nameTags = [];
+        if (!empty($recommendTags)){
+            foreach ($recommendTags as $id)
+            {
+                $nameTags[] = Tag::where('id', $id)->pluck('name_tag')->first();
+            }
+        }
+
+        if (!empty($nameTags)){
+            foreach ($nameTags as $tag)
+            {
+                $output .=''.$tag.', ';
+            }
+        }
         return response()->json($output);
     }
 }
