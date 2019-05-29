@@ -181,7 +181,9 @@
                     <li class="has-submenu">
                         <a href="{{ route('admin.category') }}"><i class="mdi mdi-layers"></i>Categories</a>
                     </li>
-
+                    <li class="has-submenu">
+                        <a href="{{ route('admin.tag') }}"><i class="mdi mdi-diamond"></i>Tags</a>
+                    </li>
                 </ul>
                 <!-- End navigation menu -->
             </div> <!-- end #navigation -->

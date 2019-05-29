@@ -32,7 +32,6 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $questionDetail = $this->modelQuestion->getQuestionDetail($id);
-        visits($questionDetail,'tag1')->increment();
         $relatedQuestions = $this->modelQuestion->getRelatedQuestion($id);
         if ($questionDetail->question_poll == 0) {
             return view('user.question.question_detail', compact('questionDetail', 'user','relatedQuestions'));

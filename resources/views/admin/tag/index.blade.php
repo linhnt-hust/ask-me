@@ -13,11 +13,11 @@
                             <a href="{{ route('admin.index') }}">Ask-me</a>
                         </li>
                         <li class="active">
-                            Categories
+                            Tags
                         </li>
                     </ol>
                 </div>
-                <h4 class="page-title"> Category Statistical</h4>
+                <h4 class="page-title"> Tag Statistical</h4>
             </div>
         </div>
     </div>
@@ -31,13 +31,13 @@
                         <form>
                             <div class="form-group search-box">
                                 <input type="text" id="search_input" class="form-control product-search" placeholder="Search here...">
-                                <button type="submit" class="btn btn-search search-category"><i class="fa fa-search"></i></button>
+                                <button type="submit" class="btn btn-search search-tag"><i class="fa fa-search"></i></button>
                             </div>
                         </form>
                     </div>
                     <div class="col-sm-4">
-                    <a href="#custom-modal" class="btn btn-success btn-rounded btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal"
-                    data-overlaySpeed="200" data-overlayColor="#36404a" data-toggle="modal" data-target="#con-close-modal"><i class="md md-add"></i> Add New Category</a>
+                        <a href="#custom-modal" class="btn btn-success btn-rounded btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal"
+                           data-overlaySpeed="200" data-overlayColor="#36404a" data-toggle="modal" data-target="#con-close-modal"><i class="md md-add"></i> Add New Tag</a>
                     </div>
                 </div>
 
@@ -49,41 +49,36 @@
                                 <div class="btn-group dropdown m-l-10">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false"><i class="caret"></i></button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#" id="newest-category">Newest</a></li>
-                                        <li><a href="#" id="oldest-category">Oldest</a></li>
-                                        <li><a href="#" id="most-question-category">Most Questions Category</a></li>
-                                        <li><a href="#" id="most-blog-category">Most Blogs Category</a></li>
+                                        <li><a href="#" id="newest-tag">Newest</a></li>
+                                        <li><a href="#" id="oldest-tag">Oldest</a></li>
+                                        <li><a href="#" id="most-question-tag">Most Questions Tag</a></li>
                                     </ul>
                                 </div>
                             </th>
-                            <th>Name</th>
+                            <th>Name Tag</th>
                             <th>Questions</th>
-                            <th>Blogs</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody class="item-user">
-                        @foreach($categories as $category)
-                            <tr id="deleteItem_{{$category->id}}">
+                        @foreach($tags as $tag)
+                            <tr id="deleteItem_{{$tag->id}}">
                                 <td>
-                                    {{ $category->id }}
+                                    {{ $tag->id }}
                                 </td>
                                 <td>
-                                    {{ $category->name_category }}
+                                    {{ $tag->name_tag }}
                                 </td>
                                 <td>
-                                    {{ $category->countQuestionByCategory($category->id) }}
+                                    {{ $tag->question->count() }}
                                 </td>
                                 <td>
-                                    {{ $category->blog->count() }}
+                                    {{ $tag->created_at }}
                                 </td>
                                 <td>
-                                    {{ $category->created_at }}
-                                </td>
-                                <td>
-                                    <a href="#" class="table-action-btn h3 edit-modal" data-toggle="modal" data-target="#con-close-modal-edit" data-id = "{{$category->id}}" data-name="{{$category->name_category}}"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
-                                    <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = "{{$category->id}}"><i class="mdi mdi-close-box-outline text-danger"></i></a>
+                                    <a href="#" class="table-action-btn h3 edit-modal" data-toggle="modal" data-target="#con-close-modal-edit-tag" data-id = "{{$tag->id}}" data-name="{{$tag->name_tag}}"><i class="mdi mdi-pencil-box-outline text-success"></i></a>
+                                    <a href="#" class="table-action-btn h3 delete-modal" data-toggle="modal" data-target=".bs-example-modal-lg" data-id = "{{$tag->id}}"><i class="mdi mdi-close-box-outline text-danger"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -93,7 +88,7 @@
             </div> <!-- end card-box -->
 
             <div class="text-right">
-                {{ $categories->render('admin.elements.pagination') }}
+                {{ $tags->render('admin.elements.pagination') }}
             </div>
 
         </div> <!-- end col -->
@@ -112,8 +107,8 @@
                     {{ csrf_field() }}
                     <input type="hidden" id="id_delete" name="question_id">
                     <div class="modal-body">
-                        <h4 class="text-center">Are you sure you want to delete the following category?</h4>
-                        <p class="text-center">Bạn có chắc muốn xoá chủ đề này không?</p>
+                        <h4 class="text-center">Are you sure you want to delete the following tag?</h4>
+                        <p class="text-center">Bạn có chắc muốn xoá tag này không?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-danger delete" data-dismiss="modal">
@@ -134,43 +129,43 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Add New Category</h4>
+                    <h4 class="modal-title">Add New Tag</h4>
                 </div>
                 <div class="modal-body">
 
                     <div class="row">
                         <div class="form-group">
-                            <label for="field-3" class="control-label">Name Category</label>
-                            <input type="text" class="form-control" id="name_category" placeholder="Write down name of category that you want" style="color: #00aff0">
+                            <label for="field-3" class="control-label">Name Tag</label>
+                            <input type="text" class="form-control" id="name_tag" placeholder="Write down name of tag that you want" style="color: #00aff0">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success waves-effect waves-light add-category" data-dismiss="modal">Save changes</button>
+                    <button type="button" class="btn btn-success waves-effect waves-light add-tag" data-dismiss="modal">Save</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div><!-- /.modal -->
 
-    <div id="con-close-modal-edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div id="con-close-modal-edit-tag" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Edit Category</h4>
+                    <h4 class="modal-title">Edit Tag</h4>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="id_edit">
                     <div class="row">
                         <div class="form-group">
-                            <label for="name_category" class="control-label">Name Category</label>
-                            <input type="text" class="form-control" id="name_category" name="name_category" style="color: #00aff0">
+                            <label for="name_tag" class="control-label">Name Tag</label>
+                            <input type="text" class="form-control" id="name_tag" name="name_tag" style="color: #00aff0">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success waves-effect waves-light update-category" data-dismiss="modal">Update</button>
+                    <button type="button" class="btn btn-success waves-effect waves-light update-tag" data-dismiss="modal">Update</button>
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -189,13 +184,13 @@
         $('.modal-footer').on('click', '.delete', function() {
             $.ajax({
                 type: 'post',
-                url: "{{ route('admin.delete.category') }}",
+                url: "{{ route('admin.delete.tag') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
-                    category_id: id,
+                    tag_id: id,
                 },
                 success: function(data) {
-                    toastr.success('Successfully deleted category!', 'Success Alert', {timeOut: 5000});
+                    toastr.success('Successfully deleted tag!', 'Success Alert', {timeOut: 5000});
                     $('#deleteItem_' + data['id']).remove();
                 },
                 error(data) {
@@ -206,21 +201,21 @@
 
         $(document).on('click', '.edit-modal', function() {
             $('#id_edit').val($(this).data('id'));
-            $('input[name="name_category"]').val($(this).data('name'));
+            $('input[name="name_tag"]').val($(this).data('name'));
         });
-        $('.modal-footer').on('click', '.update-category', function() {
+        $('.modal-footer').on('click', '.update-tag', function() {
             var id = $('#id_edit').val();
-            var name = $('input[name="name_category"]').val();
+            var name = $('input[name="name_tag"]').val();
             $.ajax({
                 type: 'post',
-                url: "{{ route('admin.update.category') }}",
+                url: "{{ route('admin.update.tag') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
                     id: id,
-                    name_category: name,
+                    name_tag: name,
                 },
                 success: function(data) {
-                    toastr.success('Successfully update category!', 'Success Alert', {timeOut: 5000});
+                    toastr.success('Successfully update tag!', 'Success Alert', {timeOut: 5000});
                     $('#deleteItem_' + data['id']).replaceWith(data['output']);
                 },
                 error(data) {
@@ -229,12 +224,12 @@
             });
         });
 
-        $('.search-category').on('click', function(event){
+        $('.search-tag').on('click', function(event){
             event.preventDefault();
             var search = $('#search_input').val();
             $.ajax({
                 type: 'post',
-                url: "{{ route('admin.category.search') }}",
+                url: "{{ route('admin.tag.search') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
                     'search': search,
@@ -248,14 +243,14 @@
             });
         });
 
-        $('.modal-footer').on('click', '.add-category', function() {
-            var name = $('#name_category').val();
+        $('.modal-footer').on('click', '.add-tag', function() {
+            var name = $('#name_tag').val();
             $.ajax({
                 type: 'post',
-                url: "{{ route('admin.add.category') }}",
+                url: "{{ route('admin.add.tag') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
-                    name_category: name,
+                    name_tag: name,
                 },
                 success: function(data) {
                     toastr.success('Successfully add category!', 'Success Alert', {timeOut: 5000});
@@ -267,11 +262,11 @@
             });
         });
 
-        $('#newest-category').on('click', function(event){
+        $('#newest-tag').on('click', function(event){
             event.preventDefault();
             $.ajax({
                 type: 'post',
-                url: "{{ route('sort.category.newest') }}",
+                url: "{{ route('sort.tag.newest') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
                 },
@@ -284,11 +279,11 @@
             });
         });
 
-        $('#oldest-category').on('click', function(event){
+        $('#oldest-tag').on('click', function(event){
             event.preventDefault();
             $.ajax({
                 type: 'post',
-                url: "{{ route('sort.category.oldest') }}",
+                url: "{{ route('sort.tag.oldest') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
                 },
@@ -301,28 +296,11 @@
             });
         });
 
-        $('#most-question-category').on('click', function(event){
+        $('#most-question-tag').on('click', function(event){
             event.preventDefault();
             $.ajax({
                 type: 'post',
-                url: "{{ route('sort.category.mostQuestion') }}",
-                data: {
-                    '_token': $('input[name=_token]').val(),
-                },
-                success: function(data) {
-                    $('.item-user').html(data);
-                },
-                error(data) {
-                    console.log(data);
-                }
-            });
-        });
-
-        $('#most-blog-category').on('click', function(event){
-            event.preventDefault();
-            $.ajax({
-                type: 'post',
-                url: "{{ route('sort.category.mostBlog') }}",
+                url: "{{ route('sort.tag.mostQuestion') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
                 },

@@ -25,4 +25,29 @@ class Tag extends Model
     {
         return $this->belongsToMany('App\Models\Question');
     }
+
+    public function getTagList()
+    {
+        return Tag::orderBy('created_at', 'ASC')->paginate(10);
+    }
+
+    public function searchTag($input)
+    {
+        return Tag::where('name_tag', 'LIKE', '%' . $input['search'] . '%')->paginate(10);
+    }
+
+    public function getNewTag()
+    {
+        return Tag::orderBy('created_at','DESC')->paginate(10);
+    }
+
+    public function getOldestTag()
+    {
+        return Tag::orderBy('created_at','ASC')->paginate(10);
+    }
+
+    public function getMostQuestionsTag()
+    {
+        return Tag::withCount("question as questions")->orderBy('questions', 'DESC')->paginate(10);
+    }
 }

@@ -64,7 +64,7 @@ Ask me – Anything you wanted to know
                                     @endif
                                     {{--<span class="question-favorite"><i class="icon-star"></i>5</span>--}}
                                 </div>
-                                <span class="question-category"><a href="{{route('question.category.detail',optional($recentQuestion->category)->id )}}"><i class="icon-folder-close"></i>{{ optional($recentQuestion->category)->name_category }}</a></span>
+                                <span class="question-category"><a href="{{route('question.category.detail',$recentQuestion->category_id )}}"><i class="icon-folder-close"></i>{{ optional($recentQuestion->category)->name_category }}</a></span>
                                 <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $recentQuestion->updated_at)->diffForHumans() }}</span>
                                 <span class="question-comment"><a href="#"><i class="icon-comment"></i>5 Answer</a></span>
                                 <span class="question-view"><i class="icon-user"></i>70 views</span>
