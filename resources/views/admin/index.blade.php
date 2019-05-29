@@ -35,10 +35,6 @@
                             </div>
                         </form>
                     </div>
-                    {{--<div class="col-sm-4">--}}
-                        {{--<a href="#custom-modal" class="btn btn-success btn-rounded btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal"--}}
-                           {{--data-overlaySpeed="200" data-overlayColor="#36404a"><i class="md md-add"></i> Add New Agent</a>--}}
-                    {{--</div>--}}
                 </div>
 
                 <div class="table-responsive">
