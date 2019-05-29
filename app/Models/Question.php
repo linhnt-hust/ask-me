@@ -315,9 +315,7 @@ class Question extends Model
 
     public function getNoAnswerQuestion()
     {
-        $questionId = Question::pluck('id')->toArray();
-        $commentQuestion = Comment::where('commentable_type', '=', 'App\Models\Question')->pluck('commentable_id')->toArray();
-        dd($commentQuestion);
+        return Question::doesntHave('comments')->orderBy('created_at', 'DESC')->paginate(10);
     }
 
     public function getAllQuestionbyCategory($categoryId)
@@ -421,5 +419,15 @@ class Question extends Model
             $relatedQuestions[$key] = Question::find($relate);
         }
         return $relatedQuestions;
+    }
+
+    public function getMostResponseQuestions()
+    {
+        return Question::withCount('comments as comment')->orderBy('comment', 'DESC')->paginate(10);
+    }
+
+    public function getRecentAnswerQuestions()
+    {
+        return Question::with('comments')->orderBy('created_at', 'DESC')->paginate(10);
     }
 }

@@ -58,7 +58,10 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $recentQuestions = $this->modelQuestion->getRecentQuestions();
-        return view('home', compact('recentQuestions', 'user'));
+        $mostResponseQuestions = $this->modelQuestion->getMostResponseQuestions();
+        $recentAnswerQuestions = $this->modelQuestion->getRecentAnswerQuestions();
+        $noAnswerQuestions = $this->modelQuestion->getNoAnswerQuestion();
+        return view('home', compact('recentQuestions', 'user', 'mostResponseQuestions', 'recentAnswerQuestions', 'noAnswerQuestions'));
     }
 
     public function userBlog()

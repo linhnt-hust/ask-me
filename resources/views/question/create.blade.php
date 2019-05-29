@@ -171,6 +171,7 @@
                 }else {
                     $("#question-details").parent().find('.required-error').remove();
                 }
+                return false;
             });
 
             $('#category').change(function(){

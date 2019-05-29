@@ -14,6 +14,6 @@ class CommentsTableSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         DB::table('comments')->truncate();
         Schema::enableForeignKeyConstraints();
-        factory(App\Models\Comment::class, 100)->create();
+        factory(App\Models\Comment::class, 250)->create();
     }
 }
