@@ -34,7 +34,7 @@ Route::get('{provider}/callback', 'Auth\AuthController@handleProviderCallback');
 Route::resource('profile', 'User\ProfileController');
 
 Route::resource('question', 'Question\QuestionController');
-
+Route::post('/recommend', 'Question\QuestionController@recommendTagByCategory')->name('recommend.tag');
 
 Route::post('/tag', 'Question\QuestionController@tagGenerate')->name('tag.generate');
 Route::get('/single/question', 'Question\QuestionController@getQuestionSingle')->name('question.single');
@@ -94,7 +94,6 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function (){
     Route::post('/sort/category/oldest','AdminController@oldestCategory' )->name('sort.category.oldest');
     Route::post('/sort/category/mostQuestion','AdminController@mostQuestionCategory' )->name('sort.category.mostQuestion');
     Route::post('/sort/category/mostBlog','AdminController@mostBlogCategory' )->name('sort.category.mostBlog');
-
     Route::get('/tag', 'Admincontroller@getTagsList')->name('admin.tag');
     Route::post('/delete/tag','AdminController@deleteTag' )->name('admin.delete.tag');
     Route::post('/update/tag','AdminController@updateTag' )->name('admin.update.tag');

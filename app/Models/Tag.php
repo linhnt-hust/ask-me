@@ -50,4 +50,26 @@ class Tag extends Model
     {
         return Tag::withCount("question as questions")->orderBy('questions', 'DESC')->paginate(10);
     }
+
+    public function recommendTagByCategory($categoryId)
+    {
+        $questions = Question::where('category_id', $categoryId)->get();
+        $allTags = [];
+        foreach ($questions as $question)
+        {
+            foreach ($question->tag as $tag)
+            {
+                if(in_array($tag->id, $allTags)){
+                    $key = array_search($tag->id, $allTags);
+                    unset($allTags[$key]);
+                    array_unshift($allTags, $tag->id);
+                } else{
+                    $allTags[] = $tag->id;
+                }
+            }
+        }
+        $recommendTags = array_slice($allTags, 0, 3);
+
+        return $recommendTags;
+    }
 }

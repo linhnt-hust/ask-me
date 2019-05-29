@@ -2,6 +2,9 @@
 @section('title')
     Ask New Question
 @endsection
+@section('page_header')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+@endsection
 @section('content')
 <div class="breadcrumbs">
     <section class="container">
@@ -50,7 +53,7 @@
                             <p>
                                 <label>Tags</label>
                                 <input type="text" class="input" id="question_tags" data-seperator="," name="tags">
-                                <span class="form-description">Please choose  suitable Keywords Ex : <span class="color">question , poll</span> .</span>
+                                <span class="form-description">Please choose  suitable Keywords Ex : <strong class="color" id="recommendTag">question, poll, </strong>..</span>
                             </p>
                             <p>
                                 <label class="required">Category<span>*</span></label>
@@ -123,6 +126,8 @@
 @endsection
 @section('page_scripts')
     @parent
+    <!-- toastr notifications -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://algorithmia.com/v1/clients/js/algorithmia-0.2.0.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -166,6 +171,24 @@
                 }else {
                     $("#question-details").parent().find('.required-error').remove();
                 }
+            });
+
+            $('#category').change(function(){
+                id = $(this).val();
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('recommend.tag') }}",
+                    data: {
+                        '_token': $('input[name=_token]').val(),
+                        'id': id,
+                    },
+                    success: function(data) {
+                        $('#recommendTag').html(data);
+                    },
+                    error(data) {
+                        console.log(data);
+                    }
+                });
             });
         });
     </script>
