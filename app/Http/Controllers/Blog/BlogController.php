@@ -78,6 +78,7 @@ class BlogController extends Controller
     public function show($id)
     {
         $blogDetail =  $this->modelBlog->getBlogDetail($id);
+//        dd($blogDetail->category->first()->blog);
         return view('blog.show', compact('blogDetail'));
     }
 
@@ -91,7 +92,6 @@ class BlogController extends Controller
     {
         $user = Auth::user();
         $blog = $this->modelBlog->getBlogDetail($id);
-//        dd($blog->blogUploaded);
         $categories = $this->modelCategory->getAllCategories();
         return view('blog.edit', compact('user', 'blog', 'categories'));
     }

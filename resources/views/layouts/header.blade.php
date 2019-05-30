@@ -10,10 +10,11 @@
                 </li>
                 <li><a href="">Questions</a>
                     <ul>
-                        <li><a href="{{ route('question.category') }}">Questions Category</a></li>
                         <li><a href="{{ route('question.single') }}">Question Text</a></li>
                         <li><a href="{{ route('question.poll') }}">Question Poll</a></li>
                     </ul>
+                </li>
+                <li><a href="{{ route('question.category') }}">Category</a>
                 </li>
                 @guest
                 @else

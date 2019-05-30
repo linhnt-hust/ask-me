@@ -279,6 +279,6 @@ class Blog extends Model
 
     public function searchBlog($input)
     {
-        return Blog::where('title', 'LIKE', '%' . $input['search_text'] . '%')->paginate(6);
+        return Blog::where('title', 'LIKE', '%' . $input['search'] . '%')->paginate(6);
     }
 }

@@ -115,7 +115,7 @@ class Question extends Model
 
     public function searchQuestion($input)
     {
-        return Question::where('title', 'LIKE', '%' . $input['search_text'] . '%')->paginate(6);
+        return Question::where('title', 'LIKE', '%' . $input['search'] . '%')->paginate(6);
     }
 
     public function createQuestion($params)
@@ -315,7 +315,7 @@ class Question extends Model
 
     public function getNoAnswerQuestion()
     {
-        return Question::doesntHave('comments')->orderBy('created_at', 'DESC')->paginate(10);
+        return Question::where('approve_status', 1)->doesntHave('comments')->orderBy('created_at', 'DESC')->paginate(10);
     }
 
     public function getAllQuestionbyCategory($categoryId)
@@ -423,11 +423,16 @@ class Question extends Model
 
     public function getMostResponseQuestions()
     {
-        return Question::withCount('comments as comment')->orderBy('comment', 'DESC')->paginate(10);
+        return Question::where('approve_status', 1)->withCount('comments as comment')->orderBy('comment', 'DESC')->paginate(10);
     }
 
     public function getRecentAnswerQuestions()
     {
-        return Question::with('comments')->orderBy('created_at', 'DESC')->paginate(10);
+        return Question::where('approve_status', 1)->with('comments')->orderBy('created_at', 'DESC')->paginate(10);
+    }
+
+    public function reportType($id, $type)
+    {
+        return Report::where('question_id', $id)->where('type', $type)->get()->count();
     }
 }

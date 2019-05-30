@@ -153,6 +153,9 @@
                             @endforeach
                         </ul>
                         <h4 class="text-uppercase" style="color: red">Reports ({{ $question->reports }})</h4>
+                            <h6>   - Spam: <span style="color: red"> {{ $question->reportType($question->id, 1) }}</span></h6>
+                            <h6>   - Content inappropriate (Có nội dung không phù hợp): <span style="color: red"> {{ $question->reportType($question->id, 2) }}</span></h6>
+                            <h6>   - Contains sensitive or violent images (Có chứa hình ảnh nhạy cảm hoặc bạo lực): <span style="color: red"> {{ $question->reportType($question->id, 3) }}</span></h6>
                         <h4 class="text-uppercase m-t-50">Leave message for question owner</h4>
                         <div class="border m-b-20"></div>
 

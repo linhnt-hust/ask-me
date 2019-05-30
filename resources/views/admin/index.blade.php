@@ -172,7 +172,7 @@
             var search = $('#search_input').val();
             $.ajax({
                 type: 'post',
-                url: "{{ route('user.search') }}",
+                url: "{{ route('admin.user.search') }}",
                 data: {
                     '_token': $('input[name=_token]').val(),
                     'search': search,

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    All Question Category
+    All Categories
 @endsection
 @section('page_header')
     <style>
@@ -46,13 +46,13 @@
         <section class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>All Question Categories</h1>
+                    <h1>All Categories</h1>
                 </div>
                 <div class="col-md-12">
                     <div class="crumbs">
                         <a href="{{ route('home') }}">Home</a>
                         <span class="crumbs-span">/</span>
-                        <span class="current">All Question Category</span>
+                        <span class="current">All Categories</span>
                     </div>
                 </div>
             </div><!-- End row -->
@@ -63,7 +63,7 @@
             <div class="col-md-9">
                 <div class="page-content page-shortcode">
                     <div class="boxedtitle page-title">
-                        <h2>All Question Categories ({{$categories->total()}})
+                        <h2>All Categories ({{$categories->total()}})
 
                                 <form class="form-search" style="margin:auto;" action="{{route('category.search')}}" method="POST">
                                     {{ csrf_field() }}

@@ -113,7 +113,7 @@
         <div class="widget widget_tag_cloud">
             <h3 class="widget_title">Tags</h3>
             @foreach($tags as $tag)
-                <a href="#">{{$tag->name_tag}}</a>
+                <a href="{{ route('question.tag.detail', $tag->tag_id) }}">{{$tag->name_tag}}</a>
             @endforeach
         </div>
         

@@ -422,7 +422,10 @@
                 },
                 success: function(data) {
                     $("#vote_"+commentId).html(data['success']);
-                    $("#upvote_"+commentId).remove();
+                    // $("#upvote_"+commentId).remove();
+                    $("#a_"+commentId).attr('style', 'color: white !important');
+                    $("#a_"+commentId).css("pointer-events", "none");
+                    $("#a_"+commentId).css("cursor", "default");
                 },
                 error(data) {
                     console.log(data);
@@ -448,26 +451,6 @@
                 }
             });
         }
-
-        {{--function follow_question(questionId, followedUser){--}}
-            {{--$.ajax({--}}
-                {{--type: 'post',--}}
-                {{--url: "{{ route('question.follow') }}",--}}
-                {{--data: {--}}
-                    {{--'_token': $('input[name=_token]').val(),--}}
-                    {{--'question_id': questionId,--}}
-                    {{--'user_id': followedUser,--}}
-                {{--},--}}
-                {{--success: function(data) {--}}
-                    {{--toastr.success('successfully follow question!', 'Success Alert', {timeOut: 5000});--}}
-                    {{--$(".follow-button").remove();--}}
-                    {{--$("#question_follow_parent").html(data);--}}
-                {{--},--}}
-                {{--error(data) {--}}
-                    {{--console.log(data);--}}
-                {{--}--}}
-            {{--});--}}
-        {{--}--}}
 
         function unfollow_question(questionId, unfollowedUser){
             $.ajax({
