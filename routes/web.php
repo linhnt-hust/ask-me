@@ -43,6 +43,7 @@ Route::get('/category/question', 'Question\QuestionController@questionCategory')
 Route::post('/report/question', 'Question\QuestionController@reportQuestion')->name('question.report');
 
 Route::get('/category/detail/{id}', 'Question\QuestionController@questionCategoryDetail')->name('question.category.detail');
+Route::get('/tag/detail/{id}', 'Question\QuestionController@questionTagDetail')->name('question.tag.detail');
 
 Route::post('/category/search', 'Question\QuestionController@searchCategory')->name('category.search');
 
@@ -79,7 +80,7 @@ Route::group(['prefix' => '/admin', 'namespace' => 'Admin'], function (){
     Route::post('/delete/question/','AdminController@deleteQuestion' )->name('admin.delete.question');
     Route::post('/blog/question/','AdminController@deleteBlog' )->name('admin.delete.blog');
     Route::post('/delete/user','AdminController@deleteUser' )->name('admin.delete.user');
-    Route::post('/search/user','AdminController@searchUser' )->name('user.search');
+    Route::post('/search/user','AdminController@searchUser' )->name('admin.user.search');
     Route::post('/sort/user/oldest','AdminController@oldestUser' )->name('sort.user.oldest');
     Route::post('/sort/user/newest','AdminController@newestUser' )->name('sort.user.newest');
     Route::post('/sort/user/mostQuestion','AdminController@mostQuestionUser' )->name('sort.user.mostQuestion');

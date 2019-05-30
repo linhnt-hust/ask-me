@@ -14,6 +14,6 @@ class PollsTableSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         DB::table('poll_fields')->truncate();
         Schema::enableForeignKeyConstraints();
-        factory(App\Models\Poll::class, 70)->create();
+        factory(App\Models\Poll::class, 100)->create();
     }
 }

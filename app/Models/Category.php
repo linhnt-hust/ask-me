@@ -57,6 +57,11 @@ class Category extends Model
         return Category::where('name_category', 'LIKE', '%' . $input['search'] . '%')->paginate(6);
     }
 
+    public function searchCategories($input)
+    {
+        return Category::where('name_category', 'LIKE', '%' . $input['search'] . '%')->get();
+    }
+
     public function countQuestionByCategory($categoryId)
     {
         return Question::where('category_id', $categoryId)->get()->count();

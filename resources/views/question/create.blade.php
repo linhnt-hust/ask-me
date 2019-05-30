@@ -171,7 +171,12 @@
                 }else {
                     $("#question-details").parent().find('.required-error').remove();
                 }
-                return false;
+
+                if (title != "" && category != "" && details != "") {
+                    return true;
+                } else {
+                    return false;
+                }
             });
 
             $('#category').change(function(){

@@ -44,7 +44,9 @@ Ask me – Anything you wanted to know
                             <h2>
                                 <a href="{{ route('question.show', $recentQuestion->id) }}"> {{ $recentQuestion->title }}</a>
                             </h2>
-                            <a class="question-report" href="#">Report</a>
+                            @if (Auth::user() && $recentQuestion->user->id != Auth::user()->id)
+                                <a class="question-report" href="{{ route('question.show', $recentQuestion->id) }}">Report</a>
+                            @endif
                             @if ( $recentQuestion->question_poll == 0)
                             <div class="question-type-main"><i class="icon-question-sign"></i>Question</div>
                             @else
@@ -82,7 +84,9 @@ Ask me – Anything you wanted to know
                                 <h2>
                                     <a href="{{ route('question.show', $mostResponseQuestion->id) }}"> {{ $mostResponseQuestion->title }}</a>
                                 </h2>
-                                <a class="question-report" href="#">Report</a>
+                                @if (Auth::user() && $mostResponseQuestion->user->id != Auth::user()->id)
+                                    <a class="question-report" href="{{ route('question.show', $mostResponseQuestion->id) }}">Report</a>
+                                @endif
                                 @if ( $mostResponseQuestion->question_poll == 0)
                                     <div class="question-type-main"><i class="icon-question-sign"></i>Question</div>
                                 @else
@@ -119,7 +123,9 @@ Ask me – Anything you wanted to know
                                 <h2>
                                     <a href="{{ route('question.show', $recentAnswerQuestion->id) }}"> {{ $recentAnswerQuestion->title }}</a>
                                 </h2>
-                                <a class="question-report" href="#">Report</a>
+                                @if (Auth::user() && $recentAnswerQuestion->user->id != Auth::user()->id)
+                                    <a class="question-report" href="{{ route('question.show', $recentAnswerQuestion->id) }}">Report</a>
+                                @endif
                                 @if ( $recentAnswerQuestion->question_poll == 0)
                                     <div class="question-type-main"><i class="icon-question-sign"></i>Question</div>
                                 @else
@@ -156,7 +162,9 @@ Ask me – Anything you wanted to know
                                 <h2>
                                     <a href="{{ route('question.show', $noAnswerQuestion->id) }}"> {{ $noAnswerQuestion->title }}</a>
                                 </h2>
-                                <a class="question-report" href="#">Report</a>
+                                @if (Auth::user() && $noAnswerQuestion->user->id != Auth::user()->id)
+                                    <a class="question-report" href="{{ route('question.show', $noAnswerQuestion->id) }}">Report</a>
+                                @endif
                                 @if ( $noAnswerQuestion->question_poll == 0)
                                     <div class="question-type-main"><i class="icon-question-sign"></i>Question</div>
                                 @else

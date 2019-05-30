@@ -36,6 +36,11 @@ class Tag extends Model
         return Tag::where('name_tag', 'LIKE', '%' . $input['search'] . '%')->paginate(10);
     }
 
+    public function searchTags($input)
+    {
+        return Tag::where('name_tag', 'LIKE', '%' . $input['search'] . '%')->get();
+    }
+
     public function getNewTag()
     {
         return Tag::orderBy('created_at','DESC')->paginate(10);

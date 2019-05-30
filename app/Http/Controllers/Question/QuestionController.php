@@ -168,8 +168,14 @@ class QuestionController extends Controller
     public function questionCategoryDetail($id)
     {
         $questions = $this->modelQuestion->getAllQuestionbyCategory($id);
-        $nameCategory = Category::where('id', $id)->value('name_category');
-        return view('question.category_detail', compact('questions', 'nameCategory'));
+        $category = Category::find($id);
+        return view('question.category_detail', compact('questions', 'category'));
+    }
+
+    public function questionTagDetail($id)
+    {
+        $tag = Tag::find($id);
+        return view('question.tag_detail', compact('tag'));
     }
 
     public function searchCategory(Request $request)

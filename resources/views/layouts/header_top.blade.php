@@ -21,7 +21,7 @@
         <div class="header-search">
             <form action="{{route('user.search')}}" method="POST">
                 {{ csrf_field() }}
-                <input type="text" id="search_text" name="search_text" value="Search here ..." onfocus="if(this.value=='Search here ...')this.value='';" onblur="if(this.value=='')this.value='Search here ...';">
+                <input type="text" id="search_text" name="search" value="Search here ..." onfocus="if(this.value=='Search here ...')this.value='';" onblur="if(this.value=='')this.value='Search here ...';">
                 <button type="submit" class="search-submit" id="search_button"></button>
             </form>
         </div>

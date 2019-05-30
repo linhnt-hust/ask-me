@@ -7,7 +7,7 @@
         <section class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>questions with title: {{$search}}</h1>
+                    <h1>Data with keyword: {{$search}}</h1>
                 </div>
                 <div class="col-md-12">
                     <div class="crumbs">
@@ -26,6 +26,8 @@
                     <ul class="tabs">
                         <li class="tab"><a href="#" class="current">Questions</a></li>
                         <li class="tab"><a href="#">Blogs</a></li>
+                        <li class="tab"><a href="#">Categories</a></li>
+                        <li class="tab"><a href="#">Tags</a></li>
                     </ul>
                     <div class="tab-inner-warp">
                         <div class="tab-inner">
@@ -54,7 +56,7 @@
                                             @endif
                                             {{--<span class="question-favorite"><i class="icon-star"></i>5</span>--}}
                                         </div>
-                                        <span class="question-category"><a href="#"><i class="icon-folder-close"></i>{{ optional($question->category)->name_category }}</a></span>
+                                        <span class="question-category"><a href="{{route('question.category.detail',$question->category_id )}}"><i class="icon-folder-close"></i>{{ optional($question->category)->name_category }}</a></span>
                                         <span class="question-date"><i class="icon-time"></i>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $question->updated_at)->diffForHumans() }}</span>
                                         <span class="question-comment"><a href="#"><i class="icon-comment"></i>{{count($question->comments)}}</a></span>
                                         {{--<span class="question-view"><i class="icon-user"></i>70 views</span>--}}
@@ -118,7 +120,6 @@
                                                 <span class="meta-comment"><i class="icon-comments-alt"></i><a href="#">{{count($blog->comments)}}</a></span>
                                             </div>
                                             <div class="post-content">
-                                                {{--<p>{{substr($blog->description, 0, 888)}}</p>--}}
                                                 <p>{!! substr($blog->description, 0, 888) !!}</p>
                                                 <a href="{{route('blog.show', $blog->id) }}" class="post-read-more button color small">Continue reading</a>
                                             </div><!-- End post-content -->
@@ -129,6 +130,32 @@
                             {{ $blogs->render('partials.pagination') }}
                         </div>
                     </div>
+
+                    <div class="tab-inner-warp">
+                        <div class="tab-inner">
+                            <div class="widget widget_tag_cloud">
+                                <div class="ul_list ul_list-icon-ok ul_list_circle" list_background="#1abc9c" list_background_hover="#34495E" list_color="#FFF">
+                                    <ul>
+                                        @foreach($categories as $category)
+                                            <li onclick="location.href='http://localhost:8000/category/detail/{{$category->id}};'"><i l_background="#3498db" l_background_hover="#34495E" class="icon-ok-sign ul_l_circle"></i>{{ $category->name_category }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-inner-warp">
+                        <div class="tab-inner">
+                            <div class="widget widget_tag_cloud">
+                                <h3 class="widget_title">Tags</h3>
+                                @foreach($tags as $tag)
+                                    <a href="{{ route('question.tag.detail', $tag->id) }}">{{$tag->name_tag}}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div><!-- End main -->

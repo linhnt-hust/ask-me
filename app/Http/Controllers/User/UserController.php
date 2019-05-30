@@ -5,8 +5,10 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FeedBackRequest;
 use App\Models\Blog;
+use App\Models\Category;
 use App\Models\FeedBack;
 use App\Models\PollVoteHistory;
+use App\Models\Tag;
 use Auth;
 use App\Models\Question;
 use Illuminate\Http\Request;
@@ -15,10 +17,18 @@ class UserController extends Controller
 {
     protected $modelQuestion;
     protected $modelBlog;
-    public function __construct(Question $question, Blog $blog)
-    {
+    protected $modelCategory;
+    protected $modelTag;
+    public function __construct(
+        Question $question,
+        Blog $blog,
+        Category $category,
+        Tag $tag
+    ){
         $this->modelBlog = $blog;
         $this->modelQuestion = $question;
+        $this->modelCategory = $category;
+        $this->modelTag = $tag;
     }
 
     public function userQuestion()
@@ -88,8 +98,10 @@ class UserController extends Controller
         $input = $request->all();
         $questions = $this->modelQuestion->searchQuestion($input);
         $blogs = $this->modelBlog->searchBlog($input);
-        $search = $request->get('search_text');
-        return view('search_result',compact('questions','search','blogs'));
+        $categories = $this->modelCategory->searchCategories($input);
+        $tags = $this->modelTag->searchTags($input);
+        $search = $request->get('search');
+        return view('search_result',compact('questions','search','blogs', 'categories','tags'));
     }
 
     public function contract()
