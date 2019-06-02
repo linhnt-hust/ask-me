@@ -139,10 +139,11 @@
                 <div id="related-posts">
                     <h2>Related Posts</h2>
                     <ul class="related-posts">
-                        <li class="related-item"><h3><a href="#"><i class="icon-double-angle-right"></i>This is a Standard Post .</a></h3></li>
-                        <li class="related-item"><h3><a href="#"><i class="icon-double-angle-right"></i>Post Without Image .</a></h3></li>
-                        <li class="related-item"><h3><a href="#"><i class="icon-double-angle-right"></i>Beautiful Gallery Post .</a></h3></li>
-                        <li class="related-item"><h3><a href="#"><i class="icon-double-angle-right"></i>This Is A Video Post .</a></h3></li>
+                        @foreach($blogDetail->category->first()->blog as $key=>$relateBlog)
+                            @if ($key <= 3)
+                                <li class="related-item"><h3><a href="{{route('blog.show', $relateBlog->id) }}"><i class="icon-double-angle-right"></i>{{ substr($relateBlog->title,0,30) }}...</a></h3></li>
+                            @endif
+                        @endforeach
                     </ul>
                 </div><!-- End related-posts -->
 
@@ -292,7 +293,10 @@
                 },
                 success: function(data) {
                     $("#vote_"+commentId).html(data['success']);
-                    $("#upvote_"+commentId).remove();
+                    // $("#upvote_"+commentId).remove();
+                    $("#a_"+commentId).attr('style', 'color: white !important');
+                    $("#a_"+commentId).css("pointer-events", "none");
+                    $("#a_"+commentId).css("cursor", "default");
                 },
                 error(data) {
                     console.log(data);

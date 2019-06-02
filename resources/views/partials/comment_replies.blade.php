@@ -24,6 +24,9 @@
                                         @elseif ($history->user_id == Auth::user()->id && $history->down == 1 && $history->up == 0)
                                             <li id="upvote_{{ $comment->id }}"><a class="question-vote-up" title="Like" onclick="up_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>
                                         @elseif ($history->user_id == Auth::user()->id && $history->down == 1 && $history->up == 1)
+                                        {{--@elseif ($history->user_id != Auth::user()->id)--}}
+                                            {{--<li id="upvote_{{ $comment->id }}"><a id="a_{{ $comment->id }}" class="question-vote-up" title="Like" onclick="up_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>--}}
+                                            {{--<li id="downvote_{{ $comment->id }}"><a class="question-vote-down" title="Dislike" onclick="down_vote( {{$comment->id}}, {{ Auth::user()->id }})"></a></li>--}}
                                         @endif
                                     @endforeach
                                 @endif

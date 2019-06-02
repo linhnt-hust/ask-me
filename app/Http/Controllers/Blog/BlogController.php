@@ -78,7 +78,6 @@ class BlogController extends Controller
     public function show($id)
     {
         $blogDetail =  $this->modelBlog->getBlogDetail($id);
-//        dd($blogDetail->category->first()->blog);
         return view('blog.show', compact('blogDetail'));
     }
 
