@@ -202,3 +202,20 @@ Ask me – Anything you wanted to know
     </div><!-- End row -->
 </section><!-- End container -->
 @endsection
+@section('inline_scripts')
+    <script lang = "javascript" >
+    var _vc_data = {
+    id: 4944425,
+    secret: 'e54fbccd97d2e8bac00ade6a1eb2b7c5'
+    };
+    (function() {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.defer = true;
+    ga.src = '//live.vnpgroup.net/client/tracking.js?id=4944425';
+    var s = document.getElementsByTagName('script');
+    s[0].parentNode.insertBefore(ga, s[0]);
+    })();
+    </script>
+@endsection

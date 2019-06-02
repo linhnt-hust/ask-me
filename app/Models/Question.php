@@ -156,6 +156,8 @@ class Question extends Model
                 ]);
             }
         }
+
+        event(new \App\Events\NotifyPusherEvent($data));
         return $data;
     }
 

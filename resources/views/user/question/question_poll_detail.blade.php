@@ -340,7 +340,10 @@
                 },
                 success: function(data) {
                     $("#vote_"+commentId).html(data['success']);
-                    $("#upvote_"+commentId).remove();
+                    // $("#upvote_"+commentId).remove();
+                    $("#a_"+commentId).attr('style', 'color: white !important');
+                    $("#a_"+commentId).css("pointer-events", "none");
+                    $("#a_"+commentId).css("cursor", "default");
                 },
                 error(data) {
                     console.log(data);
